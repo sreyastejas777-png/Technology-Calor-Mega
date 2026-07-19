@@ -1,8 +1,12 @@
 import { motion } from 'framer-motion';
 
-export default function ApplicationCard({ icon: Icon, title, description, index = 0 }) {
+export default function ApplicationCard({ application, index = 0, onSelect }) {
+  const { icon: Icon, title, description } = application;
+
   return (
-    <motion.div
+    <motion.button
+      type="button"
+      onClick={() => onSelect(application)}
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
@@ -11,7 +15,7 @@ export default function ApplicationCard({ icon: Icon, title, description, index 
         hover: { type: 'spring', stiffness: 300, damping: 22 }
       }}
       whileHover={{ y: -8, scale: 1.03 }}
-      className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-secondary p-6 text-center text-white shadow-soft transition-shadow duration-300 hover:shadow-[0_20px_45px_-15px_rgba(224,159,62,0.45)]"
+      className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-secondary p-6 text-center text-white shadow-soft transition-shadow duration-300 hover:shadow-[0_20px_45px_-15px_rgba(224,159,62,0.45)]"
     >
       <motion.div
         whileHover={{ rotate: 360 }}
@@ -22,6 +26,6 @@ export default function ApplicationCard({ icon: Icon, title, description, index 
       </motion.div>
       <h3 className="mb-1 font-semibold">{title}</h3>
       <p className="text-xs leading-relaxed text-white/70">{description}</p>
-    </motion.div>
+    </motion.button>
   );
 }

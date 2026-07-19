@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -11,17 +11,18 @@ import SectionHeading from '../components/SectionHeading';
 import StatCard from '../components/StatCard';
 import FeatureCard from '../components/FeatureCard';
 import ApplicationCard from '../components/ApplicationCard';
+import ApplicationModal from '../components/ApplicationModal';
 import TestimonialCard from '../components/TestimonialCard';
 import Newsletter from '../components/Newsletter';
 import MachineOverview from '../components/MachineOverview';
 import ParticlesBackground from '../components/ParticlesBackground';
 import GradientBlobs from '../components/GradientBlobs';
 import TrustMarquee from '../components/TrustMarquee';
-import RotatingWord from '../components/RotatingWord';
 import FloatingBadge from '../components/FloatingBadge';
 import FAQAccordion from '../components/FAQAccordion';
-import heroDryer from '../assets/images/hero-dryer.jpeg';
-import innovatechDryer from '../assets/images/innovatech-dryer.jpeg';
+import slideMachine from '../assets/images/slide-machine.svg';
+import slideTrays from '../assets/images/slide-trays.svg';
+import slideControl from '../assets/images/slide-control.svg';
 import { stats } from '../data/stats';
 import { whyChooseUs } from '../data/whyChooseUs';
 import { applications } from '../data/applications';
@@ -29,6 +30,7 @@ import { testimonials } from '../data/testimonials';
 import { faqs } from '../data/faqs';
 
 export default function Home() {
+  const [selectedApp, setSelectedApp] = useState(null);
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
   const heroImageY = useTransform(scrollYProgress, [0, 1], [0, 90]);
@@ -89,11 +91,16 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="font-display text-4xl font-bold leading-tight text-primary dark:text-base sm:text-5xl lg:text-6xl">
-              Premium Industrial <RotatingWord /> Solutions
+            <h1 className="font-display text-4xl font-bold uppercase leading-[1.05] tracking-tight text-primary dark:text-base sm:text-5xl lg:text-6xl">
+              Premium Drying
+              <br />
+              Solutions.
+              <br />
+              <span className="text-accent">Taste and Preserve.</span>
             </h1>
             <p className="mt-6 max-w-lg text-lg text-primary/70 dark:text-base/70">
-              Preserve Freshness. Increase Profit. Reduce Food Waste.
+              Industrial-grade moisture control engineered to eliminate food waste and unlock
+              agricultural profitability for family farms and cooperatives.
             </p>
             <div className="mt-9 flex flex-wrap gap-4">
               <span className="relative inline-flex">
@@ -108,6 +115,28 @@ export default function Home() {
               <Button as={Link} to="/technology" variant="glass" icon={FaPlayCircle}>
                 Watch Demo
               </Button>
+            </div>
+
+            <div className="mt-12">
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary/40 dark:text-base/40">
+                Trusted to Dry
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {applications.slice(0, 6).map((app, i) => (
+                  <motion.div
+                    key={app.title}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 + i * 0.06 }}
+                    className="flex items-center gap-2 rounded-full bg-white dark:bg-white/5 py-2 pl-2 pr-4 shadow-soft"
+                  >
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary/10 text-sm text-secondary dark:text-accent">
+                      <app.icon />
+                    </span>
+                    <span className="text-sm font-medium text-primary/80 dark:text-base/80">{app.title}</span>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </motion.div>
 
@@ -124,14 +153,28 @@ export default function Home() {
               autoplay={{ delay: 3500, disableOnInteraction: false }}
               pagination={{ clickable: true }}
               loop
-              autoHeight
-              className="hero-swiper relative w-full min-w-0 rounded-[2rem] shadow-soft glow-secondary"
+              className="hero-swiper relative aspect-square w-full min-w-0 rounded-[2rem] shadow-soft glow-secondary"
             >
-              <SwiperSlide>
-                <img src={heroDryer} alt="CALOR MEGA industrial food dryer" className="w-full" />
+              <SwiperSlide className="flex items-center justify-center bg-white dark:bg-white/5">
+                <img
+                  src={slideMachine}
+                  alt="CALOR MEGA industrial food dryer with feature highlights"
+                  className="h-full w-full object-cover"
+                />
               </SwiperSlide>
-              <SwiperSlide>
-                <img src={innovatechDryer} alt="CALOR MEGA compact dryer cabinet" className="w-full" />
+              <SwiperSlide className="flex items-center justify-center bg-white dark:bg-white/5">
+                <img
+                  src={slideTrays}
+                  alt="Inside the CALOR MEGA dryer — uniform multi-tray drying"
+                  className="h-full w-full object-cover"
+                />
+              </SwiperSlide>
+              <SwiperSlide className="flex items-center justify-center bg-white dark:bg-white/5">
+                <img
+                  src={slideControl}
+                  alt="CALOR MEGA digital precision control panel"
+                  className="h-full w-full object-cover"
+                />
               </SwiperSlide>
             </Swiper>
             <FloatingBadge
@@ -220,7 +263,7 @@ export default function Home() {
         />
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-6">
           {applications.map((app, i) => (
-            <ApplicationCard key={app.title} {...app} index={i} />
+            <ApplicationCard key={app.title} application={app} index={i} onSelect={setSelectedApp} />
           ))}
         </div>
         <div className="mt-10 text-center">
@@ -262,6 +305,12 @@ export default function Home() {
       <section className="mx-auto max-w-5xl px-5 pb-24 md:px-8">
         <Newsletter />
       </section>
+
+      <ApplicationModal
+        application={selectedApp}
+        onClose={() => setSelectedApp(null)}
+        onSelectRelated={setSelectedApp}
+      />
     </>
   );
 }
