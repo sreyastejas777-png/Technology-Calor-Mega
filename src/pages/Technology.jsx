@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FaFileDownload, FaWhatsapp, FaArrowRight } from 'react-icons/fa';
+import { FaFileDownload, FaWhatsapp, FaArrowRight, FaChevronDown } from 'react-icons/fa';
 import './Technology.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -11,7 +11,8 @@ export default function Technology() {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const centerBlockRef = useRef(null);
-  const scrollChevronRef = useRef(null);
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const [isIndicatorVisible, setIsIndicatorVisible] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,19 +37,17 @@ export default function Technology() {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
 
-    // ─── MATERIALS ───
+    // ─── REUSABLE MATERIALS ───
     const matBody = new THREE.MeshStandardMaterial({ color: 0x8a8c8e, metalness: 0.4, roughness: 0.6 });
     const matDoor = new THREE.MeshStandardMaterial({ color: 0x909295, metalness: 0.35, roughness: 0.5 });
     const matBrushedSteel = new THREE.MeshStandardMaterial({ color: 0xd0d0d0, metalness: 0.9, roughness: 0.2 });
     const matInterior = new THREE.MeshStandardMaterial({ color: 0xe0d8ba, metalness: 0.6, roughness: 0.3 });
     const matTray = new THREE.MeshStandardMaterial({ color: 0xbcbcbc, metalness: 0.9, roughness: 0.2, transparent: true, opacity: 0.85 });
-    const matHandle = new THREE.MeshStandardMaterial({ color: 0x999999, metalness: 0.9, roughness: 0.15 });
     const matDisplayBg = new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.3, roughness: 0.5 });
     const matDisplayLED = new THREE.MeshStandardMaterial({ color: 0xff3300, emissive: 0xff2200, emissiveIntensity: 2.0 });
     const matRedButton = new THREE.MeshStandardMaterial({ color: 0xdd0000, emissive: 0x990000, emissiveIntensity: 0.5, metalness: 0.4, roughness: 0.3 });
     const matGauge = new THREE.MeshStandardMaterial({ color: 0xeeeeee, metalness: 0.3, roughness: 0.4 });
     const matGaugeRim = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.9, roughness: 0.15 });
-    const matPipe = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, metalness: 0.85, roughness: 0.2 });
     const matWheel = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.3, roughness: 0.7 });
     const matWheelBracket = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.7, roughness: 0.3 });
     const matGrille = new THREE.MeshStandardMaterial({ color: 0x6a6a6a, metalness: 0.6, roughness: 0.4 });
@@ -62,7 +61,7 @@ export default function Technology() {
     const machineGroup = new THREE.Group();
     scene.add(machineGroup);
 
-    // Shell
+    // Main Outer Frame
     const backGeo = new THREE.BoxGeometry(BODY_W, BODY_H, WALL);
     const back = new THREE.Mesh(backGeo, matBody);
     back.position.set(0, BODY_H / 2, -BODY_D / 2);
@@ -272,8 +271,12 @@ export default function Technology() {
         start: 'top top',
         end: '+=550%',
         pin: true,
-        scrub: 1,
+        scrub: 0.5,
         anticipatePin: 1,
+        onUpdate: (self) => {
+          setIsIndicatorVisible(self.progress > 0.05);
+          setIsScrolledToBottom(self.progress > 0.65);
+        }
       }
     });
 
@@ -286,11 +289,6 @@ export default function Technology() {
       mainTl.fromTo('#webgl-canvas', { opacity: 0, x: '100vw' }, { opacity: 1, x: '25vw', duration: 0.6 }, 0);
       mainTl.to(centerBlockRef.current, { autoAlpha: 0, duration: 0.3 }, 0.65);
     }
-
-    // Reveal Chevron Arrow
-    mainTl.call(() => {
-      if (scrollChevronRef.current) scrollChevronRef.current.classList.add('visible');
-    }, null, 0.8);
 
     // 2. Phase 1: Structure & Controls (Open Doors & Camera Center)
     mainTl.to(machineGroup.rotation, { y: 0, duration: 0.8 }, 1.0);
@@ -345,10 +343,16 @@ export default function Technology() {
     };
   }, []);
 
-  const scrollToDatasheet = () => {
-    const datasheet = document.getElementById('datasheet');
-    if (datasheet) {
-      datasheet.scrollIntoView({ behavior: 'smooth' });
+  const handleScrollToggle = () => {
+    if (isScrolledToBottom) {
+      if (containerRef.current) {
+        containerRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      const datasheet = document.getElementById('datasheet');
+      if (datasheet) {
+        datasheet.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -387,7 +391,7 @@ export default function Technology() {
                   <FaWhatsapp className="text-xl" /> Get a Custom Quote
                 </a>
                 <button
-                  onClick={scrollToDatasheet}
+                  onClick={handleScrollToggle}
                   className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface/60 backdrop-blur-md px-6 py-3 font-semibold text-primary-text shadow-soft transition-transform hover:scale-105"
                 >
                   View Specs <FaArrowRight />
@@ -395,18 +399,20 @@ export default function Technology() {
               </div>
             </div>
           </div>
-
-          {/* Animated Scroll Down Chevron Arrow */}
-          <div
-            className="scroll-chevron"
-            ref={scrollChevronRef}
-            onClick={scrollToDatasheet}
-            role="button"
-            aria-label="Scroll to technical specifications"
-            tabIndex={0}
-          />
         </section>
       </div>
+
+      {/* Smart Directional Scroll Indicator Button */}
+      <button
+        onClick={handleScrollToggle}
+        className={`smart-scroll-toggle ${isIndicatorVisible ? 'visible' : ''} ${isScrolledToBottom ? 'is-bottom' : ''}`}
+        aria-label={isScrolledToBottom ? 'Back to 3D Blueprint' : 'Scroll to explore 3D Blueprint'}
+      >
+        <span>{isScrolledToBottom ? 'Back to 3D Blueprint' : 'Explore 3D Blueprint'}</span>
+        <div className="smart-scroll-arrow-icon">
+          <FaChevronDown />
+        </div>
+      </button>
 
       {/* Fixed UI Overlays grouped by phase with golden connecting pointer lines */}
       <div id="fixed-ui-overlay">
