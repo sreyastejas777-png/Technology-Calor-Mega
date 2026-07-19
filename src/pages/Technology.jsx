@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FaFileDownload, FaWhatsapp, FaArrowRight, FaCog, FaCheckCircle, FaShieldAlt } from 'react-icons/fa';
+import { FaFileDownload, FaWhatsapp, FaArrowRight } from 'react-icons/fa';
 import './Technology.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -10,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Technology() {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
+  const centerBlockRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -18,9 +19,9 @@ export default function Technology() {
     // ─── THREE.JS SCENE SETUP ───
     const scene = new THREE.Scene();
     const isDark = document.documentElement.classList.contains('dark');
-    const bgHex = isDark ? 0x0c0c0e : 0xFEFAF1;
+    const bgHex = isDark ? 0x0c0c0e : 0xf6f3ea;
     scene.background = new THREE.Color(bgHex);
-    scene.fog = new THREE.FogExp2(bgHex, 0.03);
+    scene.fog = new THREE.FogExp2(bgHex, 0.035);
 
     const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(0, 1.5, 13);
@@ -34,48 +35,59 @@ export default function Technology() {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
 
-    // ─── MATERIALS ───
+    // ─── REUSABLE MATERIALS ───
     const matBody = new THREE.MeshStandardMaterial({ color: 0x8a8c8e, metalness: 0.4, roughness: 0.6 });
     const matDoor = new THREE.MeshStandardMaterial({ color: 0x909295, metalness: 0.35, roughness: 0.5 });
     const matBrushedSteel = new THREE.MeshStandardMaterial({ color: 0xd0d0d0, metalness: 0.9, roughness: 0.2 });
     const matInterior = new THREE.MeshStandardMaterial({ color: 0xe0d8ba, metalness: 0.6, roughness: 0.3 });
     const matTray = new THREE.MeshStandardMaterial({ color: 0xbcbcbc, metalness: 0.9, roughness: 0.2, transparent: true, opacity: 0.85 });
+    const matHandle = new THREE.MeshStandardMaterial({ color: 0x999999, metalness: 0.9, roughness: 0.15 });
     const matDisplayBg = new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.3, roughness: 0.5 });
-    const matDisplayLED = new THREE.MeshStandardMaterial({ color: 0xe09f3e, emissive: 0xe09f3e, emissiveIntensity: 2.0 });
+    const matDisplayLED = new THREE.MeshStandardMaterial({ color: 0xff3300, emissive: 0xff2200, emissiveIntensity: 2.0 });
+    const matRedButton = new THREE.MeshStandardMaterial({ color: 0xdd0000, emissive: 0x990000, emissiveIntensity: 0.5, metalness: 0.4, roughness: 0.3 });
+    const matGauge = new THREE.MeshStandardMaterial({ color: 0xeeeeee, metalness: 0.3, roughness: 0.4 });
+    const matGaugeRim = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.9, roughness: 0.15 });
     const matPipe = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, metalness: 0.85, roughness: 0.2 });
     const matWheel = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.3, roughness: 0.7 });
+    const matWheelBracket = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.7, roughness: 0.3 });
+    const matGrille = new THREE.MeshStandardMaterial({ color: 0x6a6a6a, metalness: 0.6, roughness: 0.4 });
 
-    // ─── MACHINE GEOMETRY ───
-    const machineGroup = new THREE.Group();
-    scene.add(machineGroup);
-
+    // ─── DIMENSIONS ───
     const BODY_W = 3.6, BODY_H = 4.8, BODY_D = 3.2, WALL = 0.08, PANEL_W = 0.35;
     const DOOR_W = (BODY_W - PANEL_W) / 2;
     const DOOR_H = BODY_H * 0.65;
     const DOOR_D = 0.06;
 
-    // Main Outer Shell
+    const machineGroup = new THREE.Group();
+    scene.add(machineGroup);
+
+    // Outer Shell
     const backGeo = new THREE.BoxGeometry(BODY_W, BODY_H, WALL);
     const back = new THREE.Mesh(backGeo, matBody);
     back.position.set(0, BODY_H / 2, -BODY_D / 2);
+    back.castShadow = true; back.receiveShadow = true;
     machineGroup.add(back);
 
     const topGeo = new THREE.BoxGeometry(BODY_W, WALL, BODY_D);
     const top = new THREE.Mesh(topGeo, matBody);
     top.position.set(0, BODY_H, 0);
+    top.castShadow = true;
     machineGroup.add(top);
 
     const bottom = new THREE.Mesh(topGeo, matBody);
     bottom.position.set(0, 0, 0);
+    bottom.receiveShadow = true;
     machineGroup.add(bottom);
 
     const sideGeo = new THREE.BoxGeometry(WALL, BODY_H, BODY_D);
     const leftSide = new THREE.Mesh(sideGeo, matBody);
     leftSide.position.set(-BODY_W / 2, BODY_H / 2, 0);
+    leftSide.castShadow = true; leftSide.receiveShadow = true;
     machineGroup.add(leftSide);
 
     const rightSide = new THREE.Mesh(sideGeo, matBody);
     rightSide.position.set(BODY_W / 2, BODY_H / 2, 0);
+    rightSide.castShadow = true; rightSide.receiveShadow = true;
     machineGroup.add(rightSide);
 
     const interiorGeo = new THREE.BoxGeometry(BODY_W - WALL * 2, BODY_H - WALL * 2, 0.02);
@@ -83,99 +95,173 @@ export default function Technology() {
     interior.position.set(0, BODY_H / 2, -BODY_D / 2 + WALL + 0.01);
     machineGroup.add(interior);
 
-    // Doors & Pivots
-    const doorY = BODY_H * 0.42;
-    const doorZ = BODY_D / 2 - DOOR_D / 2;
+    // Doors & Hinged Pivots
+    const doorY = BODY_H * 0.35;
+    const doorZ = BODY_D / 2;
+    const doorGeo = new THREE.BoxGeometry(DOOR_W, DOOR_H, DOOR_D);
 
     const leftDoorPivot = new THREE.Group();
-    leftDoorPivot.position.set(-BODY_W / 2 + WALL, doorY, doorZ);
+    leftDoorPivot.position.set(-PANEL_W / 2, doorY, doorZ);
     machineGroup.add(leftDoorPivot);
 
-    const leftDoor = new THREE.Mesh(new THREE.BoxGeometry(DOOR_W, DOOR_H, DOOR_D), matDoor);
-    leftDoor.position.set(DOOR_W / 2, 0, 0);
+    const leftDoor = new THREE.Mesh(doorGeo, matDoor);
+    leftDoor.position.set(-DOOR_W / 2, 0, DOOR_D / 2);
+    leftDoor.castShadow = true;
     leftDoorPivot.add(leftDoor);
 
     const rightDoorPivot = new THREE.Group();
-    rightDoorPivot.position.set(BODY_W / 2 - WALL, doorY, doorZ);
+    rightDoorPivot.position.set(PANEL_W / 2, doorY, doorZ);
     machineGroup.add(rightDoorPivot);
 
-    const rightDoor = new THREE.Mesh(new THREE.BoxGeometry(DOOR_W, DOOR_H, DOOR_D), matDoor);
-    rightDoor.position.set(-DOOR_W / 2, 0, 0);
+    const rightDoor = new THREE.Mesh(doorGeo, matDoor);
+    rightDoor.position.set(DOOR_W / 2, 0, DOOR_D / 2);
+    rightDoor.castShadow = true;
     rightDoorPivot.add(rightDoor);
 
-    // Internal Trays
-    const TRAY_COUNT = 8;
-    const trayGeo = new THREE.BoxGeometry(DOOR_W * 0.85, 0.03, BODY_D * 0.75);
+    // Center Siemens PLC Control Panel Strip
+    const controlPanelGroup = new THREE.Group();
+    controlPanelGroup.position.set(0, doorY, doorZ + 0.01);
+    machineGroup.add(controlPanelGroup);
+
+    const stripGeo = new THREE.BoxGeometry(PANEL_W, BODY_H * 0.75, 0.03);
+    const strip = new THREE.Mesh(stripGeo, matBrushedSteel);
+    controlPanelGroup.add(strip);
+
+    const displayBgGeo = new THREE.BoxGeometry(0.2, 0.12, 0.02);
+    const displayBg = new THREE.Mesh(displayBgGeo, matDisplayBg);
+    displayBg.position.set(0, DOOR_H * 0.25, 0.025);
+    controlPanelGroup.add(displayBg);
+
+    const ledGeo = new THREE.BoxGeometry(0.14, 0.04, 0.005);
+    const led1 = new THREE.Mesh(ledGeo, matDisplayLED);
+    led1.position.set(0, DOOR_H * 0.27, 0.04);
+    controlPanelGroup.add(led1);
+
+    const buttonGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.025, 16);
+    const button = new THREE.Mesh(buttonGeo, matRedButton);
+    button.rotation.x = Math.PI / 2;
+    button.position.set(0, DOOR_H * 0.12, 0.03);
+    controlPanelGroup.add(button);
+
+    // Pressure Gauges
+    [0.0, -0.12].forEach(yOffset => {
+      const rimGeo = new THREE.TorusGeometry(0.08, 0.008, 8, 32);
+      const rim = new THREE.Mesh(rimGeo, matGaugeRim);
+      rim.position.set(0, DOOR_H * yOffset, 0.03);
+      controlPanelGroup.add(rim);
+
+      const faceGeo = new THREE.CircleGeometry(0.075, 32);
+      const face = new THREE.Mesh(faceGeo, matGauge);
+      face.position.set(0, DOOR_H * yOffset, 0.028);
+      controlPanelGroup.add(face);
+    });
+
+    // Internal Trays & Heating Elements
+    const trayCount = 5;
+    const trayW = DOOR_W - 0.15;
+    const trayD = BODY_D - 0.3;
+    const trayGeo = new THREE.BoxGeometry(trayW, 0.02, trayD);
+    const spacing = (DOOR_H * 0.85) / (trayCount + 1);
+
     const traysLeft = [];
     const traysRight = [];
 
-    for (let i = 0; i < TRAY_COUNT; i++) {
-      const ty = BODY_H * 0.12 + i * (DOOR_H * 0.85 / TRAY_COUNT);
+    for (let i = 0; i < trayCount; i++) {
+      const yPos = -DOOR_H * 0.4 + spacing * (i + 1);
 
-      const trayL = new THREE.Mesh(trayGeo, matTray);
-      trayL.position.set(-BODY_W / 4, ty, 0);
+      const trayL = new THREE.Mesh(trayGeo, matTray.clone());
+      trayL.position.set(-PANEL_W / 2 - DOOR_W / 2, BODY_H * 0.35 + yPos, 0);
       machineGroup.add(trayL);
       traysLeft.push(trayL);
 
-      const trayR = new THREE.Mesh(trayGeo, matTray);
-      trayR.position.set(BODY_W / 4, ty, 0);
+      const trayR = new THREE.Mesh(trayGeo, matTray.clone());
+      trayR.position.set(PANEL_W / 2 + DOOR_W / 2, BODY_H * 0.35 + yPos, 0);
       machineGroup.add(trayR);
       traysRight.push(trayR);
     }
 
-    // Center Control Panel
-    const panelGeo = new THREE.BoxGeometry(PANEL_W, DOOR_H, DOOR_D * 1.5);
-    const panel = new THREE.Mesh(panelGeo, matBrushedSteel);
-    panel.position.set(0, doorY, doorZ + 0.02);
-    machineGroup.add(panel);
+    // Top & Side Ventilation Grilles
+    const slotCount = 8;
+    const slotW = BODY_W * 0.6;
+    const slotH = 0.015;
+    const slotGap = 0.03;
+    const slotGeo = new THREE.BoxGeometry(slotW, slotH, 0.01);
 
-    const screenGeo = new THREE.BoxGeometry(PANEL_W * 0.7, 0.4, 0.01);
-    const screen = new THREE.Mesh(screenGeo, matDisplayBg);
-    screen.position.set(0, doorY + 0.8, doorZ + DOOR_D + 0.01);
-    machineGroup.add(screen);
-
-    const ledMesh = new THREE.Mesh(new THREE.BoxGeometry(PANEL_W * 0.5, 0.05, 0.01), matDisplayLED);
-    ledMesh.position.set(0, doorY + 0.8, doorZ + DOOR_D + 0.02);
-    machineGroup.add(ledMesh);
+    for (let i = 0; i < slotCount; i++) {
+      const slatTop = new THREE.Mesh(slotGeo, matGrille);
+      slatTop.position.set(0, BODY_H - 0.15 - i * slotGap, BODY_D / 2 + 0.01);
+      machineGroup.add(slatTop);
+    }
 
     // Wheels
-    [-BODY_W / 2.2, BODY_W / 2.2].forEach(x => {
-      [-BODY_D / 2.2, BODY_D / 2.2].forEach(z => {
-        const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.12, 16), matWheel);
-        wheel.rotation.z = Math.PI / 2;
-        wheel.position.set(x, -0.18, z);
-        machineGroup.add(wheel);
-      });
+    const wheelPositions = [
+      [-BODY_W / 2 + 0.25, -0.15, BODY_D / 2 - 0.25],
+      [BODY_W / 2 - 0.25, -0.15, BODY_D / 2 - 0.25],
+      [-BODY_W / 2 + 0.25, -0.15, -BODY_D / 2 + 0.25],
+      [BODY_W / 2 - 0.25, -0.15, -BODY_D / 2 + 0.25]
+    ];
+
+    wheelPositions.forEach(pos => {
+      const bracket = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, 0.08), matWheelBracket);
+      bracket.position.set(pos[0], pos[1] + 0.06, pos[2]);
+      machineGroup.add(bracket);
+
+      const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.04, 16), matWheel);
+      wheel.rotation.x = Math.PI / 2;
+      wheel.position.set(pos[0], pos[1], pos[2]);
+      machineGroup.add(wheel);
     });
 
     machineGroup.position.y = -1.0;
     machineGroup.rotation.y = -0.15;
 
-    // ─── LIGHTING ───
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
-    scene.add(ambientLight);
+    // ─── LIGHTING SETUP ───
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 
-    const mainLight = new THREE.DirectionalLight(0xfffaed, 1.8);
-    mainLight.position.set(6, 10, 8);
-    scene.add(mainLight);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    keyLight.position.set(5, 8, 6);
+    keyLight.castShadow = true;
+    scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xdbe7ff, 0.8);
-    fillLight.position.set(-6, 4, -4);
+    const fillLight = new THREE.PointLight(0x88aacc, 0.6, 20);
+    fillLight.position.set(-6, 4, 3);
     scene.add(fillLight);
 
-    const warmLight = new THREE.PointLight(0xe09f3e, 2, 8);
-    warmLight.position.set(0, 2, 1);
-    scene.add(warmLight);
+    const internalLightL = new THREE.PointLight(0xffdd88, 0, 5);
+    internalLightL.position.set(-PANEL_W / 2 - DOOR_W / 2, BODY_H * 0.7, 0);
+    machineGroup.add(internalLightL);
+
+    const internalLightR = new THREE.PointLight(0xffdd88, 0, 5);
+    internalLightR.position.set(PANEL_W / 2 + DOOR_W / 2, BODY_H * 0.7, 0);
+    machineGroup.add(internalLightR);
+
+    // Ground Plane Shadow
+    const groundGeo = new THREE.PlaneGeometry(30, 30);
+    const groundMat = new THREE.ShadowMaterial({ opacity: 0.3 });
+    const ground = new THREE.Mesh(groundGeo, groundMat);
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -1.15;
+    ground.receiveShadow = true;
+    scene.add(ground);
 
     // ─── ANIMATION LOOP ───
     let reqId;
     const animate = () => {
       reqId = requestAnimationFrame(animate);
+
+      if (machineGroup && machineGroup.userData.thermalActive) {
+        const t = Date.now() * 0.001;
+        [...traysLeft, ...traysRight].forEach((tray, i) => {
+          const heat = (Math.sin(t * 2.5 + i * 0.6) + 1) / 2;
+          tray.material.color.setRGB(0.85 + heat * 0.15, 0.3 + heat * 0.5, heat * 0.05);
+        });
+      }
+
       renderer.render(scene, camera);
     };
     animate();
 
-    // ─── RESIZE HANDLER ───
+    // ─── RESIZE LISTENER ───
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -183,37 +269,72 @@ export default function Technology() {
     };
     window.addEventListener('resize', handleResize);
 
-    // ─── GSAP SCROLLTIMELINE SETUP ───
-    const heroTl = gsap.timeline({
+    // ─── GSAP MASTER SCROLLTIMELINE ───
+    const isMobile = window.innerWidth < 768;
+
+    const mainTl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=300%',
+        end: '+=500%',
         pin: true,
         scrub: 1,
+        anticipatePin: 1,
       }
     });
 
-    // 3D Machine Camera & Component Animation Sequence
-    heroTl.to(machineGroup.rotation, { y: Math.PI * 0.25, duration: 1 })
-          .to(leftDoorPivot.rotation, { y: -Math.PI * 0.65, duration: 1 }, 0.5)
-          .to(rightDoorPivot.rotation, { y: Math.PI * 0.65, duration: 1 }, 0.5)
-          .to(traysLeft.map(t => t.position), { z: 0.8, duration: 1, stagger: 0.05 }, 1.2)
-          .to(traysRight.map(t => t.position), { z: 0.8, duration: 1, stagger: 0.05 }, 1.2)
-          .to(camera.position, { x: 0, y: 1.8, z: 7, duration: 1 }, 2)
-          .to(machineGroup.rotation, { y: Math.PI * 2, duration: 1.5 }, 2.5);
+    // 1. Initial Hero Split Sequence (Text slides left & disappears, 3D Canvas slides in from right)
+    if (isMobile) {
+      mainTl.to(centerBlockRef.current, { y: '-15vh', duration: 0.6 }, 0);
+      mainTl.fromTo('#webgl-canvas', { opacity: 0, y: '20vh' }, { opacity: 1, y: 0, duration: 0.6 }, 0.2);
+    } else {
+      mainTl.to(centerBlockRef.current, { x: '-25vw', duration: 0.6 }, 0);
+      mainTl.fromTo('#webgl-canvas', { opacity: 0, x: '100vw' }, { opacity: 1, x: '25vw', duration: 0.6 }, 0);
+      mainTl.to(centerBlockRef.current, { autoAlpha: 0, duration: 0.3 }, 0.65);
+    }
 
-    // Phase Overlay Toggle Triggers
-    const phaseElements = document.querySelectorAll('.phase-group');
-    phaseElements.forEach((el, idx) => {
+    // 2. Phase 1: Structure & Controls (Open Doors & Camera Center)
+    mainTl.to(machineGroup.rotation, { y: 0, duration: 0.8 }, 1.0);
+    mainTl.to(leftDoorPivot.rotation, { y: -Math.PI * 0.55, duration: 1.5 }, 1.5);
+    mainTl.to(rightDoorPivot.rotation, { y: Math.PI * 0.55, duration: 1.5 }, 1.5);
+    mainTl.to(internalLightL, { intensity: 1.5, duration: 1 }, 1.8);
+    mainTl.to(internalLightR, { intensity: 1.5, duration: 1 }, 1.8);
+    mainTl.to('#webgl-canvas', { x: '0vw', duration: 1.5 }, 1.5);
+
+    // 3. Phase 2: Thermal Engine & Airflow
+    mainTl.to(machineGroup.rotation, { y: -0.5, duration: 1.5 }, 3.5);
+    mainTl.to(camera.position, { x: 1.5, z: 14.5, y: 1.8, duration: 1.5 }, 3.5);
+    mainTl.call(() => { machineGroup.userData.thermalActive = true; }, null, 4.0);
+
+    // 4. Phase 3: Haptic Command Center (Zoom to Siemens PLC panel)
+    mainTl.to(machineGroup.rotation, { y: 0.2, duration: 1.0 }, 6.5);
+    mainTl.to(camera.position, { x: 0, z: 12.5, y: 1.8, duration: 1.0 }, 6.5);
+
+    // 5. Phase 4: Dynamic Exhaust & Efficiency (Close doors & Pull back)
+    mainTl.call(() => {
+      machineGroup.userData.thermalActive = false;
+      [...traysLeft, ...traysRight].forEach(t => t.material.color.setHex(0xbcbcbc));
+    }, null, 9.5);
+    mainTl.to(leftDoorPivot.rotation, { y: 0, duration: 1 }, 9.5);
+    mainTl.to(rightDoorPivot.rotation, { y: 0, duration: 1 }, 9.5);
+    mainTl.to(internalLightL, { intensity: 0, duration: 0.5 }, 9.5);
+    mainTl.to(internalLightR, { intensity: 0, duration: 0.5 }, 9.5);
+    mainTl.to(camera.position, { x: 0, z: 15, y: 1.5, duration: 1.0 }, 9.5);
+
+    // 6. Transition to Datasheet Section
+    mainTl.to('#webgl-canvas', { opacity: 0, y: '-30vh', duration: 1 }, 12.5);
+
+    // Phase Card Triggering
+    const phaseGroups = document.querySelectorAll('.phase-group');
+    phaseGroups.forEach((group, idx) => {
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: `${(idx + 1) * 20}% top`,
         end: `${(idx + 2) * 20}% top`,
-        onEnter: () => el.classList.add('active'),
-        onLeave: () => el.classList.remove('active'),
-        onEnterBack: () => el.classList.add('active'),
-        onLeaveBack: () => el.classList.remove('active'),
+        onEnter: () => group.classList.add('active'),
+        onLeave: () => group.classList.remove('active'),
+        onEnterBack: () => group.classList.add('active'),
+        onLeaveBack: () => group.classList.remove('active'),
       });
     });
 
@@ -225,6 +346,13 @@ export default function Technology() {
     };
   }, []);
 
+  const scrollToDatasheet = () => {
+    const datasheet = document.getElementById('datasheet');
+    if (datasheet) {
+      datasheet.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="relative w-full bg-bg text-primary-text transition-colors duration-300">
       {/* WebGL 3D Canvas */}
@@ -232,9 +360,9 @@ export default function Technology() {
 
       {/* Hero Section Container */}
       <div id="hero-scroll-container" ref={containerRef}>
-        <section className="hero flex items-center justify-center">
+        <section className="hero">
           <div className="fixed-hero-wrapper">
-            <div className="hero-center-block">
+            <div className="hero-center-block" ref={centerBlockRef}>
               <h1 className="headline">
                 Preserve Today.<br />
                 <span>Profit Tomorrow.</span>
@@ -259,15 +387,24 @@ export default function Technology() {
                 >
                   <FaWhatsapp className="text-xl" /> Get a Custom Quote
                 </a>
-                <a
-                  href="#datasheet"
+                <button
+                  onClick={scrollToDatasheet}
                   className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface/60 backdrop-blur-md px-6 py-3 font-semibold text-primary-text shadow-soft transition-transform hover:scale-105"
                 >
                   View Specs <FaArrowRight />
-                </a>
+                </button>
               </div>
             </div>
           </div>
+
+          {/* Animated Scroll Down Chevron Arrow */}
+          <div
+            className="scroll-chevron"
+            onClick={scrollToDatasheet}
+            role="button"
+            aria-label="Scroll to technical specifications"
+            tabIndex={0}
+          />
         </section>
       </div>
 
@@ -324,7 +461,7 @@ export default function Technology() {
           <div className="card-column right">
             <div className="ui-card">
               <h4 className="text-accent">Real-time Humidity Sensors</h4>
-              <p>Continuously monitors internal moisture levels to dynamically adjust airflow and maintain the perfect climate.</p>
+              <p>Continuously monitors internal moisture levels to dynamically adjust airflow and maintain the climate.</p>
             </div>
           </div>
         </div>
