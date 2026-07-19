@@ -1,0 +1,334 @@
+/* ================================================================
+   CALOR MEGA — Interactive 3D WebGL Technology Page Stylesheet
+   Integrated with Team Theme Variables (src/index.css)
+   ================================================================ */
+
+#webgl-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tech-hero-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  z-index: 10;
+}
+
+.fixed-hero-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.hero-center-block {
+  text-align: center;
+  max-width: 800px;
+  padding: 0 24px;
+  pointer-events: auto;
+}
+
+.headline {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.headline span {
+  color: var(--accent-color);
+  background: linear-gradient(120deg, var(--accent-color), #B8850F);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-center-block p {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.hero-stats-mini {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.split-stat {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  background: var(--surface-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--surface-border);
+  padding: 8px 16px;
+  border-radius: 9999px;
+}
+
+.split-stat strong {
+  color: var(--accent-color);
+}
+
+.hero-cta {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+#hero-scroll-container {
+  position: relative;
+  width: 100%;
+}
+
+.hero {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Fixed Overlay Cards */
+#fixed-ui-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.phase-group {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 0 5vw;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.phase-group.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.card-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  pointer-events: auto;
+}
+
+.card-column.left {
+  align-items: flex-start;
+}
+
+.card-column.right {
+  align-items: flex-end;
+}
+
+.ui-card {
+  background: var(--surface-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-border);
+  border-radius: 20px;
+  padding: 24px;
+  max-width: 380px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ui-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(224, 159, 62, 0.15);
+}
+
+.ui-card h4, .ui-card h3 {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.ui-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Specs Table Section */
+.datasheet-section {
+  position: relative;
+  z-index: 30;
+  background-color: var(--bg-color);
+  padding: 100px 0 120px;
+  border-top: 1px solid var(--surface-border);
+}
+
+.datasheet-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.engineering-label {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  margin-bottom: 8px;
+}
+
+.datasheet-header h2 {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.system-params {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+}
+
+.specs-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  background: var(--surface-color);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 50px;
+}
+
+.specs-table th {
+  background: rgba(224, 159, 62, 0.1);
+  color: var(--text-primary);
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 20px 24px;
+  text-align: left;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.specs-table td {
+  padding: 18px 24px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--surface-border);
+  line-height: 1.6;
+}
+
+.specs-table td:first-child {
+  font-weight: 700;
+  color: var(--text-primary);
+  width: 30%;
+}
+
+.specs-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Download CTA Card */
+.download-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: linear-gradient(135deg, rgba(224, 159, 62, 0.12), rgba(184, 133, 15, 0.05));
+  border: 1px solid var(--surface-border);
+  border-radius: 24px;
+  padding: 32px 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.download-cta-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--accent-color);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.download-cta-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.download-cta-text {
+  flex: 1;
+}
+
+.download-cta-text h3 {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.download-cta-text p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Mobile responsive layout */
+@media (max-width: 768px) {
+  .phase-group {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
+  .card-column.right {
+    align-items: flex-start;
+  }
+  .ui-card {
+    max-width: 100%;
+  }
+  .download-cta {
+    flex-direction: flex-col;
+    text-align: center;
+    padding: 24px;
+  }
+  .download-cta-text {
+    text-align: center;
+  }
+  .specs-table td:first-child {
+    width: 40%;
+  }
+}
