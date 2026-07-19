@@ -206,7 +206,7 @@ export default function Technology() {
     });
 
     machineGroup.position.y = -1.0;
-    machineGroup.rotation.y = -0.15;
+    machineGroup.rotation.y = 0; // Front facing view for open doors Phase 1
 
     // ─── LIGHTING SETUP ───
     scene.add(new THREE.AmbientLight(0xffffff, 0.5));
@@ -220,13 +220,17 @@ export default function Technology() {
     fillLight.position.set(-6, 4, 3);
     scene.add(fillLight);
 
-    const internalLightL = new THREE.PointLight(0xffdd88, 0, 5);
+    const internalLightL = new THREE.PointLight(0xffdd88, 1.5, 5);
     internalLightL.position.set(-PANEL_W / 2 - DOOR_W / 2, BODY_H * 0.7, 0);
     machineGroup.add(internalLightL);
 
-    const internalLightR = new THREE.PointLight(0xffdd88, 0, 5);
+    const internalLightR = new THREE.PointLight(0xffdd88, 1.5, 5);
     internalLightR.position.set(PANEL_W / 2 + DOOR_W / 2, BODY_H * 0.7, 0);
     machineGroup.add(internalLightR);
+
+    // Initial doors wide open for Phase 1
+    leftDoorPivot.rotation.y = -Math.PI * 0.55;
+    rightDoorPivot.rotation.y = Math.PI * 0.55;
 
     // Ground Plane Shadow
     const groundGeo = new THREE.PlaneGeometry(30, 30);
@@ -269,65 +273,69 @@ export default function Technology() {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=550%',
+        end: '+=500%',
         pin: true,
         scrub: 0.5,
         anticipatePin: 1,
         onUpdate: (self) => {
-          setIsIndicatorVisible(self.progress > 0.05);
-          setIsScrolledToBottom(self.progress > 0.65);
+          setIsIndicatorVisible(self.progress > 0.03);
+          setIsScrolledToBottom(self.progress > 0.70);
         }
       }
     });
 
-    // 1. Initial Hero Split Sequence (Text slides left & disappears, 3D Canvas slides in from right)
+    // 1. Initial Hero Split Sequence: Text slides left, 3D Canvas slides in from right
     if (isMobile) {
-      mainTl.to(centerBlockRef.current, { y: '-15vh', duration: 0.6 }, 0);
-      mainTl.fromTo('#webgl-canvas', { opacity: 0, y: '20vh' }, { opacity: 1, y: 0, duration: 0.6 }, 0.2);
+      mainTl.to(centerBlockRef.current, { y: '-15vh', duration: 0.5 }, 0);
+      mainTl.fromTo('#webgl-canvas', { opacity: 0, y: '20vh' }, { opacity: 1, y: 0, duration: 0.5 }, 0.1);
     } else {
-      mainTl.to(centerBlockRef.current, { x: '-25vw', duration: 0.6 }, 0);
-      mainTl.fromTo('#webgl-canvas', { opacity: 0, x: '100vw' }, { opacity: 1, x: '25vw', duration: 0.6 }, 0);
-      mainTl.to(centerBlockRef.current, { autoAlpha: 0, duration: 0.3 }, 0.65);
+      mainTl.to(centerBlockRef.current, { x: '-25vw', duration: 0.5 }, 0);
+      mainTl.fromTo('#webgl-canvas', { opacity: 0, x: '100vw' }, { opacity: 1, x: '0vw', duration: 0.5 }, 0);
+      mainTl.to(centerBlockRef.current, { autoAlpha: 0, duration: 0.2 }, 0.4);
     }
 
-    // 2. Phase 1: Structure & Controls (Open Doors & Camera Center)
-    mainTl.to(machineGroup.rotation, { y: 0, duration: 0.8 }, 1.0);
-    mainTl.to(leftDoorPivot.rotation, { y: -Math.PI * 0.55, duration: 1.5 }, 1.5);
-    mainTl.to(rightDoorPivot.rotation, { y: Math.PI * 0.55, duration: 1.5 }, 1.5);
-    mainTl.to(internalLightL, { intensity: 1.5, duration: 1 }, 1.8);
-    mainTl.to(internalLightR, { intensity: 1.5, duration: 1 }, 1.8);
-    mainTl.to('#webgl-canvas', { x: '0vw', duration: 1.5 }, 1.5);
+    // 2. Phase 1: Structure & Controls (Model & Parts Callouts Appear TOGETHER)
+    // Model settles in center with open doors while Phase 1 cards display
+    mainTl.to(machineGroup.rotation, { y: 0, duration: 0.5 }, 0.5);
 
-    // 3. Phase 2: Thermal Engine & Airflow
-    mainTl.to(machineGroup.rotation, { y: -0.5, duration: 1.5 }, 3.5);
-    mainTl.to(camera.position, { x: 1.5, z: 14.5, y: 1.8, duration: 1.5 }, 3.5);
-    mainTl.call(() => { machineGroup.userData.thermalActive = true; }, null, 4.0);
+    // 3. Phase 2: Thermal Engine & Airflow (Rotate to angled view, thermal pulse)
+    mainTl.to(machineGroup.rotation, { y: -0.45, duration: 1.2 }, 2.5);
+    mainTl.to(camera.position, { x: 1.2, z: 14.2, y: 1.7, duration: 1.2 }, 2.5);
+    mainTl.call(() => { machineGroup.userData.thermalActive = true; }, null, 3.0);
 
     // 4. Phase 3: Haptic Command Center (Zoom to Siemens PLC panel)
-    mainTl.to(machineGroup.rotation, { y: 0.2, duration: 1.0 }, 6.5);
-    mainTl.to(camera.position, { x: 0, z: 12.5, y: 1.8, duration: 1.0 }, 6.5);
+    mainTl.to(machineGroup.rotation, { y: 0.15, duration: 1.0 }, 5.5);
+    mainTl.to(camera.position, { x: 0, z: 12.2, y: 1.7, duration: 1.0 }, 5.5);
 
     // 5. Phase 4: Dynamic Exhaust & Efficiency (Close doors & Pull back)
     mainTl.call(() => {
       machineGroup.userData.thermalActive = false;
       [...traysLeft, ...traysRight].forEach(t => t.material.color.setHex(0xbcbcbc));
-    }, null, 9.5);
-    mainTl.to(leftDoorPivot.rotation, { y: 0, duration: 1 }, 9.5);
-    mainTl.to(rightDoorPivot.rotation, { y: 0, duration: 1 }, 9.5);
-    mainTl.to(internalLightL, { intensity: 0, duration: 0.5 }, 9.5);
-    mainTl.to(internalLightR, { intensity: 0, duration: 0.5 }, 9.5);
-    mainTl.to(camera.position, { x: 0, z: 15, y: 1.5, duration: 1.0 }, 9.5);
+    }, null, 8.0);
+    mainTl.to(leftDoorPivot.rotation, { y: 0, duration: 1 }, 8.0);
+    mainTl.to(rightDoorPivot.rotation, { y: 0, duration: 1 }, 8.0);
+    mainTl.to(internalLightL, { intensity: 0, duration: 0.5 }, 8.0);
+    mainTl.to(internalLightR, { intensity: 0, duration: 0.5 }, 8.0);
+    mainTl.to(camera.position, { x: 0, z: 15, y: 1.5, duration: 1.0 }, 8.0);
 
     // 6. Transition to Datasheet Section
-    mainTl.to('#webgl-canvas', { opacity: 0, y: '-30vh', duration: 1 }, 12.5);
+    mainTl.to('#webgl-canvas', { opacity: 0, y: '-25vh', duration: 1 }, 10.5);
 
-    // Phase Card Triggering
+    // Synchronized Phase Card Activation Ranges (Zero Gap & Immediate Together Reveal)
+    const phaseRanges = [
+      { start: 0.05, end: 0.25 }, // Phase 1: Displays IMMEDIATELY together with 3D model appearance
+      { start: 0.25, end: 0.50 }, // Phase 2: Thermal & Airflow
+      { start: 0.50, end: 0.72 }, // Phase 3: Siemens PLC & Humidity Sensors
+      { start: 0.72, end: 0.90 }  // Phase 4: Smart Exhaust & Efficiency
+    ];
+
     const phaseGroups = document.querySelectorAll('.phase-group');
     phaseGroups.forEach((group, idx) => {
+      const range = phaseRanges[idx] || { start: (idx + 1) * 0.2, end: (idx + 2) * 0.2 };
       ScrollTrigger.create({
         trigger: containerRef.current,
-        start: `${(idx + 1) * 20}% top`,
-        end: `${(idx + 2) * 20}% top`,
+        start: `${range.start * 100}% top`,
+        end: `${range.end * 100}% top`,
         onEnter: () => group.classList.add('active'),
         onLeave: () => group.classList.remove('active'),
         onEnterBack: () => group.classList.add('active'),
@@ -416,7 +424,7 @@ export default function Technology() {
 
       {/* Fixed UI Overlays grouped by phase with golden connecting pointer lines */}
       <div id="fixed-ui-overlay">
-        {/* Phase 1 Group */}
+        {/* Phase 1 Group - Appears TOGETHER with 3D model appearance */}
         <div className="phase-group phase-1-group">
           <div className="card-column left">
             <div className="ui-card card-shell line-right">
