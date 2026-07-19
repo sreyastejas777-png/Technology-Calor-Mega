@@ -11,6 +11,7 @@ export default function Technology() {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const centerBlockRef = useRef(null);
+  const scrollChevronRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -35,7 +36,7 @@ export default function Technology() {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
 
-    // ─── REUSABLE MATERIALS ───
+    // ─── MATERIALS ───
     const matBody = new THREE.MeshStandardMaterial({ color: 0x8a8c8e, metalness: 0.4, roughness: 0.6 });
     const matDoor = new THREE.MeshStandardMaterial({ color: 0x909295, metalness: 0.35, roughness: 0.5 });
     const matBrushedSteel = new THREE.MeshStandardMaterial({ color: 0xd0d0d0, metalness: 0.9, roughness: 0.2 });
@@ -52,7 +53,7 @@ export default function Technology() {
     const matWheelBracket = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.7, roughness: 0.3 });
     const matGrille = new THREE.MeshStandardMaterial({ color: 0x6a6a6a, metalness: 0.6, roughness: 0.4 });
 
-    // ─── DIMENSIONS ───
+    // ─── GEOMETRY DIMENSIONS ───
     const BODY_W = 3.6, BODY_H = 4.8, BODY_D = 3.2, WALL = 0.08, PANEL_W = 0.35;
     const DOOR_W = (BODY_W - PANEL_W) / 2;
     const DOOR_H = BODY_H * 0.65;
@@ -61,33 +62,28 @@ export default function Technology() {
     const machineGroup = new THREE.Group();
     scene.add(machineGroup);
 
-    // Outer Shell
+    // Shell
     const backGeo = new THREE.BoxGeometry(BODY_W, BODY_H, WALL);
     const back = new THREE.Mesh(backGeo, matBody);
     back.position.set(0, BODY_H / 2, -BODY_D / 2);
-    back.castShadow = true; back.receiveShadow = true;
     machineGroup.add(back);
 
     const topGeo = new THREE.BoxGeometry(BODY_W, WALL, BODY_D);
     const top = new THREE.Mesh(topGeo, matBody);
     top.position.set(0, BODY_H, 0);
-    top.castShadow = true;
     machineGroup.add(top);
 
     const bottom = new THREE.Mesh(topGeo, matBody);
     bottom.position.set(0, 0, 0);
-    bottom.receiveShadow = true;
     machineGroup.add(bottom);
 
     const sideGeo = new THREE.BoxGeometry(WALL, BODY_H, BODY_D);
     const leftSide = new THREE.Mesh(sideGeo, matBody);
     leftSide.position.set(-BODY_W / 2, BODY_H / 2, 0);
-    leftSide.castShadow = true; leftSide.receiveShadow = true;
     machineGroup.add(leftSide);
 
     const rightSide = new THREE.Mesh(sideGeo, matBody);
     rightSide.position.set(BODY_W / 2, BODY_H / 2, 0);
-    rightSide.castShadow = true; rightSide.receiveShadow = true;
     machineGroup.add(rightSide);
 
     const interiorGeo = new THREE.BoxGeometry(BODY_W - WALL * 2, BODY_H - WALL * 2, 0.02);
@@ -106,7 +102,6 @@ export default function Technology() {
 
     const leftDoor = new THREE.Mesh(doorGeo, matDoor);
     leftDoor.position.set(-DOOR_W / 2, 0, DOOR_D / 2);
-    leftDoor.castShadow = true;
     leftDoorPivot.add(leftDoor);
 
     const rightDoorPivot = new THREE.Group();
@@ -115,10 +110,9 @@ export default function Technology() {
 
     const rightDoor = new THREE.Mesh(doorGeo, matDoor);
     rightDoor.position.set(DOOR_W / 2, 0, DOOR_D / 2);
-    rightDoor.castShadow = true;
     rightDoorPivot.add(rightDoor);
 
-    // Center Siemens PLC Control Panel Strip
+    // Center Siemens Control Panel Strip
     const controlPanelGroup = new THREE.Group();
     controlPanelGroup.position.set(0, doorY, doorZ + 0.01);
     machineGroup.add(controlPanelGroup);
@@ -276,7 +270,7 @@ export default function Technology() {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=500%',
+        end: '+=550%',
         pin: true,
         scrub: 1,
         anticipatePin: 1,
@@ -292,6 +286,11 @@ export default function Technology() {
       mainTl.fromTo('#webgl-canvas', { opacity: 0, x: '100vw' }, { opacity: 1, x: '25vw', duration: 0.6 }, 0);
       mainTl.to(centerBlockRef.current, { autoAlpha: 0, duration: 0.3 }, 0.65);
     }
+
+    // Reveal Chevron Arrow
+    mainTl.call(() => {
+      if (scrollChevronRef.current) scrollChevronRef.current.classList.add('visible');
+    }, null, 0.8);
 
     // 2. Phase 1: Structure & Controls (Open Doors & Camera Center)
     mainTl.to(machineGroup.rotation, { y: 0, duration: 0.8 }, 1.0);
@@ -400,6 +399,7 @@ export default function Technology() {
           {/* Animated Scroll Down Chevron Arrow */}
           <div
             className="scroll-chevron"
+            ref={scrollChevronRef}
             onClick={scrollToDatasheet}
             role="button"
             aria-label="Scroll to technical specifications"
@@ -408,76 +408,88 @@ export default function Technology() {
         </section>
       </div>
 
-      {/* Fixed UI Overlays grouped by phase */}
+      {/* Fixed UI Overlays grouped by phase with golden connecting pointer lines */}
       <div id="fixed-ui-overlay">
-        {/* Phase 1 */}
+        {/* Phase 1 Group */}
         <div className="phase-group phase-1-group">
           <div className="card-column left">
-            <div className="ui-card">
+            <div className="ui-card card-shell line-right">
               <h4>SS 304 Stainless Steel Shell</h4>
               <p>10x10 foot premium food-grade construction. Zero contamination.</p>
             </div>
-            <div className="ui-card">
+            <div className="ui-card card-foam line-right">
               <h4>Thermal Insulation</h4>
               <p>High-density foam retains 99% of internal heat for maximum energy efficiency.</p>
             </div>
-          </div>
-          <div className="card-column right">
-            <div className="ui-card">
+            <div className="ui-card card-panel line-right">
               <h4>Siemens PLC Control</h4>
               <p>Precision PID temperature and humidity control via 10" HMI interface.</p>
             </div>
           </div>
+          <div className="card-column right">
+            <div className="ui-card card-trays line-left">
+              <h4>Drying Trays &amp; Coils</h4>
+              <p>Precision electric heating elements and uniform cross-flow blower fans.</p>
+            </div>
+            <div className="ui-card card-fans line-left">
+              <h4>Dual Centrifugal Fans</h4>
+              <p>High-velocity uniform cross-flow aerodynamics for consistent drying.</p>
+            </div>
+          </div>
         </div>
 
-        {/* Phase 2 */}
+        {/* Phase 2 Group */}
         <div className="phase-group phase-2-group">
           <div className="card-column left">
-            <div className="ui-card">
+            <div className="ui-card card-heating line-right">
               <h4>Electric Heating Elements</h4>
               <p>Rapid thermal induction reaching optimal drying temperatures in minutes.</p>
             </div>
-            <div className="ui-card">
+            <div className="ui-card card-probes line-right">
               <h4>Precision Thermal Probes</h4>
               <p>Multi-point temperature sensing ensures absolute thermal consistency.</p>
             </div>
           </div>
           <div className="card-column right">
-            <div className="ui-card">
+            <div className="ui-card card-airflow line-left">
               <h4>360° Cross-Flow Airflow</h4>
               <p>Guarantees perfectly uniform dehydration across every single tray level.</p>
             </div>
+            <div className="ui-card card-motor line-left">
+              <h4>Industrial Circulation Motor</h4>
+              <p>Heavy-duty continuous operation motor built for massive scale dehydration.</p>
+            </div>
           </div>
         </div>
 
-        {/* Phase 3 */}
+        {/* Phase 3 Group */}
         <div className="phase-group phase-3-group">
           <div className="card-column left">
-            <div className="ui-card">
-              <h4 className="text-accent">Precision Command Center</h4>
-              <p>Industrial-grade digital controllers and fail-safe analog pressure gauges put you in total control.</p>
+            <div className="ui-card command-card line-right">
+              <h3 className="text-accent">Precision Command Center</h3>
+              <p>Industrial-grade digital controllers, intuitive LED readouts, and fail-safe analog pressure gauges put you in total control.</p>
             </div>
           </div>
           <div className="card-column right">
-            <div className="ui-card">
-              <h4 className="text-accent">Real-time Humidity Sensors</h4>
-              <p>Continuously monitors internal moisture levels to dynamically adjust airflow and maintain the climate.</p>
+            <div className="ui-card card-sensors line-left">
+              <h3 className="text-accent">Real-time Humidity Sensors</h3>
+              <p>Continuously monitors internal moisture levels to dynamically adjust airflow and maintain the perfect climate.</p>
             </div>
           </div>
         </div>
 
-        {/* Phase 4 */}
+        {/* Phase 4 Group */}
         <div className="phase-group phase-4-group">
           <div className="card-column left">
-            <div className="ui-card">
-              <h4 className="text-whatsapp">Smart Moisture Exhaust</h4>
+            <div className="ui-card card-exhaust line-right">
+              <h3 style={{ color: '#25D366' }}>Smart Moisture Exhaust</h3>
               <p>Automated top-venting system expels humidity while retaining thermal energy for maximum processing speed.</p>
             </div>
           </div>
           <div className="card-column right">
-            <div className="ui-card">
-              <h4 className="text-whatsapp">Maximum Efficiency</h4>
-              <p>Engineered with dual ventilation grilles to optimize cross-flow aerodynamics. Superior heat retention translates to faster ROI.</p>
+            <div className="ui-card roi-card line-left">
+              <h3 style={{ color: '#25D366' }}>Maximum Efficiency</h3>
+              <p>Engineered with dual ventilation grilles to optimize cross-flow aerodynamics. Superior heat retention translates to a faster ROI.</p>
             </div>
           </div>
         </div>
