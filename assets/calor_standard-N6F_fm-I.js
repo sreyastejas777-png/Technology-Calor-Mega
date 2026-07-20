@@ -1,0 +1,1 @@
+var e=`/Technology-Calor-Mega/assets/calor_mega-Bz3YL3Hs.png`,t=`/Technology-Calor-Mega/assets/calor_mini-Dw-9Ik5j.png`,n=`/Technology-Calor-Mega/assets/calor_standard-Bsqmp5cM.png`;export{t as n,e as r,n as t};

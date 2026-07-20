@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-150 0 1200 1200" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#24344a"/>
+      <stop offset="1" stop-color="#131c28"/>
+    </linearGradient>
+    <linearGradient id="goldArc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F2BE6A"/>
+      <stop offset="1" stop-color="#E09F3E"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="-150" width="1200" height="1200" fill="url(#night)"/>
+  <circle cx="90" cy="130" r="200" fill="#E09F3E" opacity="0.06"/>
+  <circle cx="830" cy="1080" r="240" fill="#3D5A80" opacity="0.18"/>
+  <g fill="#FFFFFF" opacity="0.05">
+    <circle cx="150" cy="960" r="3"/><circle cx="220" cy="1060" r="3"/><circle cx="760" cy="200" r="3"/>
+    <circle cx="690" cy="120" r="3"/><circle cx="820" cy="330" r="3"/><circle cx="120" cy="420" r="3"/>
+  </g>
+
+  <text x="450" y="104" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="56" fill="#FFFFFF" letter-spacing="3">DIGITAL PRECISION</text>
+  <text x="450" y="148" text-anchor="middle" font-size="19" letter-spacing="5" fill="#E09F3E" font-weight="bold">SMART CONTROL PANEL</text>
+  <rect x="390" y="168" width="120" height="4" rx="2" fill="#E09F3E"/>
+
+  <!-- dashboard card -->
+  <g>
+    <rect x="100" y="220" width="700" height="800" rx="28" fill="#1d2a3b" stroke="#31445e" stroke-width="2"/>
+  </g>
+
+  <!-- temperature gauge -->
+  <circle cx="450" cy="470" r="150" fill="none" stroke="#2c3d54" stroke-width="24"/>
+  <path d="M 450 620 A 150 150 0 1 1 585 404" fill="none" stroke="url(#goldArc)" stroke-width="24" stroke-linecap="round"/>
+  <circle cx="585" cy="404" r="14" fill="#FFFFFF"/>
+  <text x="450" y="470" text-anchor="middle" font-size="86" font-weight="bold" fill="#FFFFFF">65°</text>
+  <text x="450" y="516" text-anchor="middle" font-size="20" fill="#8ea4c2" letter-spacing="3">CELSIUS</text>
+  <text x="450" y="560" text-anchor="middle" font-size="16" fill="#E09F3E" letter-spacing="2" font-weight="bold">CHAMBER TEMPERATURE</text>
+
+  <!-- humidity -->
+  <text x="160" y="702" font-size="17" fill="#8ea4c2" letter-spacing="2" font-weight="bold">HUMIDITY</text>
+  <text x="740" y="702" text-anchor="end" font-size="17" fill="#FFFFFF" font-weight="bold">35% RH</text>
+  <rect x="160" y="718" width="580" height="16" rx="8" fill="#2c3d54"/>
+  <rect x="160" y="718" width="203" height="16" rx="8" fill="url(#goldArc)"/>
+  <circle cx="363" cy="726" r="13" fill="#FFFFFF" stroke="#E09F3E" stroke-width="4"/>
+
+  <!-- time -->
+  <text x="160" y="792" font-size="17" fill="#8ea4c2" letter-spacing="2" font-weight="bold">TIME REMAINING</text>
+  <text x="740" y="792" text-anchor="end" font-size="17" fill="#FFFFFF" font-weight="bold">04 : 20</text>
+  <rect x="160" y="808" width="580" height="16" rx="8" fill="#2c3d54"/>
+  <rect x="160" y="808" width="406" height="16" rx="8" fill="#3D5A80"/>
+  <rect x="160" y="808" width="406" height="16" rx="8" fill="none"/>
+
+  <!-- preset buttons -->
+  <g font-size="16" font-weight="bold" letter-spacing="1">
+    <rect x="160" y="860" width="130" height="52" rx="26" fill="url(#goldArc)"/>
+    <text x="225" y="892" text-anchor="middle" fill="#1C1C1C">FRUITS</text>
+    <rect x="310" y="860" width="130" height="52" rx="26" fill="none" stroke="#41586f" stroke-width="2"/>
+    <text x="375" y="892" text-anchor="middle" fill="#8ea4c2">HERBS</text>
+    <rect x="460" y="860" width="130" height="52" rx="26" fill="none" stroke="#41586f" stroke-width="2"/>
+    <text x="525" y="892" text-anchor="middle" fill="#8ea4c2">VEGGIES</text>
+    <rect x="610" y="860" width="130" height="52" rx="26" fill="none" stroke="#41586f" stroke-width="2"/>
+    <text x="675" y="892" text-anchor="middle" fill="#8ea4c2">SPICES</text>
+  </g>
+
+  <!-- status row -->
+  <line x1="160" y1="944" x2="740" y2="944" stroke="#2c3d54" stroke-width="2"/>
+  <circle cx="172" cy="980" r="7" fill="#3FA34D"/>
+  <circle cx="172" cy="980" r="12" fill="#3FA34D" opacity="0.25"/>
+  <text x="196" y="986" font-size="16" fill="#FFFFFF" letter-spacing="1" font-weight="bold">DRYING IN PROGRESS</text>
+  <text x="740" y="986" text-anchor="end" font-size="16" fill="#8ea4c2" letter-spacing="1">TRAYS 6 / 6 ACTIVE</text>
+
+  <!-- caption -->
+  <text x="450" y="1092" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="30" fill="#FFFFFF" font-style="italic">One touch. Perfect results.</text>
+  <text x="450" y="1130" text-anchor="middle" font-size="16" fill="#8ea4c2" letter-spacing="3">HOLDS TEMPERATURE WITHIN ±1°C</text>
+</svg>
