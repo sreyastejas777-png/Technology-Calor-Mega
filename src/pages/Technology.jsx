@@ -22,7 +22,8 @@ export default function Technology() {
     const scene = new THREE.Scene();
     const isDark = document.documentElement.classList.contains('dark');
     const bgHex = isDark ? 0x0c0c0e : 0xf6f3ea;
-    scene.background = new THREE.Color(bgHex);
+    // Make canvas transparent so the machine floats on the page
+    // scene.background = new THREE.Color(bgHex);
     scene.fog = new THREE.FogExp2(bgHex, 0.035);
 
     const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -206,7 +207,7 @@ export default function Technology() {
     });
 
     machineGroup.position.y = -1.0;
-    machineGroup.rotation.y = 0; // Front facing view for open doors Phase 1
+    machineGroup.rotation.y = -0.15; // Slight initial angle for closed state
 
     // ─── LIGHTING SETUP ───
     scene.add(new THREE.AmbientLight(0xffffff, 0.5));
@@ -220,17 +221,17 @@ export default function Technology() {
     fillLight.position.set(-6, 4, 3);
     scene.add(fillLight);
 
-    const internalLightL = new THREE.PointLight(0xffdd88, 1.5, 5);
+    const internalLightL = new THREE.PointLight(0xffdd88, 0, 5); // Start at 0 intensity
     internalLightL.position.set(-PANEL_W / 2 - DOOR_W / 2, BODY_H * 0.7, 0);
     machineGroup.add(internalLightL);
 
-    const internalLightR = new THREE.PointLight(0xffdd88, 1.5, 5);
+    const internalLightR = new THREE.PointLight(0xffdd88, 0, 5); // Start at 0 intensity
     internalLightR.position.set(PANEL_W / 2 + DOOR_W / 2, BODY_H * 0.7, 0);
     machineGroup.add(internalLightR);
 
-    // Initial doors wide open for Phase 1
-    leftDoorPivot.rotation.y = -Math.PI * 0.55;
-    rightDoorPivot.rotation.y = Math.PI * 0.55;
+    // Initial doors completely closed
+    leftDoorPivot.rotation.y = 0;
+    rightDoorPivot.rotation.y = 0;
 
     // Ground Plane Shadow
     const groundGeo = new THREE.PlaneGeometry(30, 30);
@@ -273,7 +274,7 @@ export default function Technology() {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=500%',
+        end: '+=600%',
         pin: true,
         scrub: 0.5,
         anticipatePin: 1,
@@ -284,64 +285,81 @@ export default function Technology() {
       }
     });
 
-    // 1. Initial Hero Split Sequence: Text slides left, 3D Canvas slides in from right
+    // 1. Initial Hero Split Sequence: Text slides left, THEN 3D Canvas fades in on the right
     if (isMobile) {
       mainTl.to(centerBlockRef.current, { y: '-15vh', duration: 0.5 }, 0);
-      mainTl.fromTo('#webgl-canvas', { opacity: 0, y: '20vh' }, { opacity: 1, y: 0, duration: 0.5 }, 0.1);
+      mainTl.fromTo('#webgl-canvas', { opacity: 0, y: '20vh' }, { opacity: 1, y: 0, duration: 0.5 }, 0.5);
     } else {
-      mainTl.to(centerBlockRef.current, { x: '-25vw', duration: 0.5 }, 0);
-      mainTl.fromTo('#webgl-canvas', { opacity: 0, x: '100vw' }, { opacity: 1, x: '0vw', duration: 0.5 }, 0);
-      mainTl.to(centerBlockRef.current, { autoAlpha: 0, duration: 0.2 }, 0.4);
+      mainTl.to(centerBlockRef.current, { x: '-25vw', duration: 0.5, ease: 'power1.inOut' }, 0);
+      // Object arrives on the right side as part of the current page
+      mainTl.fromTo('#webgl-canvas', { opacity: 0, x: '35vw' }, { opacity: 1, x: '25vw', duration: 0.5, ease: 'power2.out' }, 0.5);
+      
+      // -- HOLD STATE FOR FIRST SCROLL --
+      mainTl.to(centerBlockRef.current, { autoAlpha: 0, duration: 0.2 }, 2.0);
+    }
+
+    // Center the canvas smoothly after the split
+    if (!isMobile) {
+      mainTl.to('#webgl-canvas', { x: '0vw', duration: 0.8, ease: 'power1.inOut' }, 2.2);
     }
 
     // 2. Phase 1: Structure & Controls (Model & Parts Callouts Appear TOGETHER)
-    // Model settles in center with open doors while Phase 1 cards display
-    mainTl.to(machineGroup.rotation, { y: 0, duration: 0.5 }, 0.5);
+    // Model rotates to center
+    mainTl.to(machineGroup.rotation, { y: 0, duration: 0.8, ease: 'power1.inOut' }, 2.2);
+    
+    // Doors physically swing open
+    mainTl.to(leftDoorPivot.rotation, { y: -Math.PI * 0.55, duration: 1.0, ease: 'power2.inOut' }, 2.5);
+    mainTl.to(rightDoorPivot.rotation, { y: Math.PI * 0.55, duration: 1.0, ease: 'power2.inOut' }, 2.5);
+    
+    // Internal warm lights fade up as doors open
+    mainTl.to(internalLightL, { intensity: 1.5, duration: 1 }, 2.7);
+    mainTl.to(internalLightR, { intensity: 1.5, duration: 1 }, 2.7);
 
     // 3. Phase 2: Thermal Engine & Airflow (Rotate to angled view, thermal pulse)
-    mainTl.to(machineGroup.rotation, { y: -0.45, duration: 1.2 }, 2.5);
-    mainTl.to(camera.position, { x: 1.2, z: 14.2, y: 1.7, duration: 1.2 }, 2.5);
-    mainTl.call(() => { machineGroup.userData.thermalActive = true; }, null, 3.0);
+    mainTl.to(machineGroup.rotation, { y: -0.45, duration: 1.2 }, 4.0);
+    mainTl.to(camera.position, { x: 0.5, z: 14.2, y: 1.7, duration: 1.2 }, 4.0);
+    mainTl.call(() => { machineGroup.userData.thermalActive = true; }, null, 4.5);
 
     // 4. Phase 3: Haptic Command Center (Zoom to Siemens PLC panel)
-    mainTl.to(machineGroup.rotation, { y: 0.15, duration: 1.0 }, 5.5);
-    mainTl.to(camera.position, { x: 0, z: 12.2, y: 1.7, duration: 1.0 }, 5.5);
+    mainTl.to(machineGroup.rotation, { y: 0.15, duration: 1.0 }, 7.0);
+    mainTl.to(camera.position, { x: -0.2, z: 12.8, y: 1.8, duration: 1.0 }, 7.0);
 
-    // 5. Phase 4: Dynamic Exhaust & Efficiency (Close doors & Pull back)
+    // 5. Phase 4: The Dynamic ROI Engine (Close doors, pull back, disable thermal)
     mainTl.call(() => {
       machineGroup.userData.thermalActive = false;
-      [...traysLeft, ...traysRight].forEach(t => t.material.color.setHex(0xbcbcbc));
-    }, null, 8.0);
-    mainTl.to(leftDoorPivot.rotation, { y: 0, duration: 1 }, 8.0);
-    mainTl.to(rightDoorPivot.rotation, { y: 0, duration: 1 }, 8.0);
-    mainTl.to(internalLightL, { intensity: 0, duration: 0.5 }, 8.0);
-    mainTl.to(internalLightR, { intensity: 0, duration: 0.5 }, 8.0);
-    mainTl.to(camera.position, { x: 0, z: 15, y: 1.5, duration: 1.0 }, 8.0);
-
-    // 6. Transition to Datasheet Section
-    mainTl.to('#webgl-canvas', { opacity: 0, y: '-25vh', duration: 1 }, 10.5);
-
-    // Synchronized Phase Card Activation Ranges (Zero Gap & Immediate Together Reveal)
-    const phaseRanges = [
-      { start: 0.05, end: 0.25 }, // Phase 1: Displays IMMEDIATELY together with 3D model appearance
-      { start: 0.25, end: 0.50 }, // Phase 2: Thermal & Airflow
-      { start: 0.50, end: 0.72 }, // Phase 3: Siemens PLC & Humidity Sensors
-      { start: 0.72, end: 0.90 }  // Phase 4: Smart Exhaust & Efficiency
-    ];
-
-    const phaseGroups = document.querySelectorAll('.phase-group');
-    phaseGroups.forEach((group, idx) => {
-      const range = phaseRanges[idx] || { start: (idx + 1) * 0.2, end: (idx + 2) * 0.2 };
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: `${range.start * 100}% top`,
-        end: `${range.end * 100}% top`,
-        onEnter: () => group.classList.add('active'),
-        onLeave: () => group.classList.remove('active'),
-        onEnterBack: () => group.classList.add('active'),
-        onLeaveBack: () => group.classList.remove('active'),
+      [...machineGroup.children].forEach(child => {
+        if (child.geometry && child.geometry.type === 'BoxGeometry' && child.material.transparent) {
+          child.material.color.setHex(0xbcbcbc);
+          child.material.emissiveIntensity = 0;
+        }
       });
-    });
+    }, null, 9.5);
+    mainTl.to(leftDoorPivot.rotation, { y: 0, duration: 1, ease: 'power2.inOut' }, 9.5);
+    mainTl.to(rightDoorPivot.rotation, { y: 0, duration: 1, ease: 'power2.inOut' }, 9.5);
+    mainTl.to(internalLightL, { intensity: 0, duration: 0.5 }, 9.5);
+    mainTl.to(internalLightR, { intensity: 0, duration: 0.5 }, 9.5);
+    mainTl.to(machineGroup.rotation, { y: 0, duration: 1.0 }, 9.5);
+    mainTl.to(camera.position, { x: 0, z: 15, y: 1.5, duration: 1.0 }, 9.5);
+
+    // 6. Phase 5: The Conversion Horizon (Fade out canvas, prepare for next section)
+    mainTl.to('#webgl-canvas', { opacity: 0, y: '-25vh', duration: 1 }, 12.0);
+
+    // ─── UI UX Boxes (Phase Groups) Synchronized with 3D Timeline ───
+    // Phase 1 (Delay slightly so it appears as doors are opening)
+    mainTl.fromTo('.phase-1-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 3.0);
+    mainTl.to('.phase-1-group', { autoAlpha: 0, duration: 0.3 }, 4.0);
+
+    // Phase 2
+    mainTl.fromTo('.phase-2-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 4.0);
+    mainTl.to('.phase-2-group', { autoAlpha: 0, duration: 0.3 }, 6.8);
+
+    // Phase 3
+    mainTl.fromTo('.phase-3-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 7.0);
+    mainTl.to('.phase-3-group', { autoAlpha: 0, duration: 0.3 }, 9.3);
+
+    // Phase 4
+    mainTl.fromTo('.phase-4-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 9.5);
+    mainTl.to('.phase-4-group', { autoAlpha: 0, duration: 0.3 }, 11.8);
 
     return () => {
       window.removeEventListener('resize', handleResize);

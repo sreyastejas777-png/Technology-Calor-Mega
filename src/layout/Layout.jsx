@@ -14,6 +14,7 @@ import GoldBubbles from '../components/GoldBubbles';
 export default function Layout() {
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const isTechnology = location.pathname.startsWith('/technology');
 
   return (
     <div className="relative min-h-screen bg-[#FEFAF1] dark:bg-[#0c0c0e] text-primary dark:text-base transition-colors duration-300 overflow-x-hidden">
@@ -32,7 +33,7 @@ export default function Layout() {
       <ScrollToTop />
       <ScrollProgressBar />
       <Navbar />
-      {!isHome && (
+      {!isHome && !isTechnology && (
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 pb-4 pt-24 md:px-8">
           <BackButton />
           <Breadcrumb />

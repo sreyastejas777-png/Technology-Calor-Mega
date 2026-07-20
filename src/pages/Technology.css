@@ -14,6 +14,11 @@
   opacity: 0;
 }
 
+#hero-scroll-container {
+  position: relative;
+  z-index: 10;
+}
+
 .tech-hero-wrapper {
   position: relative;
   width: 100%;
@@ -190,13 +195,6 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-.phase-group.active {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
 }
 
 .card-column {
@@ -421,6 +419,74 @@
   font-size: 0.95rem;
   color: var(--text-secondary);
   margin: 0;
+}
+
+/* Specific Card Positioning for 3D Object Pointers (Desktop Only) */
+@media (min-width: 1025px) {
+  .phase-group { display: block; padding: 0; }
+  .card-column { display: block; gap: 0; }
+  .ui-card { position: absolute; }
+  
+  /* ========================================================
+     Dynamic Line Length System
+     Line length = 50vw (center) - Card margin (8vw) - Card width (320px) - Target offset
+     = 42vw - 320px - var(--target-offset)
+     ======================================================== */
+  .ui-card {
+    --target-offset: 8vw; /* default offset from screen center */
+  }
+
+  .ui-card.line-right::before {
+    width: calc(42vw - 320px - var(--target-offset));
+    right: calc(-42vw + 320px + var(--target-offset));
+  }
+  .ui-card.line-right::after {
+    right: calc(-42vw + 316px + var(--target-offset));
+  }
+
+  .ui-card.line-left::before {
+    width: calc(42vw - 320px - var(--target-offset));
+    left: calc(-42vw + 320px + var(--target-offset));
+  }
+  .ui-card.line-left::after {
+    left: calc(-42vw + 316px + var(--target-offset));
+  }
+
+  /* ========================================================
+     Phase 1 Classification
+     ======================================================== */
+  /* Shell (Left Top) - Points to outer edge */
+  .card-shell { top: 15%; left: 8vw; --target-offset: 10vw; }
+  /* Foam Insulation (Left Middle) - Points to open door wall */
+  .card-foam { top: 35%; left: 8vw; --target-offset: 9vw; }
+  /* PLC Control (Left Bottom) - Points to center panel dials */
+  .card-panel { top: 65%; left: 10vw; --target-offset: 1.5vw; }
+  
+  /* Fans (Right Top) - Points to top ventilation grille */
+  .card-fans { top: 15%; right: 8vw; --target-offset: 2vw; }
+  /* Trays (Right Bottom) - Points to inner drying trays */
+  .card-trays { top: 55%; right: 8vw; --target-offset: 4vw; }
+
+  /* ========================================================
+     Phase 2 Classification
+     (Model is shifted slightly left, camera x: 0.5)
+     ======================================================== */
+  .card-heating { top: 22%; left: 8vw; --target-offset: 8vw; }
+  .card-probes { top: 62%; left: 8vw; --target-offset: 6vw; }
+  .card-airflow { top: 28%; right: 8vw; --target-offset: 9vw; }
+  .card-motor { top: 68%; right: 8vw; --target-offset: 7vw; }
+
+  /* ========================================================
+     Phase 3 Classification (Zoomed In)
+     ======================================================== */
+  .command-card { top: 48%; left: 10vw; --target-offset: 6vw; }
+  .card-sensors { top: 45%; right: 10vw; --target-offset: 6vw; }
+
+  /* ========================================================
+     Phase 4 Classification
+     ======================================================== */
+  .card-exhaust { top: 25%; left: 8vw; --target-offset: 5vw; }
+  .roi-card { top: 45%; right: 8vw; --target-offset: 8vw; }
 }
 
 /* Mobile responsive layout */
