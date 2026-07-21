@@ -277,7 +277,7 @@ export default function Technology() {
         start: 'top top',
         end: '+=350%',
         pin: true,
-        scrub: 0.5,
+        scrub: 1.2,
         anticipatePin: 1,
         onUpdate: (self) => {
           setIsIndicatorVisible(self.progress > 0.03);
