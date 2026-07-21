@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FaFileDownload, FaWhatsapp, FaArrowRight, FaChevronDown } from 'react-icons/fa';
+import { FaFileDownload, FaWhatsapp, FaArrowRight, FaChevronDown, FaUndo } from 'react-icons/fa';
 import './Technology.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -13,6 +13,7 @@ export default function Technology() {
   const centerBlockRef = useRef(null);
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
   const [isIndicatorVisible, setIsIndicatorVisible] = useState(false);
+  const [isReversing, setIsReversing] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -27,7 +28,7 @@ export default function Technology() {
     scene.fog = new THREE.FogExp2(bgHex, 0.035);
 
     const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 1.5, 13);
+    camera.position.set(0, 1.5, 11.5);
     camera.lookAt(0, 1.4, 0);
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -274,31 +275,40 @@ export default function Technology() {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=600%',
+        end: '+=250%',
         pin: true,
         scrub: 0.5,
         anticipatePin: 1,
         onUpdate: (self) => {
           setIsIndicatorVisible(self.progress > 0.03);
           setIsScrolledToBottom(self.progress > 0.70);
+          
+          // Show restart option when reversing (scrolling up) in the middle of the animation
+          if (self.direction === -1 && self.progress > 0.1 && self.progress < 0.95) {
+            setIsReversing(true);
+          } else if (self.direction === 1 || self.progress <= 0.1 || self.progress >= 0.95) {
+            setIsReversing(false);
+          }
         }
       }
     });
 
-    // 1. Initial Hero Split Sequence: Text slides left, THEN 3D Canvas fades in on the right
+    // 1. Initial State Setup: Text permanently on left, 3D object permanently on right at load
     if (isMobile) {
-      mainTl.to(centerBlockRef.current, { y: '-15vh', duration: 0.5 }, 0);
-      mainTl.fromTo('#webgl-canvas', { opacity: 0, y: '20vh' }, { opacity: 1, y: 0, duration: 0.5 }, 0.5);
+      gsap.set(centerBlockRef.current, { y: '-15vh' });
+      gsap.set('#webgl-canvas', { opacity: 1, y: 0 });
     } else {
-      mainTl.to(centerBlockRef.current, { x: '-25vw', duration: 0.5, ease: 'power1.inOut' }, 0);
-      // Object arrives on the right side as part of the current page
-      mainTl.fromTo('#webgl-canvas', { opacity: 0, x: '35vw' }, { opacity: 1, x: '25vw', duration: 0.5, ease: 'power2.out' }, 0.5);
-      
-      // -- HOLD STATE FOR FIRST SCROLL --
-      mainTl.to(centerBlockRef.current, { autoAlpha: 0, duration: 0.2 }, 2.0);
+      gsap.set(centerBlockRef.current, { x: '-25vw' });
+      gsap.set('#webgl-canvas', { opacity: 1, x: '25vw' });
     }
+    
+    // -- HOLD STATE FOR FIRST SCROLL (Allowing user to read text before phase transitions start) --
+    mainTl.to({}, { duration: 0.5 }, 0.5); // dummy tween to pad timeline
 
-    // Center the canvas smoothly after the split
+    // Fade out text when scroll begins to approach phase 1
+    mainTl.to(centerBlockRef.current, { autoAlpha: 0, duration: 0.5 }, 1.5);
+
+    // Center the canvas smoothly as phase 1 begins
     if (!isMobile) {
       mainTl.to('#webgl-canvas', { x: '0vw', duration: 0.8, ease: 'power1.inOut' }, 2.2);
     }
@@ -317,14 +327,10 @@ export default function Technology() {
 
     // 3. Phase 2: Thermal Engine & Airflow (Rotate to angled view, thermal pulse)
     mainTl.to(machineGroup.rotation, { y: -0.45, duration: 1.2 }, 4.0);
-    mainTl.to(camera.position, { x: 0.5, z: 14.2, y: 1.7, duration: 1.2 }, 4.0);
+    mainTl.to(camera.position, { x: 0.5, z: 12.7, y: 1.7, duration: 1.2 }, 4.0);
     mainTl.call(() => { machineGroup.userData.thermalActive = true; }, null, 4.5);
 
-    // 4. Phase 3: Haptic Command Center (Zoom to Siemens PLC panel)
-    mainTl.to(machineGroup.rotation, { y: 0.15, duration: 1.0 }, 7.0);
-    mainTl.to(camera.position, { x: -0.2, z: 12.8, y: 1.8, duration: 1.0 }, 7.0);
-
-    // 5. Phase 4: The Dynamic ROI Engine (Close doors, pull back, disable thermal)
+    // 4. Phase 3: The Dynamic ROI Engine & Smart Control (Close doors, pull back, disable thermal)
     mainTl.call(() => {
       machineGroup.userData.thermalActive = false;
       [...machineGroup.children].forEach(child => {
@@ -333,16 +339,32 @@ export default function Technology() {
           child.material.emissiveIntensity = 0;
         }
       });
-    }, null, 9.5);
-    mainTl.to(leftDoorPivot.rotation, { y: 0, duration: 1, ease: 'power2.inOut' }, 9.5);
-    mainTl.to(rightDoorPivot.rotation, { y: 0, duration: 1, ease: 'power2.inOut' }, 9.5);
-    mainTl.to(internalLightL, { intensity: 0, duration: 0.5 }, 9.5);
-    mainTl.to(internalLightR, { intensity: 0, duration: 0.5 }, 9.5);
-    mainTl.to(machineGroup.rotation, { y: 0, duration: 1.0 }, 9.5);
-    mainTl.to(camera.position, { x: 0, z: 15, y: 1.5, duration: 1.0 }, 9.5);
+    }, null, 7.0);
+    mainTl.to(leftDoorPivot.rotation, { y: 0, duration: 1, ease: 'power2.inOut' }, 7.0);
+    mainTl.to(rightDoorPivot.rotation, { y: 0, duration: 1, ease: 'power2.inOut' }, 7.0);
+    mainTl.to(internalLightL, { intensity: 0, duration: 0.5 }, 7.0);
+    mainTl.to(internalLightR, { intensity: 0, duration: 0.5 }, 7.0);
+    mainTl.to(machineGroup.rotation, { y: 0, duration: 1.0 }, 7.0);
+    mainTl.to(camera.position, { x: 0, z: 13.5, y: 1.5, duration: 1.0 }, 7.0);
 
     // 6. Phase 5: The Conversion Horizon (Fade out canvas, prepare for next section)
-    mainTl.to('#webgl-canvas', { opacity: 0, y: '-25vh', duration: 1 }, 12.0);
+    // mainTl.to('#webgl-canvas', { opacity: 0, y: '-25vh', duration: 1 }, 12.0); // REMOVED to prevent blank scroll gap
+
+    // NEW UI UX Transition: Tie the canvas and final UI boxes fade out strictly to the datasheet entering the viewport.
+    gsap.fromTo(['#webgl-canvas', '.phase-3-group'],
+      { opacity: 1, y: '0vh' },
+      {
+        opacity: 0,
+        y: '-15vh',
+        scrollTrigger: {
+          trigger: '.datasheet-section',
+          start: 'top bottom',
+          end: 'top center',
+          scrub: true,
+          immediateRender: false
+        }
+      }
+    );
 
     // ─── UI UX Boxes (Phase Groups) Synchronized with 3D Timeline ───
     // Phase 1 (Delay slightly so it appears as doors are opening)
@@ -353,13 +375,9 @@ export default function Technology() {
     mainTl.fromTo('.phase-2-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 4.0);
     mainTl.to('.phase-2-group', { autoAlpha: 0, duration: 0.3 }, 6.8);
 
-    // Phase 3
+    // Phase 3 (Combined final phase)
+    // NOTE: Fade OUT is now handled by the datasheet ScrollTrigger above, ensuring zero lag on reverse scroll
     mainTl.fromTo('.phase-3-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 7.0);
-    mainTl.to('.phase-3-group', { autoAlpha: 0, duration: 0.3 }, 9.3);
-
-    // Phase 4
-    mainTl.fromTo('.phase-4-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 9.5);
-    mainTl.to('.phase-4-group', { autoAlpha: 0, duration: 0.3 }, 11.8);
 
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -385,59 +403,74 @@ export default function Technology() {
   return (
     <div className="relative w-full bg-bg text-primary-text transition-colors duration-300">
       {/* WebGL 3D Canvas */}
-      <canvas id="webgl-canvas" ref={canvasRef} />
+      <canvas id="webgl-canvas" ref={canvasRef} style={{ opacity: 1, transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(0)' : 'translateX(25vw)' }} />
 
-      {/* Hero Section Container */}
-      <div id="hero-scroll-container" ref={containerRef}>
-        <section className="hero">
-          <div className="fixed-hero-wrapper">
-            <div className="hero-center-block" ref={centerBlockRef}>
-              <h1 className="headline">
-                Preserve Today.<br />
-                <span>Profit Tomorrow.</span>
-              </h1>
-              <p>
-                CALOR MEGA Industrial Dehydration Systems deliver premium drying performance with maximum product quality and extended shelf life.
-              </p>
+      {/* Fixed Hero Wrapper (Moved outside pin container to prevent flicker) */}
+      <div className="fixed-hero-wrapper">
+        <div className="hero-center-block" ref={centerBlockRef} style={{ transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(-15vh)' : 'translateX(-25vw)' }}>
+          <h1 className="headline">
+            Preserve Today.<br />
+            <span>Profit Tomorrow.</span>
+          </h1>
+          <p>
+            CALOR MEGA Industrial Dehydration Systems deliver premium drying performance with maximum product quality and extended shelf life.
+          </p>
 
-              <div className="hero-stats-mini">
-                <span className="split-stat"><strong>5%</strong> Final Moisture</span>
-                <span className="split-stat"><strong>12+ Months</strong> Shelf Life</span>
-                <span className="split-stat"><strong>Food Grade</strong> SS304 Steel</span>
-                <span className="split-stat"><strong>Industrial</strong> Capacity</span>
-              </div>
-
-              <div className="hero-cta">
-                <a
-                  href="https://wa.me/1234567890?text=Hello%2C%20I%20am%20interested%20in%20CALOR%20MEGA.%20Can%20I%20get%20more%20details%3F"
-                  className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-semibold text-white shadow-soft transition-transform hover:scale-105"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <FaWhatsapp className="text-xl" /> Get a Custom Quote
-                </a>
-                <button
-                  onClick={handleScrollToggle}
-                  className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface/60 backdrop-blur-md px-6 py-3 font-semibold text-primary-text shadow-soft transition-transform hover:scale-105"
-                >
-                  View Specs <FaArrowRight />
-                </button>
-              </div>
-            </div>
+          <div className="hero-stats-mini">
+            <span className="split-stat"><strong>5%</strong> Final Moisture</span>
+            <span className="split-stat"><strong>12+ Months</strong> Shelf Life</span>
+            <span className="split-stat"><strong>Food Grade</strong> SS304 Steel</span>
+            <span className="split-stat"><strong>Industrial</strong> Capacity</span>
           </div>
-        </section>
+
+          <div className="hero-cta">
+            <a
+              href="https://wa.me/1234567890?text=Hello%2C%20I%20am%20interested%20in%20CALOR%20MEGA.%20Can%20I%20get%20more%20details%3F"
+              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-semibold text-white shadow-soft transition-transform hover:scale-105"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaWhatsapp className="text-xl" /> Get a Custom Quote
+            </a>
+            <button
+              onClick={handleScrollToggle}
+              className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface/60 backdrop-blur-md px-6 py-3 font-semibold text-primary-text shadow-soft transition-transform hover:scale-105"
+            >
+              View Specs <FaArrowRight />
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Smart Directional Scroll Indicator Button */}
+      {/* Hero Section Container (Pinned) */}
+      <div id="hero-scroll-container" ref={containerRef} className="hero">
+      </div>
+
+      {/* Explore 3D Blueprint Button */}
       <button
         onClick={handleScrollToggle}
-        className={`smart-scroll-toggle ${isIndicatorVisible ? 'visible' : ''} ${isScrolledToBottom ? 'is-bottom' : ''}`}
-        aria-label={isScrolledToBottom ? 'Back to 3D Blueprint' : 'Scroll to explore 3D Blueprint'}
+        className={`smart-scroll-toggle ${isIndicatorVisible && !isScrolledToBottom ? 'visible' : ''}`}
+        aria-label="Scroll to explore 3D Blueprint"
       >
-        <span>{isScrolledToBottom ? 'Back to 3D Blueprint' : 'Explore 3D Blueprint'}</span>
+        <span>Explore 3D Blueprint</span>
         <div className="smart-scroll-arrow-icon">
           <FaChevronDown />
         </div>
+      </button>
+
+      {/* Restart Phase Transition Button (Visible on reverse scroll) */}
+      <button
+        onClick={() => {
+          if (containerRef.current) {
+            containerRef.current.scrollIntoView({ behavior: 'smooth' });
+            setIsReversing(false);
+          }
+        }}
+        className={`restart-phase-btn ${isReversing ? 'visible' : ''}`}
+        aria-label="Restart 3D Phase Transition"
+      >
+        <FaUndo />
+        <span>Restart Phases</span>
       </button>
 
       {/* Fixed UI Overlays grouped by phase with golden connecting pointer lines */}
@@ -460,7 +493,7 @@ export default function Technology() {
           </div>
           <div className="card-column right">
             <div className="ui-card card-trays line-left">
-              <h4>Drying Trays &amp; Coils</h4>
+              <h4>Drying Trays and Coils</h4>
               <p>Precision electric heating elements and uniform cross-flow blower fans.</p>
             </div>
             <div className="ui-card card-fans line-left">
@@ -494,12 +527,16 @@ export default function Technology() {
           </div>
         </div>
 
-        {/* Phase 3 Group */}
+        {/* Phase 3 Group (Combined Command & ROI) */}
         <div className="phase-group phase-3-group">
           <div className="card-column left">
             <div className="ui-card command-card line-right">
               <h3 className="text-accent">Precision Command Center</h3>
               <p>Industrial-grade digital controllers, intuitive LED readouts, and fail-safe analog pressure gauges put you in total control.</p>
+            </div>
+            <div className="ui-card card-exhaust line-right">
+              <h3 style={{ color: '#25D366' }}>Smart Moisture Exhaust</h3>
+              <p>Automated top-venting system expels humidity while retaining thermal energy for maximum processing speed.</p>
             </div>
           </div>
           <div className="card-column right">
@@ -507,18 +544,6 @@ export default function Technology() {
               <h3 className="text-accent">Real-time Humidity Sensors</h3>
               <p>Continuously monitors internal moisture levels to dynamically adjust airflow and maintain the perfect climate.</p>
             </div>
-          </div>
-        </div>
-
-        {/* Phase 4 Group */}
-        <div className="phase-group phase-4-group">
-          <div className="card-column left">
-            <div className="ui-card card-exhaust line-right">
-              <h3 style={{ color: '#25D366' }}>Smart Moisture Exhaust</h3>
-              <p>Automated top-venting system expels humidity while retaining thermal energy for maximum processing speed.</p>
-            </div>
-          </div>
-          <div className="card-column right">
             <div className="ui-card roi-card line-left">
               <h3 style={{ color: '#25D366' }}>Maximum Efficiency</h3>
               <p>Engineered with dual ventilation grilles to optimize cross-flow aerodynamics. Superior heat retention translates to a faster ROI.</p>
@@ -581,7 +606,7 @@ export default function Technology() {
                 <td>Active electronic humidity transmitter. Automated electric actuator dampers for exhaust air evacuation.</td>
               </tr>
               <tr>
-                <td>Installation & Service</td>
+                <td>Installation and Service</td>
                 <td>Factory-assembled skid-mounted design for rapid commissioning. Simple three-phase electrical input connection.</td>
               </tr>
             </tbody>
@@ -593,7 +618,7 @@ export default function Technology() {
               <FaFileDownload />
             </div>
             <div className="download-cta-text">
-              <h3>Technical Blueprints & Brochure</h3>
+              <h3>Technical Blueprints and Brochure</h3>
               <p>Download full dimensional drawings, wiring guides, power ratings, and tray loading density sheets.</p>
             </div>
             <a
