@@ -275,7 +275,7 @@ export default function Technology() {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=250%',
+        end: '+=350%',
         pin: true,
         scrub: 0.5,
         anticipatePin: 1,
@@ -372,12 +372,15 @@ export default function Technology() {
     mainTl.to('.phase-1-group', { autoAlpha: 0, duration: 0.3 }, 4.0);
 
     // Phase 2
-    mainTl.fromTo('.phase-2-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 4.0);
+    mainTl.fromTo('.phase-2-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 4.3);
     mainTl.to('.phase-2-group', { autoAlpha: 0, duration: 0.3 }, 6.8);
 
     // Phase 3 (Combined final phase)
     // NOTE: Fade OUT is now handled by the datasheet ScrollTrigger above, ensuring zero lag on reverse scroll
-    mainTl.fromTo('.phase-3-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 7.0);
+    mainTl.fromTo('.phase-3-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 7.1);
+
+    // Hold Phase 3 on screen slightly longer before unpinning
+    mainTl.to({}, { duration: 1.5 });
 
     return () => {
       window.removeEventListener('resize', handleResize);
