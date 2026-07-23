@@ -3,14 +3,14 @@ import { Shield, Users, Landmark, Award, Milestone } from 'lucide-react';
 
 export default function About() {
   const timelineEvents = [
-    { year: '2019', title: 'Company Founded', desc: 'CalorTech Systems was formed by thermal engineers and agricultural researchers to address crop waste in local farming clusters.' },
-    { year: '2021', title: 'Innovatech Patent', desc: 'Developed and patented our automated post-harvest heat-pump dehydration loop, doubling energy efficiency over resistive heating.' },
-    { year: '2023', title: 'Cooperative Deployments', desc: 'Installed standard drying cabinets in 15 regional cooperatives, successfully preserving over 500 tons of surplus produce.' },
-    { year: '2026', title: 'Calor Mega Release', desc: 'Launched our flagship walk-in commercial preservation chamber to support massive regional agricultural exports.' }
+    { year: '2019', title: 'Company Founded', desc: 'Established by thermal engineers to reduce crop waste in farming hubs.' },
+    { year: '2021', title: 'Patented Loop', desc: 'Patented our energy-efficient heat-pump dehydration loop.' },
+    { year: '2023', title: 'Cooperative Deployments', desc: 'Deployed cabinets in 15 cooperatives, preserving 500+ tons of crops.' },
+    { year: '2026', title: 'Calor Mega Release', desc: 'Released walk-in commercial chambers for large-scale exports.' }
   ];
 
   return (
-    <div className="w-full py-16 px-6 md:px-12 bg-bg transition-colors duration-300">
+    <div className="w-full pt-2 pb-16 px-6 md:px-12 bg-bg transition-colors duration-300 min-h-[calc(100svh-144px)]">
       <div className="max-w-[1440px] mx-auto flex flex-col gap-16">
         
         {/* 1. VISION & MISSION HERO */}
@@ -24,10 +24,10 @@ export default function About() {
               About CalorTech Systems
             </h1>
             <p className="text-[20px] md:text-[22px] text-primary-text leading-relaxed font-semibold">
-              At CalorTech Systems, we bridge the critical gap between massive regional harvests and commercial markets. By engineering premium, high-efficiency dehumidification systems, we empower farmers, eliminate waste, and build localized food security.
+              We engineer high-efficiency, robust dehumidification systems that bridge the gap between harvests and markets.
             </p>
             <p className="text-[18px] text-secondary-text leading-relaxed">
-              Our products are engineered to be extremely robust, high-yielding, and simple to operate. We prioritize simple digital user screens, high-contrast readouts, and heavy-duty structural reliability to ensure anyone—from family farm owners to industrial cooperative staff—can achieve perfect preservation.
+              Our simple-to-operate commercial dehydrators empower farmers and cooperatives to eliminate crop waste, preserve nutrients, and maximize yield value.
             </p>
           </div>
 
@@ -53,10 +53,7 @@ export default function About() {
               Why Humidity Control Matters
             </h2>
             <p className="text-[18px] text-secondary-text leading-relaxed">
-              Traditional drying techniques rely on high heat, which cooks the crop, destroys sensitive vitamins, alters the color, and damages cellular structure. 
-            </p>
-            <p className="text-[18px] text-secondary-text leading-relaxed">
-              CalorTech utilizes **Heat-Pump Dehumidification**. By drawing air through a cooling cycle to condense and remove moisture, and then reheating it slightly to expand, we pull water out of crops at safe temperatures (typically between 38°C and 55°C). 
+              Traditional drying uses high heat, damaging crop nutrients and cellular structure. CalorTech utilizes low-temperature **Heat-Pump Dehumidification** (38°C–55°C) to safely extract moisture and keep quality intact.
             </p>
           </div>
           <div className="flex flex-col gap-6">
@@ -64,14 +61,14 @@ export default function About() {
               <Shield className="w-8 h-8 text-accent flex-shrink-0" />
               <div>
                 <strong className="text-[18px] text-primary-text block font-bold">100% Nutrient Retention</strong>
-                <span className="text-[18px] text-secondary-text">Vitamins, color pigments, and aroma compounds are completely preserved.</span>
+                <span className="text-[18px] text-secondary-text">Preserves vitamins, color pigments, and natural aromas.</span>
               </div>
             </div>
             <div className="p-6 bg-surface border border-border rounded-2xl flex gap-4 transition-colors">
               <Award className="w-8 h-8 text-accent flex-shrink-0" />
               <div>
                 <strong className="text-[18px] text-primary-text block font-bold">Longer Shelf Stability</strong>
-                <span className="text-[18px] text-secondary-text">Maintains a consistent 5% moisture baseline preventing mold and pest contamination.</span>
+                <span className="text-[18px] text-secondary-text">Maintains a stable 5% moisture baseline to prevent mold.</span>
               </div>
             </div>
           </div>
@@ -81,10 +78,10 @@ export default function About() {
         <div className="flex flex-col gap-8">
           <div className="text-center max-w-[800px] mx-auto flex flex-col gap-4">
             <h2 className="text-3xl font-extrabold font-outfit text-primary-text">
-              Manufacturing Standards & Certifications
+              Standards & Certifications
             </h2>
             <p className="text-[18px] text-secondary-text">
-              We design and construct every system using food-grade materials and strict eco-friendly guidelines.
+              Built using food-grade materials and eco-friendly guidelines.
             </p>
           </div>
 
@@ -93,7 +90,7 @@ export default function About() {
               <Users className="w-12 h-12 text-accent" />
               <h3 className="text-xl font-bold text-primary-text font-outfit">Local Support</h3>
               <p className="text-[18px] text-secondary-text">
-                Every regional installation includes hands-on staff training and 24/7 hotline service.
+                On-site staff training and 24/7 technical hotline support.
               </p>
             </div>
 
@@ -101,7 +98,7 @@ export default function About() {
               <Landmark className="w-12 h-12 text-accent" />
               <h3 className="text-xl font-bold text-primary-text font-outfit">Eco Certified</h3>
               <p className="text-[18px] text-secondary-text">
-                R290/R134a refrigeration compliant systems with zero ozone depletion potential.
+                Zero ozone depletion potential using eco-compliant refrigerants.
               </p>
             </div>
 
@@ -109,7 +106,7 @@ export default function About() {
               <Award className="w-12 h-12 text-accent" />
               <h3 className="text-xl font-bold text-primary-text font-outfit">ISO 9001 Quality</h3>
               <p className="text-[18px] text-secondary-text">
-                Manufactured inside ISO 9001 certified facilities following heavy industrial safety protocols.
+                Manufactured in certified facilities following strict safety protocols.
               </p>
             </div>
           </div>

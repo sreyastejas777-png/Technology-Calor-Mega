@@ -127,7 +127,7 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="w-full py-16 px-6 md:px-12 bg-bg transition-colors duration-300">
+    <div className="w-full pt-2 pb-16 px-6 md:px-12 bg-bg transition-colors duration-300">
       <div className="max-w-[1440px] mx-auto flex flex-col gap-12">
         
         {/* Navigation Breadcrumb */}

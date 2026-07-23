@@ -6,7 +6,6 @@ export const navLinks = [
   { label: 'Gallery', path: '/gallery' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },
-  { label: 'AI Assistant', path: '/ai-assistant' },
 ];
 
 export const routeLabels = {

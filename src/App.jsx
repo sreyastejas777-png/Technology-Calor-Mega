@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Layout from './layout/Layout';
 import LoadingScreen from './components/LoadingScreen';
 import Home from './pages/Home';
@@ -15,8 +15,19 @@ const Contact = lazy(() => import('./pages/Contact'));
 const GetQuote = lazy(() => import('./pages/GetQuote'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const Terms = lazy(() => import('./pages/Terms'));
-const AIAssistant = lazy(() => import('./pages/AIAssistant'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+
+// Redirect helper to route /ai-assistant to home page and open the chatbot widget
+function AIAssistantRedirect() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate('/', { replace: true });
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('open-chatbot'));
+    }, 150);
+  }, [navigate]);
+  return null;
+}
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -41,7 +52,7 @@ function App() {
             <Route path="/process" element={<WorkingProcess />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/ai-assistant" element={<AIAssistant />} />
+            <Route path="/ai-assistant" element={<AIAssistantRedirect />} />
             <Route path="/quote" element={<GetQuote />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<Terms />} />

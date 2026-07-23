@@ -8,7 +8,7 @@ import ScrollToTop from '../components/ScrollToTop';
 import ScrollProgressBar from '../components/ScrollProgressBar';
 import BackToTop from '../components/BackToTop';
 import WhatsAppButton from '../components/WhatsAppButton';
-import AIAssistantButton from '../components/AIAssistantButton';
+import AIChatbotPopup from '../components/AIChatbotPopup';
 import GoldBubbles from '../components/GoldBubbles';
 
 export default function Layout() {
@@ -53,7 +53,7 @@ export default function Layout() {
       </AnimatePresence>
       <Footer />
       <WhatsAppButton />
-      <AIAssistantButton />
+      <AIChatbotPopup />
       <BackToTop />
     </div>
   );

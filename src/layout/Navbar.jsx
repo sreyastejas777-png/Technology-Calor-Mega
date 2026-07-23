@@ -14,6 +14,11 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
+  const handleAIChatClick = (e, question = '') => {
+    e.preventDefault();
+    window.dispatchEvent(new CustomEvent('open-chatbot', { detail: { question } }));
+  };
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -244,56 +249,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* AI Assistant Hover Group */}
-          <div className="relative group h-full flex items-center">
-            <NavLink
-              to="/ai-assistant"
-              className={({ isActive }) =>
-                `flex items-center gap-1 py-2 text-sm font-semibold transition-colors ${
-                  isActive ? 'text-accent' : 'text-primary/80 dark:text-base/80 hover:text-accent'
-                }`
-              }
-            >
-              AI Assistant
-              <ChevronDown className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180 text-primary/50 dark:text-base/50 group-hover:text-accent" />
-            </NavLink>
 
-            {/* AI Assistant Dropdown */}
-            <div className="absolute top-12 left-1/2 -translate-x-[60%] w-[560px] bg-white dark:bg-[#1C1C1C] border border-primary/10 dark:border-white/10 rounded-3xl shadow-2xl p-8 opacity-0 invisible translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 ease-out z-50 before:content-[''] before:absolute before:-top-6 before:left-0 before:right-0 before:h-6 before:bg-transparent">
-              <div className="grid grid-cols-12 gap-8 text-left">
-                {/* Column 1: Core AI Pitch */}
-                <div className="col-span-5 flex flex-col gap-3">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-accent font-sans">Smart Tools</span>
-                  <h4 className="text-[15px] font-black text-primary dark:text-base leading-tight font-sans">Instant AI Guidance</h4>
-                  <p className="text-[12px] text-primary/60 dark:text-base/60 leading-relaxed font-sans">
-                    Instantly resolve room dimensions, power requirements, crop recipes, and pricing.
-                  </p>
-                  <Link to="/ai-assistant" className="inline-flex items-center justify-center gap-1 h-9 px-4 bg-accent hover:bg-accent/90 active:scale-95 text-white text-[12px] font-bold rounded-lg transition-all shadow-btn w-fit mt-1 font-sans">
-                    Open Chat
-                  </Link>
-                </div>
-
-                {/* Column 2: Quick FAQ triggers */}
-                <div className="col-span-7 flex flex-col gap-2 border-l border-primary/10 dark:border-white/10 pl-6">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-accent font-sans">Quick Questions</span>
-                  <div className="flex flex-col gap-1.5">
-                    <Link to="/ai-assistant" className="px-3 py-1.5 rounded-lg hover:bg-primary/5 dark:hover:bg-white/5 text-[13px] font-bold text-primary dark:text-base transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10 font-sans font-sans">
-                      ⚡ Sizing Mega & Mini rooms
-                    </Link>
-                    <Link to="/ai-assistant" className="px-3 py-1.5 rounded-lg hover:bg-primary/5 dark:hover:bg-white/5 text-[13px] font-bold text-primary dark:text-base transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10 font-sans">
-                      🥭 Crop drying compatibility
-                    </Link>
-                    <Link to="/ai-assistant" className="px-3 py-1.5 rounded-lg hover:bg-primary/5 dark:hover:bg-white/5 text-[13px] font-bold text-primary dark:text-base transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10 font-sans font-sans">
-                      🔋 Energy consumption rates
-                    </Link>
-                    <Link to="/ai-assistant" className="px-3 py-1.5 rounded-lg hover:bg-primary/5 dark:hover:bg-white/5 text-[13px] font-bold text-primary dark:text-base transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10 font-sans">
-                      🛡️ Product warranty policies
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* Contact */}
           <NavLink
@@ -376,7 +332,13 @@ export default function Navbar() {
                 <NavLink
                   key={link.path}
                   to={link.path}
-                  onClick={() => setMobileOpen(false)}
+                  onClick={(e) => {
+                    setMobileOpen(false);
+                    if (link.path === '/ai-assistant') {
+                      e.preventDefault();
+                      window.dispatchEvent(new CustomEvent('open-chatbot'));
+                    }
+                  }}
                   className={({ isActive }) =>
                     `text-sm font-semibold ${isActive ? 'text-accent' : 'text-primary dark:text-base'}`
                   }
