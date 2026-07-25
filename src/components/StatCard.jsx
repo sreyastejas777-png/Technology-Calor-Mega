@@ -21,7 +21,7 @@ export default function StatCard({ value, suffix, label }) {
         {count}
         {suffix}
       </p>
-      <p className="mt-3 text-sm md:text-base font-medium text-primary/70 dark:text-base/70">{label}</p>
+      <p className="mt-3 text-sm md:text-paper font-medium text-primary/70 dark:text-paper/70">{label}</p>
     </motion.div>
   );
 }

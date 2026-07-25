@@ -36,7 +36,7 @@ export default function Gallery() {
             className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
               activeCategory === cat
                 ? 'bg-accent text-primary'
-                : 'bg-white dark:bg-white/5 text-primary/70 dark:text-base/70 hover:text-accent'
+                : 'bg-white dark:bg-white/5 text-primary/70 dark:text-paper/70 hover:text-accent'
             }`}
           >
             {cat}

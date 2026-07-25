@@ -17,19 +17,8 @@ export default function Layout() {
   const isTechnology = location.pathname.startsWith('/technology');
 
   return (
-    <div className="relative min-h-screen bg-[#FEFAF1] dark:bg-[#0c0c0e] text-primary dark:text-base transition-colors duration-300 overflow-x-hidden">
-      {/* Ambient Floating Backdrop */}
-      <div className="pointer-events-none fixed inset-0 -z-30 overflow-hidden">
-        {/* Animated Light Blobs */}
-        <div className="absolute -left-32 -top-32 h-[35rem] w-[35rem] rounded-full bg-secondary/12 dark:bg-secondary/8 blur-[120px] animate-float-slow-1" />
-        <div className="absolute -right-32 top-1/4 h-[40rem] w-[40rem] rounded-full bg-accent/10 dark:bg-accent/5 blur-[120px] animate-float-slow-2" />
-        <div className="absolute left-1/3 bottom-10 h-[30rem] w-[30rem] rounded-full bg-accent/8 dark:bg-accent/4 blur-[120px] animate-float-slow-3" />
-        {/* Subtle Dot Grid */}
-        <div className="dot-grid absolute inset-0 opacity-40 dark:opacity-[0.18]" />
-        {/* Floating Gold Bubbles */}
-        <GoldBubbles />
-      </div>
-
+    <div className="relative min-h-screen bg-white dark:bg-[#0c0c0e] text-primary dark:text-paper transition-colors duration-300 overflow-x-hidden">
+      <GoldBubbles />
       <ScrollToTop />
       <ScrollProgressBar />
       <Navbar />
@@ -39,13 +28,13 @@ export default function Layout() {
           <Breadcrumb />
         </div>
       )}
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout" initial={false}>
         <motion.main
           key={location.pathname}
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -12 }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           className={isHome ? '' : 'pb-4'}
         >
           <Outlet />

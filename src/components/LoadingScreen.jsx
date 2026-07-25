@@ -149,10 +149,10 @@ export default function LoadingScreen({ show }) {
             >
               <GiComputerFan className="text-3xl" />
             </motion.div>
-            <span className="absolute -bottom-8 font-display text-sm font-bold text-base/70">{progress}%</span>
+            <span className="absolute -bottom-8 font-display text-sm font-bold text-paper/70">{progress}%</span>
           </motion.div>
 
-          <div className="relative flex overflow-hidden font-display text-3xl font-bold tracking-widest text-base sm:text-4xl">
+          <div className="relative flex overflow-hidden font-display text-3xl font-bold tracking-widest text-paper sm:text-4xl">
             {NAME.split('').map((char, i) => (
               <motion.span
                 key={i}
@@ -178,7 +178,7 @@ export default function LoadingScreen({ show }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9, duration: 0.5 }}
-            className="text-xs uppercase tracking-[0.3em] text-base/50"
+            className="text-xs uppercase tracking-[0.3em] text-paper/50"
           >
             Preserving Freshness, Naturally
           </motion.p>

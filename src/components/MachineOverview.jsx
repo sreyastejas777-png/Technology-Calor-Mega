@@ -6,7 +6,7 @@ import { hotspots } from '../data/hotspots';
 
 export default function MachineOverview() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-24 md:px-8">
+    <section className="mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-center px-5 py-14 md:px-8">
       <SectionHeading
         eyebrow="Inside the Machine"
         title="Machine Overview"

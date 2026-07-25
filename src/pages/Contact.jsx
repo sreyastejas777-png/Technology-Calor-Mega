@@ -38,8 +38,8 @@ export default function Contact() {
                 <FaMapMarkerAlt />
               </span>
               <div>
-                <p className="font-semibold text-primary dark:text-base">Address</p>
-                <p className="text-sm text-primary/65 dark:text-base/65">Industrial Estate, Kochi, Kerala, India</p>
+                <p className="font-semibold text-primary dark:text-paper">Address</p>
+                <p className="text-sm text-primary/65 dark:text-paper/65">Industrial Estate, Kochi, Kerala, India</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -47,8 +47,8 @@ export default function Contact() {
                 <FaPhoneAlt />
               </span>
               <div>
-                <p className="font-semibold text-primary dark:text-base">Phone</p>
-                <a href="tel:+919999999999" className="text-sm text-primary/65 dark:text-base/65 hover:text-accent">
+                <p className="font-semibold text-primary dark:text-paper">Phone</p>
+                <a href="tel:+919999999999" className="text-sm text-primary/65 dark:text-paper/65 hover:text-accent">
                   +91 99999 99999
                 </a>
               </div>
@@ -58,8 +58,8 @@ export default function Contact() {
                 <FaEnvelope />
               </span>
               <div>
-                <p className="font-semibold text-primary dark:text-base">Email</p>
-                <a href="mailto:info@calormega.com" className="text-sm text-primary/65 dark:text-base/65 hover:text-accent">
+                <p className="font-semibold text-primary dark:text-paper">Email</p>
+                <a href="mailto:info@calormega.com" className="text-sm text-primary/65 dark:text-paper/65 hover:text-accent">
                   info@calormega.com
                 </a>
               </div>
@@ -69,8 +69,8 @@ export default function Contact() {
                 <FaClock />
               </span>
               <div>
-                <p className="font-semibold text-primary dark:text-base">Working Hours</p>
-                <p className="text-sm text-primary/65 dark:text-base/65">Mon - Sat: 9:00 AM - 6:00 PM</p>
+                <p className="font-semibold text-primary dark:text-paper">Working Hours</p>
+                <p className="text-sm text-primary/65 dark:text-paper/65">Mon - Sat: 9:00 AM - 6:00 PM</p>
               </div>
             </div>
           </div>
@@ -93,8 +93,8 @@ export default function Contact() {
             {submitted ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <FaCheckCircle className="mb-4 text-5xl text-success" />
-                <p className="text-lg font-bold text-primary dark:text-base">Message Sent!</p>
-                <p className="mt-2 text-sm text-primary/65 dark:text-base/65">
+                <p className="text-lg font-bold text-primary dark:text-paper">Message Sent!</p>
+                <p className="mt-2 text-sm text-primary/65 dark:text-paper/65">
                   Thank you for reaching out. Our team will contact you shortly.
                 </p>
                 <Button variant="outline" className="mt-6" onClick={handleReset}>
@@ -110,7 +110,7 @@ export default function Contact() {
                     value={form.name}
                     onChange={handleChange}
                     placeholder="Full Name"
-                    className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-base outline-none focus:ring-2 focus:ring-accent"
+                    className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-paper outline-none focus:ring-2 focus:ring-accent"
                   />
                   <input
                     required
@@ -119,7 +119,7 @@ export default function Contact() {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="Email Address"
-                    className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-base outline-none focus:ring-2 focus:ring-accent"
+                    className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-paper outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2">
@@ -128,14 +128,14 @@ export default function Contact() {
                     value={form.phone}
                     onChange={handleChange}
                     placeholder="Phone Number"
-                    className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-base outline-none focus:ring-2 focus:ring-accent"
+                    className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-paper outline-none focus:ring-2 focus:ring-accent"
                   />
                   <input
                     name="business"
                     value={form.business}
                     onChange={handleChange}
                     placeholder="Business Name"
-                    className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-base outline-none focus:ring-2 focus:ring-accent"
+                    className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-paper outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
                 <textarea
@@ -145,7 +145,7 @@ export default function Contact() {
                   onChange={handleChange}
                   rows={5}
                   placeholder="Your Message"
-                  className="w-full rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-base outline-none focus:ring-2 focus:ring-accent"
+                  className="w-full rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-paper outline-none focus:ring-2 focus:ring-accent"
                 />
                 <div className="flex flex-wrap gap-4">
                   <Button type="submit" variant="primary">

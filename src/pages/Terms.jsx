@@ -4,7 +4,7 @@ export default function Terms() {
   return (
     <section className="mx-auto max-w-3xl px-5 py-10 md:px-8">
       <SectionHeading eyebrow="Legal" title="Terms of Service" center={false} />
-      <div className="space-y-6 text-primary/75 dark:text-base/75 leading-relaxed">
+      <div className="space-y-6 text-primary/75 dark:text-paper/75 leading-relaxed">
         <p>
           By accessing this website, you agree to use it only for lawful purposes related to evaluating and
           purchasing CALOR MEGA industrial food drying equipment.

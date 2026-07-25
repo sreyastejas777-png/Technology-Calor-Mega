@@ -4,7 +4,7 @@ export default function PrivacyPolicy() {
   return (
     <section className="mx-auto max-w-3xl px-5 py-10 md:px-8">
       <SectionHeading eyebrow="Legal" title="Privacy Policy" center={false} />
-      <div className="space-y-6 text-primary/75 dark:text-base/75 leading-relaxed">
+      <div className="space-y-6 text-primary/75 dark:text-paper/75 leading-relaxed">
         <p>
           CALOR MEGA respects your privacy. Information submitted through our contact, quote and newsletter forms —
           including your name, email, phone number and business details — is used solely to respond to your inquiry

@@ -30,7 +30,7 @@ export default function Navbar() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 md:px-8">
-        <Link to="/" className="font-display text-xl md:text-2xl font-bold tracking-wide text-primary dark:text-base">
+        <Link to="/" className="font-display text-xl md:text-2xl font-bold tracking-wide text-primary dark:text-paper">
           CALOR <span className="text-accent">MEGA</span>
         </Link>
 
@@ -40,7 +40,7 @@ export default function Navbar() {
             to="/"
             className={({ isActive }) =>
               `relative py-2 text-sm font-semibold transition-colors ${
-                isActive ? 'text-accent' : 'text-primary/80 dark:text-base/80 hover:text-accent'
+                isActive ? 'text-accent' : 'text-primary/80 dark:text-paper/80 hover:text-accent'
               }`
             }
           >
@@ -53,12 +53,12 @@ export default function Navbar() {
               to="/products"
               className={({ isActive }) =>
                 `flex items-center gap-1 py-2 text-sm font-semibold transition-colors ${
-                  isActive ? 'text-accent' : 'text-primary/80 dark:text-base/80 hover:text-accent'
+                  isActive ? 'text-accent' : 'text-primary/80 dark:text-paper/80 hover:text-accent'
                 }`
               }
             >
               Products
-              <ChevronDown className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180 text-primary/50 dark:text-base/50 group-hover:text-accent" />
+              <ChevronDown className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180 text-primary/50 dark:text-paper/50 group-hover:text-accent" />
             </NavLink>
 
             {/* Products Mega Menu Dropdown */}
@@ -69,25 +69,25 @@ export default function Navbar() {
                   <h4 className="text-[13px] font-black uppercase tracking-wider text-accent font-sans">Current Systems</h4>
                   <div className="flex flex-col gap-2">
                     <Link to="/products/mega" className="p-3 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 transition-all flex flex-col gap-1 border border-transparent hover:border-primary/10 dark:hover:border-white/10">
-                      <span className="text-[15px] font-bold text-primary dark:text-base flex items-center gap-2 font-sans">
+                      <span className="text-[15px] font-bold text-primary dark:text-paper flex items-center gap-2 font-sans">
                         <Cpu className="w-4 h-4 text-accent" />
                         Calor Mega
                       </span>
-                      <span className="text-[12px] text-primary/60 dark:text-base/60 font-sans">Walk-in 10x10ft insulated room. Capacity: 1200L / 24 hrs.</span>
+                      <span className="text-[12px] text-primary/60 dark:text-paper/60 font-sans">Walk-in 10x10ft insulated room. Capacity: 1200L / 24 hrs.</span>
                     </Link>
                     <Link to="/products/standard" className="p-3 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 transition-all flex flex-col gap-1 border border-transparent hover:border-primary/10 dark:hover:border-white/10">
-                      <span className="text-[15px] font-bold text-primary dark:text-base flex items-center gap-2 font-sans">
+                      <span className="text-[15px] font-bold text-primary dark:text-paper flex items-center gap-2 font-sans">
                         <Layers className="w-4 h-4 text-accent" />
                         Calor Standard
                       </span>
-                      <span className="text-[12px] text-primary/60 dark:text-base/60 font-sans">Commercial drying cabinet. Capacity: 350L / 24 hrs.</span>
+                      <span className="text-[12px] text-primary/60 dark:text-paper/60 font-sans">Commercial drying cabinet. Capacity: 350L / 24 hrs.</span>
                     </Link>
                     <Link to="/products/mini" className="p-3 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 transition-all flex flex-col gap-1 border border-transparent hover:border-primary/10 dark:hover:border-white/10">
-                      <span className="text-[15px] font-bold text-primary dark:text-base flex items-center gap-2 font-sans">
+                      <span className="text-[15px] font-bold text-primary dark:text-paper flex items-center gap-2 font-sans">
                         <Sparkles className="w-4 h-4 text-accent" />
                         Calor Mini
                       </span>
-                      <span className="text-[12px] text-primary/60 dark:text-base/60 font-sans">Precision desktop drier. Capacity: 80L / 24 hrs.</span>
+                      <span className="text-[12px] text-primary/60 dark:text-paper/60 font-sans">Precision desktop drier. Capacity: 80L / 24 hrs.</span>
                     </Link>
                   </div>
                 </div>
@@ -97,25 +97,25 @@ export default function Navbar() {
                   <h4 className="text-[13px] font-black uppercase tracking-wider text-accent font-sans">Upcoming Releases</h4>
                   <div className="flex flex-col gap-2">
                     <div className="p-3 rounded-xl bg-primary/[0.02] dark:bg-white/[0.02] flex flex-col gap-1 border border-primary/5 dark:border-white/5 select-none">
-                      <span className="text-[14px] font-bold text-primary/80 dark:text-base/80 flex items-center justify-between font-sans">
+                      <span className="text-[14px] font-bold text-primary/80 dark:text-paper/80 flex items-center justify-between font-sans">
                         Calor Hybrid
                         <span className="text-[9px] uppercase font-black tracking-widest px-1.5 py-0.5 rounded bg-accent/15 text-accent border border-accent/20">Solar Tech</span>
                       </span>
-                      <span className="text-[11px] text-primary/50 dark:text-base/50 font-sans">Eco-friendly solar heat pump. Coming Q4 2026.</span>
+                      <span className="text-[11px] text-primary/50 dark:text-paper/50 font-sans">Eco-friendly solar heat pump. Coming Q4 2026.</span>
                     </div>
                     <div className="p-3 rounded-xl bg-primary/[0.02] dark:bg-white/[0.02] flex flex-col gap-1 border border-primary/5 dark:border-white/5 select-none">
-                      <span className="text-[14px] font-bold text-primary/80 dark:text-base/80 flex items-center justify-between font-sans">
+                      <span className="text-[14px] font-bold text-primary/80 dark:text-paper/80 flex items-center justify-between font-sans">
                         Calor Ultra
                         <span className="text-[9px] uppercase font-black tracking-widest px-1.5 py-0.5 rounded bg-accent/15 text-accent border border-accent/20">Industrial</span>
                       </span>
-                      <span className="text-[11px] text-primary/50 dark:text-base/50 font-sans">Continuous belt dehydrator. Coming 2027.</span>
+                      <span className="text-[11px] text-primary/50 dark:text-paper/50 font-sans">Continuous belt dehydrator. Coming 2027.</span>
                     </div>
                     <div className="p-3 rounded-xl bg-primary/[0.02] dark:bg-white/[0.02] flex flex-col gap-1 border border-primary/5 dark:border-white/5 select-none">
-                      <span className="text-[14px] font-bold text-primary/80 dark:text-base/80 flex items-center justify-between font-sans">
+                      <span className="text-[14px] font-bold text-primary/80 dark:text-paper/80 flex items-center justify-between font-sans">
                         Calor Nano
                         <span className="text-[9px] uppercase font-black tracking-widest px-1.5 py-0.5 rounded bg-accent/15 text-accent border border-accent/20">Botanical</span>
                       </span>
-                      <span className="text-[11px] text-primary/50 dark:text-base/50 font-sans">Microscale precision dryer. Coming Q1 2027.</span>
+                      <span className="text-[11px] text-primary/50 dark:text-paper/50 font-sans">Microscale precision dryer. Coming Q1 2027.</span>
                     </div>
                   </div>
                 </div>
@@ -124,8 +124,8 @@ export default function Navbar() {
                 <div className="col-span-3 flex flex-col justify-between p-5 rounded-2xl bg-accent/5 border border-accent/10">
                   <div className="flex flex-col gap-1.5 text-left">
                     <span className="text-[11px] font-black uppercase tracking-wider text-accent font-sans">Need Custom Work?</span>
-                    <h5 className="text-[15px] font-black leading-tight text-primary dark:text-base font-sans">Cooperative Engineering</h5>
-                    <p className="text-[11px] text-primary/60 dark:text-base/60 leading-relaxed font-sans">We custom design volume chambers for agricultural cooperatives.</p>
+                    <h5 className="text-[15px] font-black leading-tight text-primary dark:text-paper font-sans">Cooperative Engineering</h5>
+                    <p className="text-[11px] text-primary/60 dark:text-paper/60 leading-relaxed font-sans">We custom design volume chambers for agricultural cooperatives.</p>
                   </div>
                   <a
                     href="https://wa.me/919999999999?text=Hello%20CalorTech%2C%20I%20would%20like%20to%20consult%20an%20engineer%20regarding%20custom%20cooperative%20installations."
@@ -146,7 +146,7 @@ export default function Navbar() {
             to="/applications"
             className={({ isActive }) =>
               `relative py-2 text-sm font-semibold transition-colors ${
-                isActive ? 'text-accent' : 'text-primary/80 dark:text-base/80 hover:text-accent'
+                isActive ? 'text-accent' : 'text-primary/80 dark:text-paper/80 hover:text-accent'
               }`
             }
           >
@@ -158,7 +158,7 @@ export default function Navbar() {
             to="/technology"
             className={({ isActive }) =>
               `relative py-2 text-sm font-semibold transition-colors ${
-                isActive ? 'text-accent' : 'text-primary/80 dark:text-base/80 hover:text-accent'
+                isActive ? 'text-accent' : 'text-primary/80 dark:text-paper/80 hover:text-accent'
               }`
             }
           >
@@ -170,7 +170,7 @@ export default function Navbar() {
             to="/gallery"
             className={({ isActive }) =>
               `relative py-2 text-sm font-semibold transition-colors ${
-                isActive ? 'text-accent' : 'text-primary/80 dark:text-base/80 hover:text-accent'
+                isActive ? 'text-accent' : 'text-primary/80 dark:text-paper/80 hover:text-accent'
               }`
             }
           >
@@ -183,12 +183,12 @@ export default function Navbar() {
               to="/about"
               className={({ isActive }) =>
                 `flex items-center gap-1 py-2 text-sm font-semibold transition-colors ${
-                  isActive ? 'text-accent' : 'text-primary/80 dark:text-base/80 hover:text-accent'
+                  isActive ? 'text-accent' : 'text-primary/80 dark:text-paper/80 hover:text-accent'
                 }`
               }
             >
               About Us
-              <ChevronDown className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180 text-primary/50 dark:text-base/50 group-hover:text-accent" />
+              <ChevronDown className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180 text-primary/50 dark:text-paper/50 group-hover:text-accent" />
             </NavLink>
 
             {/* About Us Dropdown */}
@@ -197,8 +197,8 @@ export default function Navbar() {
                 {/* Column 1: Core Mission Statement */}
                 <div className="col-span-5 flex flex-col gap-3">
                   <span className="text-[11px] font-black uppercase tracking-wider text-accent font-sans">Our Mission</span>
-                  <h4 className="text-[15px] font-black text-primary dark:text-base leading-tight font-sans">Preserving Yields, Eliminating Waste</h4>
-                  <p className="text-[12px] text-primary/60 dark:text-base/60 leading-relaxed font-sans">
+                  <h4 className="text-[15px] font-black text-primary dark:text-paper leading-tight font-sans">Preserving Yields, Eliminating Waste</h4>
+                  <p className="text-[12px] text-primary/60 dark:text-paper/60 leading-relaxed font-sans">
                     CalorTech Systems designs high-efficiency drying equipment that allows cooperatives and family farms to add long-term value to their harvests.
                   </p>
                   <Link to="/about" className="inline-flex items-center gap-1 text-[12px] font-black text-accent hover:underline mt-1 font-sans">
@@ -211,32 +211,32 @@ export default function Navbar() {
                   <span className="text-[11px] font-black uppercase tracking-wider text-accent font-sans">Explore Areas</span>
                   <div className="grid grid-cols-2 gap-3">
                     <Link to="/about" className="p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 flex flex-col gap-1 transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10">
-                      <span className="text-[13px] font-bold text-primary dark:text-base flex items-center gap-1.5 font-sans">
+                      <span className="text-[13px] font-bold text-primary dark:text-paper flex items-center gap-1.5 font-sans">
                         <Compass className="w-3.5 h-3.5 text-accent" />
                         Our Vision
                       </span>
-                      <span className="text-[10px] text-primary/50 dark:text-base/50 font-sans">Agro-tech goals.</span>
+                      <span className="text-[10px] text-primary/50 dark:text-paper/50 font-sans">Agro-tech goals.</span>
                     </Link>
                     <Link to="/about" className="p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 flex flex-col gap-1 transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10">
-                      <span className="text-[13px] font-bold text-primary dark:text-base flex items-center gap-1.5 font-sans">
+                      <span className="text-[13px] font-bold text-primary dark:text-paper flex items-center gap-1.5 font-sans">
                         <Info className="w-3.5 h-3.5 text-accent" />
                         Tech Info
                       </span>
-                      <span className="text-[10px] text-primary/50 dark:text-base/50 font-sans">Dehumidifier cycle.</span>
+                      <span className="text-[10px] text-primary/50 dark:text-paper/50 font-sans">Dehumidifier cycle.</span>
                     </Link>
                     <Link to="/about" className="p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 flex flex-col gap-1 transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10">
-                      <span className="text-[13px] font-bold text-primary dark:text-base flex items-center gap-1.5 font-sans">
+                      <span className="text-[13px] font-bold text-primary dark:text-paper flex items-center gap-1.5 font-sans">
                         <Calendar className="w-3.5 h-3.5 text-accent" />
                         Our Journey
                       </span>
-                      <span className="text-[10px] text-primary/50 dark:text-base/50 font-sans">Growth timeline.</span>
+                      <span className="text-[10px] text-primary/50 dark:text-paper/50 font-sans">Growth timeline.</span>
                     </Link>
                     <Link to="/about" className="p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 flex flex-col gap-1 transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10">
-                      <span className="text-[13px] font-bold text-primary dark:text-base flex items-center gap-1.5 font-sans">
+                      <span className="text-[13px] font-bold text-primary dark:text-paper flex items-center gap-1.5 font-sans">
                         <HelpCircle className="w-3.5 h-3.5 text-accent" />
                         Support
                       </span>
-                      <span className="text-[10px] text-primary/50 dark:text-base/50 font-sans">Certifications info.</span>
+                      <span className="text-[10px] text-primary/50 dark:text-paper/50 font-sans">Certifications info.</span>
                     </Link>
                   </div>
                 </div>
@@ -250,12 +250,12 @@ export default function Navbar() {
               to="/ai-assistant"
               className={({ isActive }) =>
                 `flex items-center gap-1 py-2 text-sm font-semibold transition-colors ${
-                  isActive ? 'text-accent' : 'text-primary/80 dark:text-base/80 hover:text-accent'
+                  isActive ? 'text-accent' : 'text-primary/80 dark:text-paper/80 hover:text-accent'
                 }`
               }
             >
               AI Assistant
-              <ChevronDown className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180 text-primary/50 dark:text-base/50 group-hover:text-accent" />
+              <ChevronDown className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180 text-primary/50 dark:text-paper/50 group-hover:text-accent" />
             </NavLink>
 
             {/* AI Assistant Dropdown */}
@@ -264,8 +264,8 @@ export default function Navbar() {
                 {/* Column 1: Core AI Pitch */}
                 <div className="col-span-5 flex flex-col gap-3">
                   <span className="text-[11px] font-black uppercase tracking-wider text-accent font-sans">Smart Tools</span>
-                  <h4 className="text-[15px] font-black text-primary dark:text-base leading-tight font-sans">Instant AI Guidance</h4>
-                  <p className="text-[12px] text-primary/60 dark:text-base/60 leading-relaxed font-sans">
+                  <h4 className="text-[15px] font-black text-primary dark:text-paper leading-tight font-sans">Instant AI Guidance</h4>
+                  <p className="text-[12px] text-primary/60 dark:text-paper/60 leading-relaxed font-sans">
                     Instantly resolve room dimensions, power requirements, crop recipes, and pricing.
                   </p>
                   <Link to="/ai-assistant" className="inline-flex items-center justify-center gap-1 h-9 px-4 bg-accent hover:bg-accent/90 active:scale-95 text-white text-[12px] font-bold rounded-lg transition-all shadow-btn w-fit mt-1 font-sans">
@@ -277,16 +277,16 @@ export default function Navbar() {
                 <div className="col-span-7 flex flex-col gap-2 border-l border-primary/10 dark:border-white/10 pl-6">
                   <span className="text-[11px] font-black uppercase tracking-wider text-accent font-sans">Quick Questions</span>
                   <div className="flex flex-col gap-1.5">
-                    <Link to="/ai-assistant" className="px-3 py-1.5 rounded-lg hover:bg-primary/5 dark:hover:bg-white/5 text-[13px] font-bold text-primary dark:text-base transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10 font-sans font-sans">
+                    <Link to="/ai-assistant" className="px-3 py-1.5 rounded-lg hover:bg-primary/5 dark:hover:bg-white/5 text-[13px] font-bold text-primary dark:text-paper transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10 font-sans font-sans">
                       ⚡ Sizing Mega & Mini rooms
                     </Link>
-                    <Link to="/ai-assistant" className="px-3 py-1.5 rounded-lg hover:bg-primary/5 dark:hover:bg-white/5 text-[13px] font-bold text-primary dark:text-base transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10 font-sans">
+                    <Link to="/ai-assistant" className="px-3 py-1.5 rounded-lg hover:bg-primary/5 dark:hover:bg-white/5 text-[13px] font-bold text-primary dark:text-paper transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10 font-sans">
                       🥭 Crop drying compatibility
                     </Link>
-                    <Link to="/ai-assistant" className="px-3 py-1.5 rounded-lg hover:bg-primary/5 dark:hover:bg-white/5 text-[13px] font-bold text-primary dark:text-base transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10 font-sans font-sans">
+                    <Link to="/ai-assistant" className="px-3 py-1.5 rounded-lg hover:bg-primary/5 dark:hover:bg-white/5 text-[13px] font-bold text-primary dark:text-paper transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10 font-sans font-sans">
                       🔋 Energy consumption rates
                     </Link>
-                    <Link to="/ai-assistant" className="px-3 py-1.5 rounded-lg hover:bg-primary/5 dark:hover:bg-white/5 text-[13px] font-bold text-primary dark:text-base transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10 font-sans">
+                    <Link to="/ai-assistant" className="px-3 py-1.5 rounded-lg hover:bg-primary/5 dark:hover:bg-white/5 text-[13px] font-bold text-primary dark:text-paper transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10 font-sans">
                       🛡️ Product warranty policies
                     </Link>
                   </div>
@@ -300,7 +300,7 @@ export default function Navbar() {
             to="/contact"
             className={({ isActive }) =>
               `relative py-2 text-sm font-semibold transition-colors ${
-                isActive ? 'text-accent' : 'text-primary/80 dark:text-base/80 hover:text-accent'
+                isActive ? 'text-accent' : 'text-primary/80 dark:text-paper/80 hover:text-accent'
               }`
             }
           >
@@ -312,28 +312,17 @@ export default function Navbar() {
           <button
             onClick={() => setSearchOpen(!searchOpen)}
             aria-label="Toggle search"
-            className="flex h-10 w-10 items-center justify-center rounded-full text-primary dark:text-base hover:text-accent transition-colors"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-primary dark:text-paper hover:text-accent transition-colors"
           >
             <FaSearch />
           </button>
-          {/* Premium Theme Toggle Button */}
+          {/* Minimal Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            className="p-1 focus:outline-none focus:ring-2 focus:ring-accent rounded-full transition-transform active:scale-95 ml-2"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-primary dark:text-paper hover:text-accent transition-colors"
             aria-label={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
           >
-            <div className="w-[62px] h-[32px] rounded-[30px] bg-toggle-bg shadow-skeuo-in relative border border-border transition-colors duration-300">
-              <div
-                className={`w-[26px] h-[26px] rounded-full bg-toggle-thumb shadow-skeuo-out absolute top-[2px] left-[3px] flex items-center justify-center transition-transform duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${theme === 'light' ? 'translate-x-[28px]' : 'translate-x-0'
-                  }`}
-              >
-                {theme === 'light' ? (
-                  <Sun className="w-4 h-4 text-orange-500 fill-orange-500" />
-                ) : (
-                  <Moon className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                )}
-              </div>
-            </div>
+            {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
           </button>
           <Button as={Link} to="/quote" variant="accent">
             Get Quote
@@ -341,7 +330,7 @@ export default function Navbar() {
         </div>
 
         <button
-          className="text-2xl text-primary dark:text-base lg:hidden"
+          className="text-2xl text-primary dark:text-paper lg:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -378,31 +367,20 @@ export default function Navbar() {
                   to={link.path}
                   onClick={() => setMobileOpen(false)}
                   className={({ isActive }) =>
-                    `text-sm font-semibold ${isActive ? 'text-accent' : 'text-primary dark:text-base'}`
+                    `text-sm font-semibold ${isActive ? 'text-accent' : 'text-primary dark:text-paper'}`
                   }
                 >
                   {link.label}
                 </NavLink>
               ))}
               <div className="flex items-center gap-3 pt-2">
-                {/* Premium Theme Toggle Button */}
+                {/* Minimal Theme Toggle Button */}
                 <button
                   onClick={toggleTheme}
-                  className="p-1 focus:outline-none focus:ring-2 focus:ring-accent rounded-full transition-transform active:scale-95"
+                  className="flex h-10 w-10 items-center justify-center rounded-full text-primary dark:text-paper hover:text-accent transition-colors"
                   aria-label="Toggle Theme"
                 >
-                  <div className="w-[62px] h-[32px] rounded-[30px] bg-toggle-bg shadow-skeuo-in relative border border-border transition-colors duration-300">
-                    <div
-                      className={`w-[26px] h-[26px] rounded-full bg-toggle-thumb shadow-skeuo-out absolute top-[2px] left-[3px] flex items-center justify-center transition-transform duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${theme === 'light' ? 'translate-x-[28px]' : 'translate-x-0'
-                        }`}
-                    >
-                      {theme === 'light' ? (
-                        <Sun className="w-4 h-4 text-orange-500 fill-orange-500" />
-                      ) : (
-                        <Moon className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                      )}
-                    </div>
-                  </div>
+                  {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
                 </button>
                 <Button as={Link} to="/quote" variant="accent" className="flex-1 text-center" onClick={() => setMobileOpen(false)}>
                   Get Quote

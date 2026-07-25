@@ -8,7 +8,7 @@ export default {
         primary: '#1C1C1C',
         secondary: '#B8850F',
         accent: '#E09F3E',
-        base: '#FFFFFF',
+        paper: '#FFFFFF',
         success: '#3FA34D',
         // Custom variables mapped to CSS variables for the imported pages
         bg: 'var(--bg-color)',

@@ -1,32 +1,19 @@
-import { FaCircle } from 'react-icons/fa';
-
-const items = [
-  'Jackfruit',
-  'Banana',
-  'Mango',
-  'Pineapple',
-  'Coconut',
-  'Vegetables',
-  'Herbs',
-  'Spices',
-  'Fruits',
-  'Medicinal Plants',
-];
+import { applications } from '../data/applications';
 
 export default function TrustMarquee() {
-  const track = [...items, ...items];
+  const track = [...applications, ...applications];
 
   return (
-    <div className="overflow-hidden border-y border-primary/10 dark:border-white/10 bg-white/60 dark:bg-white/[0.03] py-4 backdrop-blur">
+    <div className="overflow-hidden border-y border-primary/10 dark:border-white/10 bg-white dark:bg-white/[0.03] py-8">
       <div className="marquee-track">
         {track.map((item, i) => (
-          <span
+          <div
             key={i}
-            className="mx-6 flex items-center gap-3 whitespace-nowrap text-sm font-semibold uppercase tracking-[0.15em] text-primary/50 dark:text-base/50"
+            className="mx-5 flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-primary/5 dark:bg-white/5 text-4xl text-secondary dark:text-accent transition-colors sm:h-24 sm:w-24 sm:text-5xl"
+            title={item.title}
           >
-            {item}
-            <FaCircle className="text-[5px] text-accent" />
-          </span>
+            <item.icon />
+          </div>
         ))}
       </div>
     </div>

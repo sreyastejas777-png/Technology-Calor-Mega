@@ -19,7 +19,7 @@ export default function Breadcrumb({ current }) {
   });
 
   return (
-    <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-primary/60 dark:text-base/60">
+    <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-primary/60 dark:text-paper/60">
       <Link to="/" className="flex items-center gap-1 hover:text-accent transition-colors">
         <FaHome /> Home
       </Link>
@@ -27,7 +27,7 @@ export default function Breadcrumb({ current }) {
         <span key={crumb.path} className="flex items-center gap-2">
           <FaChevronRight className="text-xs opacity-50" />
           {crumb.isLast ? (
-            <span className="font-semibold text-primary dark:text-base">{crumb.label}</span>
+            <span className="font-semibold text-primary dark:text-paper">{crumb.label}</span>
           ) : (
             <Link to={crumb.path} className="hover:text-accent transition-colors">
               {crumb.label}

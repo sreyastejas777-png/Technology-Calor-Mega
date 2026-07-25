@@ -23,15 +23,15 @@ export default function Hotspot({ x, y, title, description }) {
             initial={{ opacity: 0, y: flipUp ? -10 : 10, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: flipUp ? -10 : 10, scale: 0.9 }}
-            className="glass absolute z-20 w-52 -translate-x-1/2 rounded-2xl p-4 text-left shadow-glass"
+            className="glass absolute z-20 w-52 max-w-[calc(100vw-2.5rem)] -translate-x-1/2 rounded-2xl p-4 text-left shadow-glass"
             style={
               flipUp
                 ? { bottom: '2.2rem', left: '50%' }
                 : { top: '2.2rem', left: '50%' }
             }
           >
-            <p className="mb-1 font-bold text-primary dark:text-base">{title}</p>
-            <p className="text-xs leading-relaxed text-primary/70 dark:text-base/70">{description}</p>
+            <p className="mb-1 font-bold text-primary dark:text-paper">{title}</p>
+            <p className="text-xs leading-relaxed text-primary/70 dark:text-paper/70">{description}</p>
           </motion.div>
         )}
       </AnimatePresence>

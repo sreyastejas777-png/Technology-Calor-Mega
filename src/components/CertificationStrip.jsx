@@ -23,7 +23,7 @@ export default function CertificationStrip() {
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/10 text-xl text-secondary dark:text-accent">
             <c.icon />
           </span>
-          <p className="text-xs font-semibold text-primary/70 dark:text-base/70">{c.label}</p>
+          <p className="text-xs font-semibold text-primary/70 dark:text-paper/70">{c.label}</p>
         </motion.div>
       ))}
     </div>

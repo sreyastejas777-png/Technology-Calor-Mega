@@ -12,7 +12,7 @@ export default function FloatingBadge({ icon: Icon, label, className = '', delay
       <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/20 text-accent">
         <Icon className="text-sm" />
       </span>
-      <span className="text-xs font-semibold text-primary dark:text-base whitespace-nowrap">{label}</span>
+      <span className="text-xs font-semibold text-primary dark:text-paper whitespace-nowrap">{label}</span>
     </motion.div>
   );
 }

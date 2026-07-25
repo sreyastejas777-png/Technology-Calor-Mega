@@ -25,8 +25,8 @@ export default function WorkingProcess() {
               <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-secondary to-accent text-xl text-white">
                 <step.icon />
               </div>
-              <p className="font-bold text-primary dark:text-base">{step.title}</p>
-              <p className="mt-1 text-xs text-primary/60 dark:text-base/60">{step.description}</p>
+              <p className="font-bold text-primary dark:text-paper">{step.title}</p>
+              <p className="mt-1 text-xs text-primary/60 dark:text-paper/60">{step.description}</p>
             </motion.div>
             {i < workingProcess.length - 1 && <FaArrowDown className="my-2 text-accent" />}
           </div>
@@ -48,8 +48,8 @@ export default function WorkingProcess() {
                 <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-secondary to-accent text-2xl text-white">
                   <step.icon />
                 </div>
-                <p className="font-bold text-primary dark:text-base">{step.title}</p>
-                <p className="mt-1 text-xs leading-relaxed text-primary/60 dark:text-base/60">{step.description}</p>
+                <p className="font-bold text-primary dark:text-paper">{step.title}</p>
+                <p className="mt-1 text-xs leading-relaxed text-primary/60 dark:text-paper/60">{step.description}</p>
               </motion.div>
               {i < workingProcess.length - 1 && <FaArrowRight className="shrink-0 text-xl text-accent" />}
             </div>

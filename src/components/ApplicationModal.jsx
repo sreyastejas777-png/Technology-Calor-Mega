@@ -44,31 +44,31 @@ export default function ApplicationModal({ application, onClose, onSelectRelated
               <span className="flex h-14 w-14 items-center justify-center rounded-full bg-success/15 text-2xl text-success">
                 <FaLeaf />
               </span>
-              <span className="text-sm font-semibold text-primary dark:text-base">Fresh</span>
+              <span className="text-sm font-semibold text-primary dark:text-paper">Fresh</span>
             </div>
             <FaArrowRight className="text-xl text-accent" />
             <div className="flex flex-col items-center gap-2">
               <span className="flex h-14 w-14 items-center justify-center rounded-full bg-accent/15 text-2xl text-accent">
                 <GiFallingLeaf />
               </span>
-              <span className="text-sm font-semibold text-primary dark:text-base">Dehydrated</span>
+              <span className="text-sm font-semibold text-primary dark:text-paper">Dehydrated</span>
             </div>
           </div>
 
           <div className="mt-8 grid grid-cols-2 gap-4">
             <div className="rounded-2xl bg-primary/5 dark:bg-white/5 p-5 text-center">
-              <p className="text-xs font-bold uppercase tracking-wider text-primary/50 dark:text-base/50">
+              <p className="text-xs font-bold uppercase tracking-wider text-primary/50 dark:text-paper/50">
                 Moisture Reduction
               </p>
-              <p className="mt-2 flex items-center justify-center gap-2 font-display text-xl font-bold text-primary dark:text-base">
+              <p className="mt-2 flex items-center justify-center gap-2 font-display text-xl font-bold text-primary dark:text-paper">
                 {app.moistureBefore}% <FaArrowRight className="text-sm text-accent" /> {app.moistureAfter}%
               </p>
             </div>
             <div className="rounded-2xl bg-primary/5 dark:bg-white/5 p-5 text-center">
-              <p className="text-xs font-bold uppercase tracking-wider text-primary/50 dark:text-base/50">
+              <p className="text-xs font-bold uppercase tracking-wider text-primary/50 dark:text-paper/50">
                 Shelf Life Extension
               </p>
-              <p className="mt-2 flex items-center justify-center gap-1.5 font-display text-lg font-bold text-primary dark:text-base">
+              <p className="mt-2 flex items-center justify-center gap-1.5 font-display text-lg font-bold text-primary dark:text-paper">
                 {app.shelfBefore} <FaArrowRight className="text-sm text-accent shrink-0" /> {app.shelfAfter}
               </p>
             </div>
@@ -76,20 +76,20 @@ export default function ApplicationModal({ application, onClose, onSelectRelated
 
           <div className="mt-8 grid grid-cols-2 gap-6">
             <div>
-              <p className="mb-3 font-bold text-primary dark:text-base">Possible Products</p>
+              <p className="mb-3 font-bold text-primary dark:text-paper">Possible Products</p>
               <ul className="space-y-2">
                 {app.products.map((p) => (
-                  <li key={p} className="flex items-center gap-2 text-sm text-primary/75 dark:text-base/75">
+                  <li key={p} className="flex items-center gap-2 text-sm text-primary/75 dark:text-paper/75">
                     <FaCheckCircle className="text-accent shrink-0" /> {p}
                   </li>
                 ))}
               </ul>
             </div>
             <div>
-              <p className="mb-3 font-bold text-primary dark:text-base">Business Benefits</p>
+              <p className="mb-3 font-bold text-primary dark:text-paper">Business Benefits</p>
               <ul className="space-y-2">
                 {app.benefits.map((b) => (
-                  <li key={b} className="flex items-center gap-2 text-sm text-primary/75 dark:text-base/75">
+                  <li key={b} className="flex items-center gap-2 text-sm text-primary/75 dark:text-paper/75">
                     <FaCheckCircle className="text-accent shrink-0" /> {b}
                   </li>
                 ))}
@@ -99,10 +99,10 @@ export default function ApplicationModal({ application, onClose, onSelectRelated
 
           {related && (
             <div className="mt-8 border-t border-primary/10 dark:border-white/10 pt-6">
-              <p className="mb-3 font-bold text-primary dark:text-base">Explore Related</p>
+              <p className="mb-3 font-bold text-primary dark:text-paper">Explore Related</p>
               <button
                 onClick={() => onSelectRelated(related)}
-                className="rounded-full bg-primary/5 dark:bg-white/5 px-4 py-2 text-sm font-semibold text-primary dark:text-base hover:bg-accent hover:text-primary transition-colors"
+                className="rounded-full bg-primary/5 dark:bg-white/5 px-4 py-2 text-sm font-semibold text-primary dark:text-paper hover:bg-accent hover:text-primary transition-colors"
               >
                 {related.title}
               </button>

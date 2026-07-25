@@ -4,8 +4,8 @@ const variants = {
     'absolute top-1/3 -right-32 h-[26rem] w-[26rem] rounded-full bg-accent/20 blur-3xl animate-float-delay',
   ],
   section: [
-    'absolute -top-16 left-1/4 h-72 w-72 rounded-full bg-accent/10 blur-3xl',
-    'absolute -bottom-16 right-1/4 h-72 w-72 rounded-full bg-accent/15 blur-3xl',
+    'absolute -top-16 left-1/4 h-72 w-72 rounded-full bg-accent/10 blur-3xl animate-float',
+    'absolute -bottom-16 right-1/4 h-72 w-72 rounded-full bg-accent/15 blur-3xl animate-float-delay',
   ],
   cta: [
     'absolute -top-10 -left-10 h-64 w-64 rounded-full bg-white/10 blur-3xl',

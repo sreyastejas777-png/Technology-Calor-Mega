@@ -20,8 +20,8 @@ export default function FeatureCard({ icon: Icon, title, description, index = 0 
       >
         <Icon />
       </motion.div>
-      <h3 className="mb-2 text-lg font-bold text-primary dark:text-base">{title}</h3>
-      <p className="text-sm leading-relaxed text-primary/65 dark:text-base/65">{description}</p>
+      <h3 className="mb-2 text-lg font-bold text-primary dark:text-paper">{title}</h3>
+      <p className="text-sm leading-relaxed text-primary/65 dark:text-paper/65">{description}</p>
     </motion.div>
   );
 }

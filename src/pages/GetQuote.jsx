@@ -42,8 +42,8 @@ export default function GetQuote() {
         {submitted ? (
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <FaCheckCircle className="mb-4 text-5xl text-success" />
-            <p className="text-lg font-bold text-primary dark:text-base">Quote Request Received!</p>
-            <p className="mt-2 max-w-sm text-sm text-primary/65 dark:text-base/65">
+            <p className="text-lg font-bold text-primary dark:text-paper">Quote Request Received!</p>
+            <p className="mt-2 max-w-sm text-sm text-primary/65 dark:text-paper/65">
               Our team will review your requirements and get back to you within one business day.
             </p>
             <Button variant="outline" className="mt-6" onClick={() => { setForm(initialForm); setSubmitted(false); }}>
@@ -59,7 +59,7 @@ export default function GetQuote() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Full Name"
-                className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-base outline-none focus:ring-2 focus:ring-accent"
+                className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-paper outline-none focus:ring-2 focus:ring-accent"
               />
               <input
                 required
@@ -67,7 +67,7 @@ export default function GetQuote() {
                 value={form.company}
                 onChange={handleChange}
                 placeholder="Company Name"
-                className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-base outline-none focus:ring-2 focus:ring-accent"
+                className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-paper outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
@@ -77,7 +77,7 @@ export default function GetQuote() {
                 value={form.phone}
                 onChange={handleChange}
                 placeholder="Phone Number"
-                className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-base outline-none focus:ring-2 focus:ring-accent"
+                className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-paper outline-none focus:ring-2 focus:ring-accent"
               />
               <input
                 required
@@ -86,7 +86,7 @@ export default function GetQuote() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="Email Address"
-                className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-base outline-none focus:ring-2 focus:ring-accent"
+                className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-paper outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
@@ -95,7 +95,7 @@ export default function GetQuote() {
                 name="capacity"
                 value={form.capacity}
                 onChange={handleChange}
-                className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-base outline-none focus:ring-2 focus:ring-accent"
+                className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-paper outline-none focus:ring-2 focus:ring-accent"
               >
                 <option value="">Machine Capacity Needed</option>
                 <option value="small">Small Scale (20 - 50 kg)</option>
@@ -109,7 +109,7 @@ export default function GetQuote() {
                 value={form.purpose}
                 onChange={handleChange}
                 placeholder="Purpose / Produce Type"
-                className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-base outline-none focus:ring-2 focus:ring-accent"
+                className="rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-paper outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
             <textarea
@@ -118,7 +118,7 @@ export default function GetQuote() {
               onChange={handleChange}
               rows={5}
               placeholder="Additional Details"
-              className="w-full rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-base outline-none focus:ring-2 focus:ring-accent"
+              className="w-full rounded-xl border border-primary/10 dark:border-white/10 bg-primary/[0.03] dark:bg-white/5 px-4 py-3 text-sm text-primary dark:text-paper outline-none focus:ring-2 focus:ring-accent"
             />
             <Button type="submit" variant="accent" icon={FaFileInvoiceDollar} className="w-full justify-center">
               Submit Quote Request

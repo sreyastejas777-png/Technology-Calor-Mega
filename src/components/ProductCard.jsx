@@ -26,12 +26,12 @@ export default function ProductCard({ product, index = 0 }) {
       </div>
       <div className="flex flex-1 flex-col p-6">
         <p className="mb-3 text-sm font-medium text-accent">{product.tagline}</p>
-        <p className="mb-4 flex-1 text-sm leading-relaxed text-primary/65 dark:text-base/65">
+        <p className="mb-4 flex-1 text-sm leading-relaxed text-primary/65 dark:text-paper/65">
           {product.shortDescription}
         </p>
         <ul className="mb-6 space-y-2">
           {product.features.slice(0, 3).map((f) => (
-            <li key={f} className="flex items-center gap-2 text-sm text-primary/75 dark:text-base/75">
+            <li key={f} className="flex items-center gap-2 text-sm text-primary/75 dark:text-paper/75">
               <FaCheckCircle className="text-success shrink-0" /> {f}
             </li>
           ))}

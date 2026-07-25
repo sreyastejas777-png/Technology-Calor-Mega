@@ -8,8 +8,8 @@ const variants = {
   accent:
     'bg-accent text-primary hover:brightness-95 shadow-soft',
   outline:
-    'border-2 border-primary text-primary dark:border-base dark:text-base bg-transparent hover:bg-primary hover:text-white dark:hover:bg-base dark:hover:text-primary',
-  glass: 'glass text-primary dark:text-base',
+    'border-2 border-primary text-primary dark:border-paper dark:text-paper bg-transparent hover:bg-primary hover:text-white dark:hover:bg-paper dark:hover:text-primary',
+  glass: 'glass text-primary dark:text-paper',
 };
 
 export default function Button({

@@ -17,11 +17,11 @@ export default function NotFound() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="mt-4 text-2xl font-bold text-primary dark:text-base"
+        className="mt-4 text-2xl font-bold text-primary dark:text-paper"
       >
         This Page Has Dried Up
       </motion.h1>
-      <p className="mt-4 text-primary/65 dark:text-base/65">
+      <p className="mt-4 text-primary/65 dark:text-paper/65">
         The page you're looking for doesn't exist or may have moved. Let's get you back on track.
       </p>
       <Button as={Link} to="/" variant="primary" icon={FaHome} className="mt-8">

@@ -2,13 +2,14 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './layout/Layout';
 import LoadingScreen from './components/LoadingScreen';
+import RouteFallback from './components/RouteFallback';
 import Home from './pages/Home';
+import Gallery from './pages/Gallery';
 
 const Products = lazy(() => import('./pages/Products'));
 const ProductDetail = lazy(() => import('./pages/ProductDetail'));
 const Applications = lazy(() => import('./pages/Applications'));
 const Technology = lazy(() => import('./pages/Technology'));
-const Gallery = lazy(() => import('./pages/Gallery'));
 const WorkingProcess = lazy(() => import('./pages/WorkingProcess'));
 const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
@@ -29,7 +30,7 @@ function App() {
   return (
     <>
       <LoadingScreen show={loading} />
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />

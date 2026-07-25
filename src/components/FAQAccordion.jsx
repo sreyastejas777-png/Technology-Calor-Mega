@@ -15,7 +15,7 @@ export default function FAQAccordion({ items }) {
               onClick={() => setOpenIndex(isOpen ? -1 : index)}
               className="flex w-full items-center justify-between gap-4 py-6 text-left"
             >
-              <span className="font-semibold text-primary dark:text-base">{item.question}</span>
+              <span className="font-semibold text-primary dark:text-paper">{item.question}</span>
               <motion.span animate={{ rotate: isOpen ? 180 : 0 }} className="text-accent shrink-0">
                 <FaChevronDown />
               </motion.span>
@@ -28,7 +28,7 @@ export default function FAQAccordion({ items }) {
                   exit={{ height: 0, opacity: 0 }}
                   className="overflow-hidden"
                 >
-                  <p className="pb-6 text-primary/70 dark:text-base/70 leading-relaxed">{item.answer}</p>
+                  <p className="pb-6 text-primary/70 dark:text-paper/70 leading-relaxed">{item.answer}</p>
                 </motion.div>
               )}
             </AnimatePresence>
