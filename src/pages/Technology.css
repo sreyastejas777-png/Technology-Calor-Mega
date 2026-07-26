@@ -3,6 +3,12 @@
    Integrated with Team Theme Variables (src/index.css)
    ================================================================ */
 
+html, body, #root, main, .relative.min-h-screen {
+  transform: none !important;
+  filter: none !important;
+  will-change: auto !important;
+}
+
 #webgl-canvas {
   position: fixed;
   top: 0;
@@ -11,7 +17,7 @@
   height: 100vh;
   z-index: 1;
   pointer-events: none;
-  opacity: 0;
+  opacity: 1;
 }
 
 #hero-scroll-container {
@@ -60,6 +66,13 @@
   padding: 0 24px;
   pointer-events: auto;
   will-change: transform, opacity;
+  transform: translateX(-25vw); /* Align with initial desktop GSAP position to prevent pop-in */
+}
+
+@media (max-width: 767px) {
+  .hero-center-block {
+    transform: translateY(-15vh); /* Align with initial mobile GSAP position to prevent pop-in */
+  }
 }
 
 .headline {

@@ -8,8 +8,7 @@ import ScrollToTop from '../components/ScrollToTop';
 import ScrollProgressBar from '../components/ScrollProgressBar';
 import BackToTop from '../components/BackToTop';
 import WhatsAppButton from '../components/WhatsAppButton';
-import AIAssistantButton from '../components/AIAssistantButton';
-import GoldBubbles from '../components/GoldBubbles';
+import AIChatbotPopup from '../components/AIChatbotPopup';
 
 export default function Layout() {
   const location = useLocation();
@@ -17,8 +16,7 @@ export default function Layout() {
   const isTechnology = location.pathname.startsWith('/technology');
 
   return (
-    <div className="relative min-h-screen bg-white dark:bg-[#0c0c0e] text-primary dark:text-paper transition-colors duration-300 overflow-x-hidden">
-      <GoldBubbles />
+    <div className="relative min-h-screen bg-bg dark:bg-[#0c0c0e] text-primary dark:text-paper transition-colors duration-300 overflow-x-hidden">
       <ScrollToTop />
       <ScrollProgressBar />
       <Navbar />
@@ -42,7 +40,7 @@ export default function Layout() {
       </AnimatePresence>
       <Footer />
       <WhatsAppButton />
-      <AIAssistantButton />
+      <AIChatbotPopup />
       <BackToTop />
     </div>
   );
