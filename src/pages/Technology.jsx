@@ -15,7 +15,55 @@ export default function Technology() {
   const [isIndicatorVisible, setIsIndicatorVisible] = useState(false);
   const [isReversing, setIsReversing] = useState(false);
 
+  // ─── ZOOM PREVENTION (Applies only to this page) ───
   useEffect(() => {
+    // 1. Block Ctrl + Mouse Wheel zoom
+    const handleWheel = (e) => {
+      if (e.ctrlKey) {
+        e.preventDefault();
+      }
+    };
+
+    // 2. Block Keyboard Zoom (Ctrl + '+', Ctrl + '-', Ctrl + '0')
+    const handleKeyDown = (e) => {
+      if (
+        e.ctrlKey &&
+        (e.key === '=' || e.key === '-' || e.key === '+' || e.key === '0')
+      ) {
+        e.preventDefault();
+      }
+    };
+
+    // Add event listeners (passive: false is required to use preventDefault on wheel)
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Disable automatic browser scroll restoration to prevent timing/calculation bugs
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    // Reset scroll position to top instantly to ensure correct GSAP calculations
+    window.scrollTo(0, 0);
+
+    // Clear parent <main> transform to allow correct fixed positioning and GSAP pinning
+    const mainElement = document.querySelector('main');
+    let originalTransform = '';
+    let originalFilter = '';
+    if (mainElement) {
+      originalTransform = mainElement.style.transform;
+      originalFilter = mainElement.style.filter;
+      mainElement.style.transform = 'none';
+      mainElement.style.filter = 'none';
+    }
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -271,122 +319,136 @@ export default function Technology() {
     // ─── GSAP MASTER SCROLLTIMELINE ───
     const isMobile = window.innerWidth < 768;
 
-    const mainTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top top',
-        end: '+=350%',
-        pin: true,
-        scrub: 1.2,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          setIsIndicatorVisible(self.progress > 0.03);
-          setIsScrolledToBottom(self.progress > 0.70);
-          
-          // Show restart option when reversing (scrolling up) in the middle of the animation
-          if (self.direction === -1 && self.progress > 0.1 && self.progress < 0.95) {
-            setIsReversing(true);
-          } else if (self.direction === 1 || self.progress <= 0.1 || self.progress >= 0.95) {
-            setIsReversing(false);
+    // Initialize GSAP & ScrollTrigger after route transition and layout have fully settled
+    let ctx;
+    const initTimer = setTimeout(() => {
+      ctx = gsap.context(() => {
+        const mainTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: '#hero-scroll-container',
+            start: 'top top',
+            end: '+=350%',
+            pin: true,
+            scrub: 1.2,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+              console.log("GSAP Progress:", self.progress);
+              setIsIndicatorVisible(self.progress > 0.03);
+              setIsScrolledToBottom(self.progress > 0.70);
+              
+              // Show restart option when reversing (scrolling up) in the middle of the animation
+              if (self.direction === -1 && self.progress > 0.1 && self.progress < 0.95) {
+                setIsReversing(true);
+              } else if (self.direction === 1 || self.progress <= 0.1 || self.progress >= 0.95) {
+                setIsReversing(false);
+              }
+            }
           }
+        });
+
+        // 1. Initial State Setup: Text permanently on left, 3D object permanently on right at load
+        if (isMobile) {
+          gsap.set('.hero-center-block', { y: '-15vh' });
+          gsap.set('#webgl-canvas', { opacity: 1, y: 0 });
+        } else {
+          gsap.set('.hero-center-block', { x: '-25vw' });
+          gsap.set('#webgl-canvas', { opacity: 1, x: '25vw' });
         }
-      }
-    });
+        
+        // -- HOLD STATE FOR FIRST SCROLL (Allowing user to read text before phase transitions start) --
+        mainTl.to({}, { duration: 0.5 }, 0.5); // dummy tween to pad timeline
 
-    // 1. Initial State Setup: Text permanently on left, 3D object permanently on right at load
-    if (isMobile) {
-      gsap.set(centerBlockRef.current, { y: '-15vh' });
-      gsap.set('#webgl-canvas', { opacity: 1, y: 0 });
-    } else {
-      gsap.set(centerBlockRef.current, { x: '-25vw' });
-      gsap.set('#webgl-canvas', { opacity: 1, x: '25vw' });
-    }
-    
-    // -- HOLD STATE FOR FIRST SCROLL (Allowing user to read text before phase transitions start) --
-    mainTl.to({}, { duration: 0.5 }, 0.5); // dummy tween to pad timeline
+        // Fade out text when scroll begins to approach phase 1
+        mainTl.to('.hero-center-block', { autoAlpha: 0, duration: 0.5 }, 1.5);
 
-    // Fade out text when scroll begins to approach phase 1
-    mainTl.to(centerBlockRef.current, { autoAlpha: 0, duration: 0.5 }, 1.5);
-
-    // Center the canvas smoothly as phase 1 begins
-    if (!isMobile) {
-      mainTl.to('#webgl-canvas', { x: '0vw', duration: 0.8, ease: 'power1.inOut' }, 2.2);
-    }
-
-    // 2. Phase 1: Structure & Controls (Model & Parts Callouts Appear TOGETHER)
-    // Model rotates to center
-    mainTl.to(machineGroup.rotation, { y: 0, duration: 0.8, ease: 'power1.inOut' }, 2.2);
-    
-    // Doors physically swing open
-    mainTl.to(leftDoorPivot.rotation, { y: -Math.PI * 0.55, duration: 1.0, ease: 'power2.inOut' }, 2.5);
-    mainTl.to(rightDoorPivot.rotation, { y: Math.PI * 0.55, duration: 1.0, ease: 'power2.inOut' }, 2.5);
-    
-    // Internal warm lights fade up as doors open
-    mainTl.to(internalLightL, { intensity: 1.5, duration: 1 }, 2.7);
-    mainTl.to(internalLightR, { intensity: 1.5, duration: 1 }, 2.7);
-
-    // 3. Phase 2: Thermal Engine & Airflow (Rotate to angled view, thermal pulse)
-    mainTl.to(machineGroup.rotation, { y: -0.45, duration: 1.2 }, 4.0);
-    mainTl.to(camera.position, { x: 0.5, z: 12.7, y: 1.7, duration: 1.2 }, 4.0);
-    mainTl.call(() => { machineGroup.userData.thermalActive = true; }, null, 4.5);
-
-    // 4. Phase 3: The Dynamic ROI Engine & Smart Control (Close doors, pull back, disable thermal)
-    mainTl.call(() => {
-      machineGroup.userData.thermalActive = false;
-      [...machineGroup.children].forEach(child => {
-        if (child.geometry && child.geometry.type === 'BoxGeometry' && child.material.transparent) {
-          child.material.color.setHex(0xbcbcbc);
-          child.material.emissiveIntensity = 0;
+        // Center the canvas smoothly as phase 1 begins
+        if (!isMobile) {
+          mainTl.to('#webgl-canvas', { x: '0vw', duration: 0.8, ease: 'power1.inOut' }, 2.2);
         }
+
+        // 2. Phase 1: Structure & Controls (Model & Parts Callouts Appear TOGETHER)
+        // Model rotates to center
+        mainTl.to(machineGroup.rotation, { y: 0, duration: 0.8, ease: 'power1.inOut' }, 2.2);
+        
+        // Doors physically swing open
+        mainTl.to(leftDoorPivot.rotation, { y: -Math.PI * 0.55, duration: 1.0, ease: 'power2.inOut' }, 2.5);
+        mainTl.to(rightDoorPivot.rotation, { y: Math.PI * 0.55, duration: 1.0, ease: 'power2.inOut' }, 2.5);
+        
+        // Internal warm lights fade up as doors open
+        mainTl.to(internalLightL, { intensity: 1.5, duration: 1 }, 2.7);
+        mainTl.to(internalLightR, { intensity: 1.5, duration: 1 }, 2.7);
+
+        // 3. Phase 2: Thermal Engine & Airflow (Rotate to angled view, thermal pulse)
+        mainTl.to(machineGroup.rotation, { y: -0.45, duration: 1.2 }, 4.0);
+        mainTl.to(camera.position, { x: 0.5, z: 12.7, y: 1.7, duration: 1.2 }, 4.0);
+        mainTl.call(() => { machineGroup.userData.thermalActive = true; }, null, 4.5);
+
+        // 4. Phase 3: The Dynamic ROI Engine & Smart Control (Close doors, pull back, disable thermal)
+        mainTl.call(() => {
+          machineGroup.userData.thermalActive = false;
+          [...machineGroup.children].forEach(child => {
+            if (child.geometry && child.geometry.type === 'BoxGeometry' && child.material.transparent) {
+              child.material.color.setHex(0xbcbcbc);
+              child.material.emissiveIntensity = 0;
+            }
+          });
+        }, null, 7.0);
+        mainTl.to(leftDoorPivot.rotation, { y: 0, duration: 1, ease: 'power2.inOut' }, 7.0);
+        mainTl.to(rightDoorPivot.rotation, { y: 0, duration: 1, ease: 'power2.inOut' }, 7.0);
+        mainTl.to(internalLightL, { intensity: 0, duration: 0.5 }, 7.0);
+        mainTl.to(internalLightR, { intensity: 0, duration: 0.5 }, 7.0);
+        mainTl.to(machineGroup.rotation, { y: 0, duration: 1.0 }, 7.0);
+        mainTl.to(camera.position, { x: 0, z: 13.5, y: 1.5, duration: 1.0 }, 7.0);
+
+        // NEW UI UX Transition: Tie the canvas, final UI boxes, and hero text fade out strictly to the datasheet entering the viewport.
+        gsap.fromTo(['#webgl-canvas', '.phase-3-group', '.fixed-hero-wrapper'],
+          { opacity: 1, y: '0vh' },
+          {
+            opacity: 0,
+            y: '-15vh',
+            scrollTrigger: {
+              trigger: '.datasheet-section',
+              start: 'top bottom',
+              end: 'top center',
+              scrub: true,
+              immediateRender: false
+            }
+          }
+        );
+
+        // ─── UI UX Boxes (Phase Groups) Synchronized with 3D Timeline ───
+        // Phase 1 (Delay slightly so it appears as doors are opening)
+        mainTl.fromTo('.phase-1-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 3.0);
+        mainTl.to('.phase-1-group', { autoAlpha: 0, duration: 0.3 }, 4.0);
+
+        // Phase 2
+        mainTl.fromTo('.phase-2-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 4.3);
+        mainTl.to('.phase-2-group', { autoAlpha: 0, duration: 0.3 }, 6.8);
+
+        // Phase 3 (Combined final phase)
+        mainTl.fromTo('.phase-3-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 7.1);
+
+        // Hold Phase 3 on screen slightly longer before unpinning
+        mainTl.to({}, { duration: 1.5 });
       });
-    }, null, 7.0);
-    mainTl.to(leftDoorPivot.rotation, { y: 0, duration: 1, ease: 'power2.inOut' }, 7.0);
-    mainTl.to(rightDoorPivot.rotation, { y: 0, duration: 1, ease: 'power2.inOut' }, 7.0);
-    mainTl.to(internalLightL, { intensity: 0, duration: 0.5 }, 7.0);
-    mainTl.to(internalLightR, { intensity: 0, duration: 0.5 }, 7.0);
-    mainTl.to(machineGroup.rotation, { y: 0, duration: 1.0 }, 7.0);
-    mainTl.to(camera.position, { x: 0, z: 13.5, y: 1.5, duration: 1.0 }, 7.0);
 
-    // 6. Phase 5: The Conversion Horizon (Fade out canvas, prepare for next section)
-    // mainTl.to('#webgl-canvas', { opacity: 0, y: '-25vh', duration: 1 }, 12.0); // REMOVED to prevent blank scroll gap
-
-    // NEW UI UX Transition: Tie the canvas and final UI boxes fade out strictly to the datasheet entering the viewport.
-    gsap.fromTo(['#webgl-canvas', '.phase-3-group'],
-      { opacity: 1, y: '0vh' },
-      {
-        opacity: 0,
-        y: '-15vh',
-        scrollTrigger: {
-          trigger: '.datasheet-section',
-          start: 'top bottom',
-          end: 'top center',
-          scrub: true,
-          immediateRender: false
-        }
-      }
-    );
-
-    // ─── UI UX Boxes (Phase Groups) Synchronized with 3D Timeline ───
-    // Phase 1 (Delay slightly so it appears as doors are opening)
-    mainTl.fromTo('.phase-1-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 3.0);
-    mainTl.to('.phase-1-group', { autoAlpha: 0, duration: 0.3 }, 4.0);
-
-    // Phase 2
-    mainTl.fromTo('.phase-2-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 4.3);
-    mainTl.to('.phase-2-group', { autoAlpha: 0, duration: 0.3 }, 6.8);
-
-    // Phase 3 (Combined final phase)
-    // NOTE: Fade OUT is now handled by the datasheet ScrollTrigger above, ensuring zero lag on reverse scroll
-    mainTl.fromTo('.phase-3-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 7.1);
-
-    // Hold Phase 3 on screen slightly longer before unpinning
-    mainTl.to({}, { duration: 1.5 });
+      // Force a manual refresh to calculate coordinates correctly
+      ScrollTrigger.refresh();
+    }, 800);
 
     return () => {
+      if (mainElement) {
+        mainElement.style.transform = originalTransform;
+        mainElement.style.filter = originalFilter;
+      }
+      if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'auto';
+      }
+      clearTimeout(initTimer);
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(reqId);
       renderer.dispose();
-      ScrollTrigger.getAll().forEach(t => t.kill());
+      if (ctx) ctx.revert();
     };
   }, []);
 
