@@ -3,14 +3,10 @@
    Integrated with Team Theme Variables (src/index.css)
    ================================================================ */
 
-html, body, #root, main, .relative.min-h-screen {
-  transform: none !important;
-  filter: none !important;
-  will-change: auto !important;
-}
+
 
 #webgl-canvas {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
@@ -48,7 +44,7 @@ html, body, #root, main, .relative.min-h-screen {
 }
 
 .fixed-hero-wrapper {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -223,7 +219,7 @@ html, body, #root, main, .relative.min-h-screen {
 
 /* Fixed Overlay Cards Container */
 #fixed-ui-overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100vw;

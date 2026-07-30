@@ -60,8 +60,6 @@ export default function Technology() {
     if (mainElement) {
       originalTransform = mainElement.style.transform;
       originalFilter = mainElement.style.filter;
-      mainElement.style.transform = 'none';
-      mainElement.style.filter = 'none';
     }
 
     const canvas = canvasRef.current;
@@ -322,6 +320,10 @@ export default function Technology() {
     // Initialize GSAP & ScrollTrigger after route transition and layout have fully settled
     let ctx;
     const initTimer = setTimeout(() => {
+      if (mainElement) {
+        mainElement.style.transform = 'none';
+        mainElement.style.filter = 'none';
+      }
       ctx = gsap.context(() => {
         const mainTl = gsap.timeline({
           scrollTrigger: {
@@ -400,22 +402,6 @@ export default function Technology() {
         mainTl.to(machineGroup.rotation, { y: 0, duration: 1.0 }, 7.0);
         mainTl.to(camera.position, { x: 0, z: 13.5, y: 1.5, duration: 1.0 }, 7.0);
 
-        // NEW UI UX Transition: Tie the canvas, final UI boxes, and hero text fade out strictly to the datasheet entering the viewport.
-        gsap.fromTo(['#webgl-canvas', '.phase-3-group', '.fixed-hero-wrapper'],
-          { opacity: 1, y: '0vh' },
-          {
-            opacity: 0,
-            y: '-15vh',
-            scrollTrigger: {
-              trigger: '.datasheet-section',
-              start: 'top bottom',
-              end: 'top center',
-              scrub: true,
-              immediateRender: false
-            }
-          }
-        );
-
         // ─── UI UX Boxes (Phase Groups) Synchronized with 3D Timeline ───
         // Phase 1 (Delay slightly so it appears as doors are opening)
         mainTl.fromTo('.phase-1-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 3.0);
@@ -467,6 +453,8 @@ export default function Technology() {
 
   return (
     <div className="relative w-full bg-bg text-primary-text transition-colors duration-300">
+      {/* Hero Section Container (Pinned) */}
+      <div id="hero-scroll-container" ref={containerRef} className="hero">
       {/* WebGL 3D Canvas */}
       <canvas id="webgl-canvas" ref={canvasRef} style={{ opacity: 1, transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(0)' : 'translateX(25vw)' }} />
 
@@ -506,37 +494,6 @@ export default function Technology() {
           </div>
         </div>
       </div>
-
-      {/* Hero Section Container (Pinned) */}
-      <div id="hero-scroll-container" ref={containerRef} className="hero">
-      </div>
-
-      {/* Explore 3D Blueprint Button */}
-      <button
-        onClick={handleScrollToggle}
-        className={`smart-scroll-toggle ${isIndicatorVisible && !isScrolledToBottom ? 'visible' : ''}`}
-        aria-label="Scroll to explore 3D Blueprint"
-      >
-        <span>Explore 3D Blueprint</span>
-        <div className="smart-scroll-arrow-icon">
-          <FaChevronDown />
-        </div>
-      </button>
-
-      {/* Restart Phase Transition Button (Visible on reverse scroll) */}
-      <button
-        onClick={() => {
-          if (containerRef.current) {
-            containerRef.current.scrollIntoView({ behavior: 'smooth' });
-            setIsReversing(false);
-          }
-        }}
-        className={`restart-phase-btn ${isReversing ? 'visible' : ''}`}
-        aria-label="Restart 3D Phase Transition"
-      >
-        <FaUndo />
-        <span>Restart Phases</span>
-      </button>
 
       {/* Fixed UI Overlays grouped by phase with golden connecting pointer lines */}
       <div id="fixed-ui-overlay">
@@ -616,6 +573,34 @@ export default function Technology() {
           </div>
         </div>
       </div>
+      </div>
+
+      {/* Explore 3D Blueprint Button */}
+      <button
+        onClick={handleScrollToggle}
+        className={`smart-scroll-toggle ${isIndicatorVisible && !isScrolledToBottom ? 'visible' : ''}`}
+        aria-label="Scroll to explore 3D Blueprint"
+      >
+        <span>Explore 3D Blueprint</span>
+        <div className="smart-scroll-arrow-icon">
+          <FaChevronDown />
+        </div>
+      </button>
+
+      {/* Restart Phase Transition Button (Visible on reverse scroll) */}
+      <button
+        onClick={() => {
+          if (containerRef.current) {
+            containerRef.current.scrollIntoView({ behavior: 'smooth' });
+            setIsReversing(false);
+          }
+        }}
+        className={`restart-phase-btn ${isReversing ? 'visible' : ''}`}
+        aria-label="Restart 3D Phase Transition"
+      >
+        <FaUndo />
+        <span>Restart Phases</span>
+      </button>
 
       {/* Technical Data Sheet Section */}
       <section id="datasheet" className="datasheet-section">

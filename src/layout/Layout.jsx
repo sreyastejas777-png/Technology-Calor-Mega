@@ -1,5 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { Suspense } from 'react';
+import RouteFallback from '../components/RouteFallback';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import BackButton from '../components/BackButton';
@@ -16,7 +18,7 @@ export default function Layout() {
   const isTechnology = location.pathname.startsWith('/technology');
 
   return (
-    <div className="relative min-h-screen bg-bg dark:bg-[#0c0c0e] text-primary dark:text-paper transition-colors duration-300 overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col bg-bg dark:bg-[#0c0c0e] text-primary dark:text-paper transition-colors duration-300 overflow-x-hidden">
       <ScrollToTop />
       <ScrollProgressBar />
       <Navbar />
@@ -26,18 +28,17 @@ export default function Layout() {
           <Breadcrumb />
         </div>
       )}
-      <AnimatePresence mode="popLayout" initial={false}>
-        <motion.main
-          key={location.pathname}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className={isHome ? '' : 'pb-4'}
-        >
+      <motion.main
+        key={location.pathname}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className={`flex-1 flex flex-col ${isHome ? '' : 'pb-4'}`}
+      >
+        <Suspense fallback={<RouteFallback />}>
           <Outlet />
-        </motion.main>
-      </AnimatePresence>
+        </Suspense>
+      </motion.main>
       <Footer />
       <WhatsAppButton />
       <AIChatbotPopup />

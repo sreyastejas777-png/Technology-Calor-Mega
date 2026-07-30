@@ -172,7 +172,7 @@ export default function AIChatbotPopup() {
   )}`;
 
   return (
-    <div className="fixed bottom-[88px] right-6 z-[100] flex flex-col items-end">
+    <div className="fixed bottom-[88px] right-6 z-[60] flex flex-col items-end">
       
       {/* Chat Window Popup Screen */}
       <AnimatePresence>

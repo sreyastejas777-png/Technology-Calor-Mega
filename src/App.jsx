@@ -5,14 +5,14 @@ import LoadingScreen from './components/LoadingScreen';
 import RouteFallback from './components/RouteFallback';
 import Home from './pages/Home';
 import Gallery from './pages/Gallery';
+import About from './pages/About';
+import Products from './pages/Products';
+import Contact from './pages/Contact';
+import WorkingProcess from './pages/WorkingProcess';
 
-const Products = lazy(() => import('./pages/Products'));
 const ProductDetail = lazy(() => import('./pages/ProductDetail'));
 const Applications = lazy(() => import('./pages/Applications'));
 const Technology = lazy(() => import('./pages/Technology'));
-const WorkingProcess = lazy(() => import('./pages/WorkingProcess'));
-const About = lazy(() => import('./pages/About'));
-const Contact = lazy(() => import('./pages/Contact'));
 const GetQuote = lazy(() => import('./pages/GetQuote'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const Terms = lazy(() => import('./pages/Terms'));

@@ -1,21 +1,25 @@
 import { motion } from 'framer-motion';
 
-export default function ApplicationCard({ application, index = 0, onSelect }) {
+export default function ApplicationCard({ application, index = 0, onSelect, disableEntranceAnimation = false, layoutId }) {
   const { icon: Icon, title, description } = application;
+  const finalLayoutId = layoutId || `app-card-${title}`;
 
   return (
-    <motion.button
-      type="button"
+    <motion.div
+      layoutId={finalLayoutId}
+      role="button"
+      tabIndex={0}
       onClick={() => onSelect(application)}
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
+      initial={disableEntranceAnimation ? false : { opacity: 0, scale: 0.9 }}
+      whileInView={disableEntranceAnimation ? undefined : { opacity: 1, scale: 1 }}
+      viewport={disableEntranceAnimation ? undefined : { once: true }}
       transition={{
         default: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: index * 0.04 },
-        hover: { type: 'spring', stiffness: 300, damping: 22 }
+        hover: { type: 'spring', stiffness: 300, damping: 22 },
+        layout: { duration: 0.35, ease: 'easeInOut' }
       }}
       whileHover={{ y: -8, scale: 1.03 }}
-      className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-secondary p-6 text-center text-white shadow-soft transition-shadow duration-300 hover:shadow-[0_20px_45px_-15px_rgba(224,159,62,0.45)]"
+      className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-secondary p-6 text-center text-white shadow-soft transition-shadow duration-300 hover:shadow-[0_20px_45px_-15px_rgba(224,159,62,0.45)] cursor-pointer"
     >
       <motion.div
         whileHover={{ rotate: 360 }}
@@ -26,6 +30,6 @@ export default function ApplicationCard({ application, index = 0, onSelect }) {
       </motion.div>
       <h3 className="mb-1 font-semibold">{title}</h3>
       <p className="text-xs leading-relaxed text-white/70">{description}</p>
-    </motion.button>
+    </motion.div>
   );
 }

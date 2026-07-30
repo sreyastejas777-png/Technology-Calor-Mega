@@ -59,7 +59,6 @@ export default function Footer() {
           <p className="mb-4 font-semibold text-accent">Company</p>
           <ul className="space-y-3 text-sm text-white/70">
             <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
-            <li><Link to="/process" className="hover:text-white transition-colors">Working Process</Link></li>
             <li><Link to="/quote" className="hover:text-white transition-colors">Get Quote</Link></li>
             <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
             <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
