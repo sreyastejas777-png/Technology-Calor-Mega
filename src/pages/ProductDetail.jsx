@@ -141,7 +141,7 @@ export default function ProductDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Gallery Column */}
           <div className="lg:col-span-5 flex flex-col gap-4">
-            <div className="p-8 bg-surface border border-border rounded-2xl shadow-skeuo-out flex items-center justify-center">
+            <div className="p-5 md:p-6 bg-surface border border-border rounded-2xl shadow-skeuo-out flex items-center justify-center">
               <img
                 src={product.img}
                 alt={product.name}
@@ -224,7 +224,7 @@ export default function ProductDetail() {
           </div>
 
           {/* Tabs Content */}
-          <div className="p-8 bg-surface border-b border-l border-r border-border rounded-b-2xl shadow-skeuo-out transition-colors duration-300">
+          <div className="p-5 md:p-6 bg-surface border-b border-l border-r border-border rounded-b-2xl shadow-skeuo-out transition-colors duration-300">
             {activeTab === 'specs' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 {/* Tech specifications table */}
@@ -315,7 +315,7 @@ export default function ProductDetail() {
         </div>
 
         {/* 3. CTA CARD TO ANOTHER PRODUCT */}
-        <div className="mt-8 p-8 md:p-12 rounded-3xl bg-brand-light border border-border flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left transition-colors duration-300">
+        <div className="mt-8 p-5 md:p-6 rounded-3xl bg-brand-light border border-border flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left transition-colors duration-300">
           <div>
             <h3 className="text-2xl font-extrabold font-outfit text-primary-text">Want to compare other capacities?</h3>
             <p className="text-[18px] text-secondary-text mt-1">Review the full CalorTech line from compact desktop units to commercial systems.</p>

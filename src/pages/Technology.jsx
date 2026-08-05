@@ -337,7 +337,7 @@ export default function Technology() {
               console.log("GSAP Progress:", self.progress);
               setIsIndicatorVisible(self.progress > 0.03);
               setIsScrolledToBottom(self.progress > 0.70);
-              
+
               // Show restart option when reversing (scrolling up) in the middle of the animation
               if (self.direction === -1 && self.progress > 0.1 && self.progress < 0.95) {
                 setIsReversing(true);
@@ -356,7 +356,7 @@ export default function Technology() {
           gsap.set('.hero-center-block', { x: '-25vw' });
           gsap.set('#webgl-canvas', { opacity: 1, x: '25vw' });
         }
-        
+
         // -- HOLD STATE FOR FIRST SCROLL (Allowing user to read text before phase transitions start) --
         mainTl.to({}, { duration: 0.5 }, 0.5); // dummy tween to pad timeline
 
@@ -371,11 +371,11 @@ export default function Technology() {
         // 2. Phase 1: Structure & Controls (Model & Parts Callouts Appear TOGETHER)
         // Model rotates to center
         mainTl.to(machineGroup.rotation, { y: 0, duration: 0.8, ease: 'power1.inOut' }, 2.2);
-        
+
         // Doors physically swing open
         mainTl.to(leftDoorPivot.rotation, { y: -Math.PI * 0.55, duration: 1.0, ease: 'power2.inOut' }, 2.5);
         mainTl.to(rightDoorPivot.rotation, { y: Math.PI * 0.55, duration: 1.0, ease: 'power2.inOut' }, 2.5);
-        
+
         // Internal warm lights fade up as doors open
         mainTl.to(internalLightL, { intensity: 1.5, duration: 1 }, 2.7);
         mainTl.to(internalLightR, { intensity: 1.5, duration: 1 }, 2.7);
@@ -455,124 +455,121 @@ export default function Technology() {
     <div className="relative w-full bg-bg text-primary-text transition-colors duration-300">
       {/* Hero Section Container (Pinned) */}
       <div id="hero-scroll-container" ref={containerRef} className="hero">
-      {/* WebGL 3D Canvas */}
-      <canvas id="webgl-canvas" ref={canvasRef} style={{ opacity: 1, transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(0)' : 'translateX(25vw)' }} />
+        {/* WebGL 3D Canvas */}
+        <canvas id="webgl-canvas" ref={canvasRef} style={{ opacity: 1, transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(0)' : 'translateX(25vw)' }} />
 
-      {/* Fixed Hero Wrapper (Moved outside pin container to prevent flicker) */}
-      <div className="fixed-hero-wrapper">
-        <div className="hero-center-block" ref={centerBlockRef} style={{ transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(-15vh)' : 'translateX(-25vw)' }}>
-          <h1 className="headline">
-            Preserve Today.<br />
-            <span>Profit Tomorrow.</span>
-          </h1>
-          <p>
-            CALOR MEGA Industrial Dehydration Systems deliver premium drying performance with maximum product quality and extended shelf life.
-          </p>
+        {/* Fixed Hero Wrapper (Moved outside pin container to prevent flicker) */}
+        <div className="fixed-hero-wrapper">
+          <div className="hero-center-block" ref={centerBlockRef} style={{ transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(-15vh)' : 'translateX(-25vw)' }}>
+            <h1 className="headline">Preserve Today.<br /><span>Profit Tomorrow.</span></h1>
+            <p>
+              CALOR MEGA Industrial Dehydration Systems deliver premium drying performance with maximum product quality and extended shelf life.
+            </p>
 
-          <div className="hero-stats-mini">
-            <span className="split-stat"><strong>5%</strong> Final Moisture</span>
-            <span className="split-stat"><strong>12+ Months</strong> Shelf Life</span>
-            <span className="split-stat"><strong>Food Grade</strong> SS304 Steel</span>
-            <span className="split-stat"><strong>Industrial</strong> Capacity</span>
-          </div>
+            <div className="hero-stats-mini">
+              <span className="split-stat"><strong>5%</strong> Final Moisture</span>
+              <span className="split-stat"><strong>12+ Months</strong> Shelf Life</span>
+              <span className="split-stat"><strong>Food Grade</strong> SS304 Steel</span>
+              <span className="split-stat"><strong>Industrial</strong> Capacity</span>
+            </div>
 
-          <div className="hero-cta">
-            <a
-              href="https://wa.me/1234567890?text=Hello%2C%20I%20am%20interested%20in%20CALOR%20MEGA.%20Can%20I%20get%20more%20details%3F"
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-semibold text-white shadow-soft transition-transform hover:scale-105"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FaWhatsapp className="text-xl" /> Get a Custom Quote
-            </a>
-            <button
-              onClick={handleScrollToggle}
-              className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface/60 backdrop-blur-md px-6 py-3 font-semibold text-primary-text shadow-soft transition-transform hover:scale-105"
-            >
-              View Specs <FaArrowRight />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Fixed UI Overlays grouped by phase with golden connecting pointer lines */}
-      <div id="fixed-ui-overlay">
-        {/* Phase 1 Group - Appears TOGETHER with 3D model appearance */}
-        <div className="phase-group phase-1-group">
-          <div className="card-column left">
-            <div className="ui-card card-shell line-right">
-              <h4>SS 304 Stainless Steel Shell</h4>
-              <p>10x10 foot premium food-grade construction. Zero contamination.</p>
-            </div>
-            <div className="ui-card card-foam line-right">
-              <h4>Thermal Insulation</h4>
-              <p>High-density foam retains 99% of internal heat for maximum energy efficiency.</p>
-            </div>
-            <div className="ui-card card-panel line-right">
-              <h4>Siemens PLC Control</h4>
-              <p>Precision PID temperature and humidity control via 10" HMI interface.</p>
-            </div>
-          </div>
-          <div className="card-column right">
-            <div className="ui-card card-trays line-left">
-              <h4>Drying Trays and Coils</h4>
-              <p>Precision electric heating elements and uniform cross-flow blower fans.</p>
-            </div>
-            <div className="ui-card card-fans line-left">
-              <h4>Dual Centrifugal Fans</h4>
-              <p>High-velocity uniform cross-flow aerodynamics for consistent drying.</p>
+            <div className="hero-cta">
+              <a
+                href="https://wa.me/1234567890?text=Hello%2C%20I%20am%20interested%20in%20CALOR%20MEGA.%20Can%20I%20get%20more%20details%3F"
+                className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-semibold text-white shadow-soft transition-transform hover:scale-105"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaWhatsapp className="text-xl" /> Get a Custom Quote
+              </a>
+              <button
+                onClick={handleScrollToggle}
+                className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface/60 backdrop-blur-md px-6 py-3 font-semibold text-primary-text shadow-soft transition-transform hover:scale-105"
+              >
+                View Specs <FaArrowRight />
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Phase 2 Group */}
-        <div className="phase-group phase-2-group">
-          <div className="card-column left">
-            <div className="ui-card card-heating line-right">
-              <h4>Electric Heating Elements</h4>
-              <p>Rapid thermal induction reaching optimal drying temperatures in minutes.</p>
+        {/* Fixed UI Overlays grouped by phase with golden connecting pointer lines */}
+        <div id="fixed-ui-overlay">
+          {/* Phase 1 Group - Appears TOGETHER with 3D model appearance */}
+          <div className="phase-group phase-1-group">
+            <div className="card-column left">
+              <div className="ui-card card-shell line-right">
+                <h4>SS 304 Stainless Steel Shell</h4>
+                <p>10x10 foot premium food-grade construction. Zero contamination.</p>
+              </div>
+              <div className="ui-card card-foam line-right">
+                <h4>Thermal Insulation</h4>
+                <p>High-density foam retains 99% of internal heat for maximum energy efficiency.</p>
+              </div>
+              <div className="ui-card card-panel line-right">
+                <h4>Siemens PLC Control</h4>
+                <p>Precision PID temperature and humidity control via 10" HMI interface.</p>
+              </div>
             </div>
-            <div className="ui-card card-probes line-right">
-              <h4>Precision Thermal Probes</h4>
-              <p>Multi-point temperature sensing ensures absolute thermal consistency.</p>
+            <div className="card-column right">
+              <div className="ui-card card-trays line-left">
+                <h4>Drying Trays and Coils</h4>
+                <p>Precision electric heating elements and uniform cross-flow blower fans.</p>
+              </div>
+              <div className="ui-card card-fans line-left">
+                <h4>Dual Centrifugal Fans</h4>
+                <p>High-velocity uniform cross-flow aerodynamics for consistent drying.</p>
+              </div>
             </div>
           </div>
-          <div className="card-column right">
-            <div className="ui-card card-airflow line-left">
-              <h4>360° Cross-Flow Airflow</h4>
-              <p>Guarantees perfectly uniform dehydration across every single tray level.</p>
-            </div>
-            <div className="ui-card card-motor line-left">
-              <h4>Industrial Circulation Motor</h4>
-              <p>Heavy-duty continuous operation motor built for massive scale dehydration.</p>
-            </div>
-          </div>
-        </div>
 
-        {/* Phase 3 Group (Combined Command & ROI) */}
-        <div className="phase-group phase-3-group">
-          <div className="card-column left">
-            <div className="ui-card command-card line-right">
-              <h3 className="text-accent">Precision Command Center</h3>
-              <p>Industrial-grade digital controllers, intuitive LED readouts, and fail-safe analog pressure gauges put you in total control.</p>
+          {/* Phase 2 Group */}
+          <div className="phase-group phase-2-group">
+            <div className="card-column left">
+              <div className="ui-card card-heating line-right">
+                <h4>Electric Heating Elements</h4>
+                <p>Rapid thermal induction reaching optimal drying temperatures in minutes.</p>
+              </div>
+              <div className="ui-card card-probes line-right">
+                <h4>Precision Thermal Probes</h4>
+                <p>Multi-point temperature sensing ensures absolute thermal consistency.</p>
+              </div>
             </div>
-            <div className="ui-card card-exhaust line-right">
-              <h3 style={{ color: '#25D366' }}>Smart Moisture Exhaust</h3>
-              <p>Automated top-venting system expels humidity while retaining thermal energy for maximum processing speed.</p>
+            <div className="card-column right">
+              <div className="ui-card card-airflow line-left">
+                <h4>360° Cross-Flow Airflow</h4>
+                <p>Guarantees perfectly uniform dehydration across every single tray level.</p>
+              </div>
+              <div className="ui-card card-motor line-left">
+                <h4>Industrial Circulation Motor</h4>
+                <p>Heavy-duty continuous operation motor built for massive scale dehydration.</p>
+              </div>
             </div>
           </div>
-          <div className="card-column right">
-            <div className="ui-card card-sensors line-left">
-              <h3 className="text-accent">Real-time Humidity Sensors</h3>
-              <p>Continuously monitors internal moisture levels to dynamically adjust airflow and maintain the perfect climate.</p>
+
+          {/* Phase 3 Group (Combined Command & ROI) */}
+          <div className="phase-group phase-3-group">
+            <div className="card-column left">
+              <div className="ui-card command-card line-right">
+                <h3 className="text-accent">Precision Command Center</h3>
+                <p>Industrial-grade digital controllers, intuitive LED readouts, and fail-safe analog pressure gauges put you in total control.</p>
+              </div>
+              <div className="ui-card card-exhaust line-right">
+                <h3 style={{ color: '#25D366' }}>Smart Moisture Exhaust</h3>
+                <p>Automated top-venting system expels humidity while retaining thermal energy for maximum processing speed.</p>
+              </div>
             </div>
-            <div className="ui-card roi-card line-left">
-              <h3 style={{ color: '#25D366' }}>Maximum Efficiency</h3>
-              <p>Engineered with dual ventilation grilles to optimize cross-flow aerodynamics. Superior heat retention translates to a faster ROI.</p>
+            <div className="card-column right">
+              <div className="ui-card card-sensors line-left">
+                <h3 className="text-accent">Real-time Humidity Sensors</h3>
+                <p>Continuously monitors internal moisture levels to dynamically adjust airflow and maintain the perfect climate.</p>
+              </div>
+              <div className="ui-card roi-card line-left">
+                <h3 style={{ color: '#25D366' }}>Maximum Efficiency</h3>
+                <p>Engineered with dual ventilation grilles to optimize cross-flow aerodynamics. Superior heat retention translates to a faster ROI.</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
 
       {/* Explore 3D Blueprint Button */}
@@ -590,10 +587,8 @@ export default function Technology() {
       {/* Restart Phase Transition Button (Visible on reverse scroll) */}
       <button
         onClick={() => {
-          if (containerRef.current) {
-            containerRef.current.scrollIntoView({ behavior: 'smooth' });
-            setIsReversing(false);
-          }
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setIsReversing(false);
         }}
         className={`restart-phase-btn ${isReversing ? 'visible' : ''}`}
         aria-label="Restart 3D Phase Transition"
@@ -604,7 +599,7 @@ export default function Technology() {
 
       {/* Technical Data Sheet Section */}
       <section id="datasheet" className="datasheet-section">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-[1500px] px-6">
           <div className="datasheet-header">
             <div className="engineering-label">Engineering Specs</div>
             <h2>Technical Data Sheet</h2>

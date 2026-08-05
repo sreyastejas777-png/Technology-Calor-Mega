@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -19,7 +19,7 @@ html.dark body {
 
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -33,7 +33,7 @@ h2,
 h3,
 h4,
 .font-display {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 ::-webkit-scrollbar {
@@ -234,6 +234,8 @@ html.dark .dot-grid {
   --max-width: 1440px;
   --navbar-height: 80px;
   --backdrop-blur: 12px;
+  --font-heading: 'Roboto', sans-serif;
+  --font-primary: 'Roboto', sans-serif;
 
   /* LIGHT MODE (Matches main website's light warm beige theme) */
   --bg-color: #FEFAF1;

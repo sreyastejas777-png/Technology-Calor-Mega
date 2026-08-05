@@ -37,7 +37,7 @@ export default function GetQuote() {
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="rounded-3xl bg-white dark:bg-white/5 p-8 shadow-soft md:p-10"
+        className="rounded-3xl bg-white dark:bg-white/5 p-5 md:p-6 shadow-soft"
       >
         {submitted ? (
           <div className="flex flex-col items-center justify-center py-16 text-center">

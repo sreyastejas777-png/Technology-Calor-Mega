@@ -47,7 +47,7 @@ export default function About() {
         </div>
 
         {/* 2. WHY HUMIDITY CONTROL MATTERS */}
-        <div id="humidity-control" className="p-8 md:p-12 rounded-3xl bg-brand-light border border-border shadow-skeuo-in grid grid-cols-1 md:grid-cols-2 gap-8 items-start transition-colors duration-300 scroll-mt-28">
+        <div id="humidity-control" className="p-5 md:p-6 rounded-3xl bg-brand-light border border-border shadow-skeuo-in grid grid-cols-1 md:grid-cols-2 gap-8 items-start transition-colors duration-300 scroll-mt-28">
           <div className="flex flex-col gap-4">
             <h2 className="text-3xl font-extrabold font-outfit text-primary-text">
               Why Humidity Control Matters
@@ -86,7 +86,7 @@ export default function About() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-2xl bg-surface border border-border shadow-skeuo-out text-center flex flex-col gap-4 items-center transition-colors duration-300">
+            <div className="p-5 md:p-6 rounded-2xl bg-surface border border-border shadow-skeuo-out text-center flex flex-col gap-4 items-center transition-colors duration-300">
               <Users className="w-12 h-12 text-accent" />
               <h3 className="text-xl font-bold text-primary-text font-outfit">Local Support</h3>
               <p className="text-[18px] text-secondary-text">
@@ -94,7 +94,7 @@ export default function About() {
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl bg-surface border border-border shadow-skeuo-out text-center flex flex-col gap-4 items-center transition-colors duration-300">
+            <div className="p-5 md:p-6 rounded-2xl bg-surface border border-border shadow-skeuo-out text-center flex flex-col gap-4 items-center transition-colors duration-300">
               <Landmark className="w-12 h-12 text-accent" />
               <h3 className="text-xl font-bold text-primary-text font-outfit">Eco Certified</h3>
               <p className="text-[18px] text-secondary-text">
@@ -102,7 +102,7 @@ export default function About() {
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl bg-surface border border-border shadow-skeuo-out text-center flex flex-col gap-4 items-center transition-colors duration-300">
+            <div className="p-5 md:p-6 rounded-2xl bg-surface border border-border shadow-skeuo-out text-center flex flex-col gap-4 items-center transition-colors duration-300">
               <Award className="w-12 h-12 text-accent" />
               <h3 className="text-xl font-bold text-primary-text font-outfit">ISO 9001 Quality</h3>
               <p className="text-[18px] text-secondary-text">

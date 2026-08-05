@@ -68,7 +68,7 @@ export default function Products() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, delay: idx * 0.1 }}
-              className="p-8 md:p-12 rounded-3xl bg-surface border border-border shadow-skeuo-out hover:shadow-card-hover hover:scale-[1.005] transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
+              className="p-5 md:p-6 rounded-3xl bg-surface border border-border shadow-skeuo-out hover:shadow-card-hover hover:scale-[1.005] transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
             >
               {/* Product Image Column */}
               <div className="lg:col-span-5 flex justify-center p-4 bg-bg rounded-2xl border border-border/50">

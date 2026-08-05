@@ -15,7 +15,7 @@ export default function Newsletter() {
   };
 
   return (
-    <div className="rounded-3xl bg-gradient-to-br from-primary to-secondary px-6 py-14 text-center text-white shadow-soft">
+    <div className="rounded-3xl bg-gradient-to-br from-primary to-secondary px-6 py-10 md:py-12 text-center text-white shadow-soft">
       <h3 className="font-display text-2xl md:text-3xl font-bold">Stay Ahead of the Harvest</h3>
       <p className="mx-auto mt-3 max-w-md text-white/70">
         Subscribe for drying tips, product updates and seasonal offers from CALOR MEGA.

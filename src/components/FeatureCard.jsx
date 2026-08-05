@@ -11,7 +11,7 @@ export default function FeatureCard({ icon: Icon, title, description, index = 0 
         hover: { type: 'spring', stiffness: 300, damping: 22 }
       }}
       whileHover={{ y: -8, scale: 1.02 }}
-      className="group rounded-3xl bg-white dark:bg-white/5 border border-primary/5 dark:border-white/10 p-8 shadow-soft transition-all duration-300 hover:shadow-[0_20px_45px_-15px_rgba(224,159,62,0.35)] hover:border-accent/30"
+      className="group rounded-3xl bg-white dark:bg-white/5 border border-primary/5 dark:border-white/10 p-5 md:p-6 shadow-soft transition-all duration-300 hover:shadow-[0_20px_45px_-15px_rgba(224,159,62,0.35)] hover:border-accent/30"
     >
       <motion.div
         whileHover={{ rotate: 12, scale: 1.1 }}

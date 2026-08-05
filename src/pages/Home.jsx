@@ -146,8 +146,8 @@ export default function Home() {
       <TrustMarquee />
 
       {/* STATS */}
-      <section className="mx-auto flex min-h-[100svh] max-w-7xl items-center px-5 py-14 md:px-8">
-        <div className="relative w-full rounded-3xl border border-secondary/15 dark:border-white/5 bg-white/10 dark:bg-white/[0.01] p-8 md:p-12 overflow-hidden shadow-soft">
+      <section className="mx-auto flex min-h-[20svh] max-w-[1440px] items-center px-5 py-6 md:py-8 md:px-8">
+        <div className="relative w-full rounded-3xl border border-secondary/15 dark:border-white/5 bg-white/10 dark:bg-white/[0.01] p-6 md:p-8 overflow-hidden shadow-soft">
           {/* Background Grid Pattern */}
           <div className="dot-grid absolute inset-0 opacity-30 pointer-events-none" />
 
@@ -160,7 +160,7 @@ export default function Home() {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden bg-white/40 dark:bg-white/[0.01] backdrop-blur-[2px] py-14">
+      <section className="relative flex flex-col justify-center overflow-hidden bg-white/40 dark:bg-white/[0.01] backdrop-blur-[2px] py-16 md:py-20">
         <GradientBlobs variant="section" />
 
         <div className="relative mx-auto max-w-7xl px-5 md:px-8">
@@ -178,7 +178,7 @@ export default function Home() {
       </section>
 
       {/* APPLICATIONS */}
-      <section className="relative mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-center px-5 py-14 md:px-8">
+      <section className="relative mx-auto flex max-w-7xl flex-col justify-center px-5 py-16 md:py-20 md:px-8">
         <SectionHeading
           eyebrow="Built to Dry Anything"
           title="Applications"
@@ -202,7 +202,7 @@ export default function Home() {
       </div>
 
       {/* TESTIMONIALS */}
-      <section className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden py-14">
+      <section className="relative flex flex-col justify-center overflow-hidden py-16 md:py-20">
         <GradientBlobs variant="section" />
         <div className="relative mx-auto max-w-7xl px-5 md:px-8">
           <SectionHeading
@@ -219,13 +219,13 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-center px-5 py-14 md:px-8">
+      <section className="mx-auto flex max-w-7xl flex-col justify-center px-5 py-16 md:py-20 md:px-8">
         <SectionHeading eyebrow="Questions & Answers" title="Frequently Asked Questions" />
         <FAQAccordion items={faqs} />
       </section>
 
       {/* NEWSLETTER */}
-      <section className="mx-auto flex min-h-[70svh] max-w-5xl flex-col justify-center px-5 py-14 md:px-8">
+      <section className="mx-auto flex max-w-5xl flex-col justify-center px-5 py-16 md:py-20 md:px-8">
         <Newsletter />
       </section>
 

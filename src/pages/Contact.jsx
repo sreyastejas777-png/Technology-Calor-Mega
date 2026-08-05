@@ -23,14 +23,14 @@ export default function Contact() {
   };
 
   return (
-    <section className="mx-auto max-w-7xl px-5 py-10 md:px-8">
+    <section className="mx-auto max-w-[1400px] w-[90%] px-5 py-10 md:px-8">
       <SectionHeading
         eyebrow="Get In Touch"
         title="Contact Us"
         subtitle="Have a question about a machine or your specific produce? Our team is ready to help."
       />
 
-      <div className="grid gap-10 lg:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-2">
         <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
           <div className="space-y-5 rounded-3xl bg-white dark:bg-white/5 p-8 shadow-soft">
             <div className="flex items-start gap-4">

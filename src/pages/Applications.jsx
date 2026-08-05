@@ -9,7 +9,7 @@ export default function Applications() {
   const [selectedApp, setSelectedApp] = useState(null);
 
   return (
-    <section className="mx-auto max-w-7xl px-5 py-10 md:px-8">
+    <section className="mx-auto max-w-[1400px] w-[90%] px-5 py-10 md:px-8">
       <SectionHeading
         eyebrow="One Machine, Endless Produce"
         title="Applications"
