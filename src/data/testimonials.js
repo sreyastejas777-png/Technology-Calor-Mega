@@ -25,6 +25,13 @@ export const testimonials = [
     role: 'Home Food Business Owner',
     quote:
       'The Small Scale Dryer was the perfect entry point for my banana chips business. Simple to use and built to last.',
-    rating: 4,
+    rating: 5,
+  },
+  {
+    name: 'Suresh Rajan',
+    role: 'Director, Spices & Herb Agro Processing',
+    quote:
+      'Precise moisture control reduced our dehydration cycle by 45% while preserving essential oils, color, and aroma flawlessly.',
+    rating: 5,
   },
 ];

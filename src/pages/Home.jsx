@@ -250,17 +250,18 @@ export default function Home() {
       </div>
 
       {/* TESTIMONIALS */}
-      <section className="relative flex flex-col justify-center overflow-hidden py-16 md:py-20">
+      <section className="relative flex flex-col justify-center items-center overflow-hidden px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 py-14 sm:py-16 md:py-20">
         <GradientBlobs variant="section" />
-        <div className="relative mx-auto max-w-7xl px-5 md:px-8">
+        <div className="relative z-10 w-full max-w-[1600px] mx-auto">
           <SectionHeading
             eyebrow="Why Farmers Trust Us"
             title="What Our Customers Say"
             subtitle="Real results from farmers, processors and exporters using CALOR MEGA."
+            className="mb-6 sm:mb-8 max-w-2xl mx-auto text-center"
           />
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {testimonials.map((t) => (
-              <TestimonialCard key={t.name} {...t} />
+          <div className="grid gap-4 sm:gap-5 lg:gap-5.5 xl:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            {testimonials.map((t, idx) => (
+              <TestimonialCard key={t.name} {...t} index={idx} />
             ))}
           </div>
         </div>
