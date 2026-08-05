@@ -147,59 +147,6 @@
   }
 }
 
-/* Smart Directional Scroll Indicator Button */
-.smart-scroll-toggle {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 40;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
-  background: var(--surface-color);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1.5px solid var(--surface-border);
-  border-radius: 9999px;
-  color: var(--text-primary);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s ease, border-color 0.3s ease;
-}
-
-.smart-scroll-toggle.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.smart-scroll-toggle:hover {
-  transform: translateX(-50%) translateY(-3px);
-  border-color: var(--accent-color);
-  box-shadow: 0 12px 28px rgba(224, 159, 62, 0.25);
-}
-
-.smart-scroll-arrow-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: rgba(224, 159, 62, 0.15);
-  color: var(--accent-color);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.smart-scroll-toggle.is-bottom .smart-scroll-arrow-icon {
-  transform: rotate(180deg);
-}
 
 /* Restart Phase Floating Pill Button */
 .phase-nav-pill-bar {
@@ -269,6 +216,7 @@
     transform: translateX(50%) translateY(12px);
     width: max-content;
   }
+
   .phase-nav-pill-bar.visible {
     transform: translateX(50%) translateY(0);
   }
@@ -723,43 +671,6 @@
   }
 }
 
-.phase-3-actions {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 50;
-  pointer-events: auto;
-}
-
-.phase-3-restart-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 28px;
-  background: var(--surface-color);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1.5px solid var(--accent-color);
-  border-radius: 9999px;
-  color: var(--accent-color);
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  box-shadow: 0 8px 24px rgba(224, 159, 62, 0.2);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.phase-3-restart-cta:hover {
-  background: var(--accent-color);
-  color: #ffffff;
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 12px 30px rgba(224, 159, 62, 0.4);
-}
 
 /* Mobile responsive layout */
 @media (max-width: 1024px) {

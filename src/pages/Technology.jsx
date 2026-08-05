@@ -12,7 +12,6 @@ export default function Technology() {
   const containerRef = useRef(null);
   const centerBlockRef = useRef(null);
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
-  const [isIndicatorVisible, setIsIndicatorVisible] = useState(false);
   const [isReversing, setIsReversing] = useState(false);
   const [showRestartPhases, setShowRestartPhases] = useState(false);
 
@@ -361,7 +360,6 @@ export default function Technology() {
             anticipatePin: 1,
             onUpdate: (self) => {
               const p = self.progress;
-              setIsIndicatorVisible(p > 0.03);
               setIsScrolledToBottom(p >= 0.98);
               setShowRestartPhases(p > 0.03 && p < 0.98);
 
@@ -603,16 +601,8 @@ export default function Technology() {
               </div>
             </div>
           </div>
-          
-          {/* Dedicated Phase 3 Restart & Specs Action Bar */}
-          <div className="phase-3-actions">
-            <button
-              onClick={handleRestartPhases}
-              className="phase-3-restart-cta"
-            >
-              <FaUndo className="mr-2" /> Restart Blueprint Phases
-            </button>
-          </div>
+
+
         </div>
       </div>
 
@@ -629,17 +619,7 @@ export default function Technology() {
         </button>
       </div>
 
-      {/* Explore 3D Blueprint Button */}
-      <button
-        onClick={handleScrollToggle}
-        className={`smart-scroll-toggle ${isIndicatorVisible && !isScrolledToBottom ? 'visible' : ''}`}
-        aria-label="Scroll to explore 3D Blueprint"
-      >
-        <span>Explore 3D Blueprint</span>
-        <div className="smart-scroll-arrow-icon">
-          <FaChevronDown />
-        </div>
-      </button>
+
       {/* Technical Data Sheet Section */}
       <section id="datasheet" className="datasheet-section">
         <div className="mx-auto max-w-[1500px] px-6">
