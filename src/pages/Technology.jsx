@@ -14,33 +14,60 @@ export default function Technology() {
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
   const [isIndicatorVisible, setIsIndicatorVisible] = useState(false);
   const [isReversing, setIsReversing] = useState(false);
+  const [showRestartPhases, setShowRestartPhases] = useState(false);
 
-  // ─── ZOOM PREVENTION (Applies only to this page) ───
+  // ─── ZOOM LOCK (Applies strictly to Technology page) ───
   useEffect(() => {
-    // 1. Block Ctrl + Mouse Wheel zoom
+    // 1. Block Ctrl + Mouse Wheel zoom and Trackpad pinch zoom
     const handleWheel = (e) => {
       if (e.ctrlKey) {
         e.preventDefault();
       }
     };
 
-    // 2. Block Keyboard Zoom (Ctrl + '+', Ctrl + '-', Ctrl + '0')
+    // 2. Block Keyboard Zoom (Ctrl + '+', Ctrl + '-', Ctrl + '0', Ctrl + '=', Numpad +/-)
     const handleKeyDown = (e) => {
       if (
         e.ctrlKey &&
-        (e.key === '=' || e.key === '-' || e.key === '+' || e.key === '0')
+        (e.key === '=' ||
+          e.key === '-' ||
+          e.key === '+' ||
+          e.key === '0' ||
+          e.key === '_' ||
+          e.code === 'NumpadAdd' ||
+          e.code === 'NumpadSubtract')
       ) {
         e.preventDefault();
       }
     };
 
-    // Add event listeners (passive: false is required to use preventDefault on wheel)
+    // 3. Block multi-touch pinch to zoom
+    const handleTouchMove = (e) => {
+      if (e.touches && e.touches.length > 1) {
+        e.preventDefault();
+      }
+    };
+
+    // 4. Block gesture zoom (Safari / Apple trackpads)
+    const handleGesture = (e) => {
+      e.preventDefault();
+    };
+
+    // Attach non-passive event listeners to enforce zoom prevention
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('gesturestart', handleGesture);
+    document.addEventListener('gesturechange', handleGesture);
+    document.addEventListener('gestureend', handleGesture);
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('gesturestart', handleGesture);
+      document.removeEventListener('gesturechange', handleGesture);
+      document.removeEventListener('gestureend', handleGesture);
     };
   }, []);
 
@@ -69,13 +96,11 @@ export default function Technology() {
     const scene = new THREE.Scene();
     const isDark = document.documentElement.classList.contains('dark');
     const bgHex = isDark ? 0x0c0c0e : 0xf6f3ea;
-    // Make canvas transparent so the machine floats on the page
-    // scene.background = new THREE.Color(bgHex);
     scene.fog = new THREE.FogExp2(bgHex, 0.035);
 
-    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 1.5, 11.5);
-    camera.lookAt(0, 1.4, 0);
+    const camera = new THREE.PerspectiveCamera(39, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 1.35, 13.0);
+    camera.lookAt(0, 1.25, 0);
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -253,11 +278,12 @@ export default function Technology() {
       machineGroup.add(wheel);
     });
 
-    machineGroup.position.y = -1.0;
+    machineGroup.scale.set(1.10, 1.10, 1.10);
+    machineGroup.position.y = -1.35;
     machineGroup.rotation.y = -0.15; // Slight initial angle for closed state
 
     // ─── LIGHTING SETUP ───
-    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 1.8);
     keyLight.position.set(5, 8, 6);
@@ -285,7 +311,7 @@ export default function Technology() {
     const groundMat = new THREE.ShadowMaterial({ opacity: 0.3 });
     const ground = new THREE.Mesh(groundGeo, groundMat);
     ground.rotation.x = -Math.PI / 2;
-    ground.position.y = -1.15;
+    ground.position.y = -1.48;
     ground.receiveShadow = true;
     scene.add(ground);
 
@@ -334,27 +360,28 @@ export default function Technology() {
             scrub: 1.2,
             anticipatePin: 1,
             onUpdate: (self) => {
-              console.log("GSAP Progress:", self.progress);
-              setIsIndicatorVisible(self.progress > 0.03);
-              setIsScrolledToBottom(self.progress > 0.70);
+              const p = self.progress;
+              setIsIndicatorVisible(p > 0.03);
+              setIsScrolledToBottom(p >= 0.98);
+              setShowRestartPhases(p > 0.03 && p < 0.98);
 
-              // Show restart option when reversing (scrolling up) in the middle of the animation
-              if (self.direction === -1 && self.progress > 0.1 && self.progress < 0.95) {
+              // Track reverse scrolling direction
+              if (self.direction === -1 && p > 0.1 && p < 0.95) {
                 setIsReversing(true);
-              } else if (self.direction === 1 || self.progress <= 0.1 || self.progress >= 0.95) {
+              } else if (self.direction === 1 || p <= 0.1 || p >= 0.95) {
                 setIsReversing(false);
               }
             }
           }
         });
 
-        // 1. Initial State Setup: Text permanently on left, 3D object permanently on right at load
+        // 1. Initial State Setup: Text shifted to left, 3D object shifted to right
         if (isMobile) {
-          gsap.set('.hero-center-block', { y: '-15vh' });
-          gsap.set('#webgl-canvas', { opacity: 1, y: 0 });
+          gsap.set('.hero-center-block', { y: '-18vh' });
+          gsap.set('#webgl-canvas', { opacity: 1, y: '8vh' });
         } else {
-          gsap.set('.hero-center-block', { x: '-25vw' });
-          gsap.set('#webgl-canvas', { opacity: 1, x: '25vw' });
+          gsap.set('.hero-center-block', { x: '-24vw' });
+          gsap.set('#webgl-canvas', { opacity: 1, x: '23vw' });
         }
 
         // -- HOLD STATE FOR FIRST SCROLL (Allowing user to read text before phase transitions start) --
@@ -363,10 +390,13 @@ export default function Technology() {
         // Fade out text when scroll begins to approach phase 1
         mainTl.to('.hero-center-block', { autoAlpha: 0, duration: 0.5 }, 1.5);
 
-        // Center the canvas smoothly as phase 1 begins
+        // Center the canvas smoothly and transition machine size to standard phase scale
         if (!isMobile) {
-          mainTl.to('#webgl-canvas', { x: '0vw', duration: 0.8, ease: 'power1.inOut' }, 2.2);
+          mainTl.to('#webgl-canvas', { x: '0vw', duration: 0.8, ease: 'power1.inOut' }, 1.8);
         }
+        mainTl.to(machineGroup.scale, { x: 1.0, y: 1.0, z: 1.0, duration: 0.8, ease: 'power1.inOut' }, 1.8);
+        mainTl.to(machineGroup.position, { y: -1.2, duration: 0.8, ease: 'power1.inOut' }, 1.8);
+        mainTl.to(camera.position, { x: 0, y: 1.4, z: 14.2, duration: 0.8, ease: 'power1.inOut' }, 1.8);
 
         // 2. Phase 1: Structure & Controls (Model & Parts Callouts Appear TOGETHER)
         // Model rotates to center
@@ -382,7 +412,7 @@ export default function Technology() {
 
         // 3. Phase 2: Thermal Engine & Airflow (Rotate to angled view, thermal pulse)
         mainTl.to(machineGroup.rotation, { y: -0.45, duration: 1.2 }, 4.0);
-        mainTl.to(camera.position, { x: 0.5, z: 12.7, y: 1.7, duration: 1.2 }, 4.0);
+        mainTl.to(camera.position, { x: 0.4, z: 14.2, y: 1.4, duration: 1.2 }, 4.0);
         mainTl.call(() => { machineGroup.userData.thermalActive = true; }, null, 4.5);
 
         // 4. Phase 3: The Dynamic ROI Engine & Smart Control (Close doors, pull back, disable thermal)
@@ -400,7 +430,7 @@ export default function Technology() {
         mainTl.to(internalLightL, { intensity: 0, duration: 0.5 }, 7.0);
         mainTl.to(internalLightR, { intensity: 0, duration: 0.5 }, 7.0);
         mainTl.to(machineGroup.rotation, { y: 0, duration: 1.0 }, 7.0);
-        mainTl.to(camera.position, { x: 0, z: 13.5, y: 1.5, duration: 1.0 }, 7.0);
+        mainTl.to(camera.position, { x: 0, z: 14.8, y: 1.3, duration: 1.0 }, 7.0);
 
         // ─── UI UX Boxes (Phase Groups) Synchronized with 3D Timeline ───
         // Phase 1 (Delay slightly so it appears as doors are opening)
@@ -440,15 +470,16 @@ export default function Technology() {
 
   const handleScrollToggle = () => {
     if (isScrolledToBottom) {
-      if (containerRef.current) {
-        containerRef.current.scrollIntoView({ behavior: 'smooth' });
-      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      const datasheet = document.getElementById('datasheet');
-      if (datasheet) {
-        datasheet.scrollIntoView({ behavior: 'smooth' });
-      }
+      const pinDistance = window.innerHeight * 3.5;
+      window.scrollTo({ top: pinDistance + 100, behavior: 'smooth' });
     }
+  };
+
+  const handleRestartPhases = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsReversing(false);
   };
 
   return (
@@ -456,12 +487,15 @@ export default function Technology() {
       {/* Hero Section Container (Pinned) */}
       <div id="hero-scroll-container" ref={containerRef} className="hero">
         {/* WebGL 3D Canvas */}
-        <canvas id="webgl-canvas" ref={canvasRef} style={{ opacity: 1, transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(0)' : 'translateX(25vw)' }} />
+        <canvas id="webgl-canvas" ref={canvasRef} style={{ opacity: 1, transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(8vh)' : 'translateX(23vw)' }} />
 
         {/* Fixed Hero Wrapper (Moved outside pin container to prevent flicker) */}
         <div className="fixed-hero-wrapper">
-          <div className="hero-center-block" ref={centerBlockRef} style={{ transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(-15vh)' : 'translateX(-25vw)' }}>
-            <h1 className="headline">Preserve Today.<br /><span>Profit Tomorrow.</span></h1>
+          <div className="hero-center-block" ref={centerBlockRef} style={{ transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(-18vh)' : 'translateX(-24vw)' }}>
+            <h1 className="headline">
+              Preserve Today.<br />
+              <span>Profit Tomorrow.</span>
+            </h1>
             <p>
               CALOR MEGA Industrial Dehydration Systems deliver premium drying performance with maximum product quality and extended shelf life.
             </p>
@@ -476,7 +510,7 @@ export default function Technology() {
             <div className="hero-cta">
               <a
                 href="https://wa.me/1234567890?text=Hello%2C%20I%20am%20interested%20in%20CALOR%20MEGA.%20Can%20I%20get%20more%20details%3F"
-                className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-semibold text-white shadow-soft transition-transform hover:scale-105"
+                className="inline-flex items-center gap-2.5 rounded-full bg-accent px-7 py-3.5 text-base sm:text-lg font-semibold text-white shadow-soft transition-transform hover:scale-105"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -484,7 +518,7 @@ export default function Technology() {
               </a>
               <button
                 onClick={handleScrollToggle}
-                className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface/60 backdrop-blur-md px-6 py-3 font-semibold text-primary-text shadow-soft transition-transform hover:scale-105"
+                className="inline-flex items-center gap-2.5 rounded-full border border-surface-border bg-surface/60 backdrop-blur-md px-7 py-3.5 text-base sm:text-lg font-semibold text-primary-text shadow-soft transition-transform hover:scale-105"
               >
                 View Specs <FaArrowRight />
               </button>
@@ -537,11 +571,11 @@ export default function Technology() {
             <div className="card-column right">
               <div className="ui-card card-airflow line-left">
                 <h4>360° Cross-Flow Airflow</h4>
-                <p>Guarantees perfectly uniform dehydration across every single tray level.</p>
+                <p>Engineered aerodynamics eliminate cold spots and speed up batch times.</p>
               </div>
               <div className="ui-card card-motor line-left">
-                <h4>Industrial Circulation Motor</h4>
-                <p>Heavy-duty continuous operation motor built for massive scale dehydration.</p>
+                <h4>Industrial Blower Motors</h4>
+                <p>Continuous heavy-duty operation rated for 50,000+ uninterrupted hours.</p>
               </div>
             </div>
           </div>
@@ -569,7 +603,30 @@ export default function Technology() {
               </div>
             </div>
           </div>
+          
+          {/* Dedicated Phase 3 Restart & Specs Action Bar */}
+          <div className="phase-3-actions">
+            <button
+              onClick={handleRestartPhases}
+              className="phase-3-restart-cta"
+            >
+              <FaUndo className="mr-2" /> Restart Blueprint Phases
+            </button>
+          </div>
         </div>
+      </div>
+
+      {/* Floating Restart Phase Option (Visible during all 3D phases, hidden in datasheet) */}
+      <div className={`phase-nav-pill-bar ${showRestartPhases && !isScrolledToBottom ? 'visible' : ''}`}>
+        <button
+          onClick={handleRestartPhases}
+          className="phase-restart-btn"
+          title="Restart 3D Phase Animation from the Beginning"
+          aria-label="Restart 3D Phase Animation"
+        >
+          <FaUndo className="phase-restart-icon" />
+          <span>Restart Phases</span>
+        </button>
       </div>
 
       {/* Explore 3D Blueprint Button */}
@@ -583,20 +640,6 @@ export default function Technology() {
           <FaChevronDown />
         </div>
       </button>
-
-      {/* Restart Phase Transition Button (Visible on reverse scroll) */}
-      <button
-        onClick={() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          setIsReversing(false);
-        }}
-        className={`restart-phase-btn ${isReversing ? 'visible' : ''}`}
-        aria-label="Restart 3D Phase Transition"
-      >
-        <FaUndo />
-        <span>Restart Phases</span>
-      </button>
-
       {/* Technical Data Sheet Section */}
       <section id="datasheet" className="datasheet-section">
         <div className="mx-auto max-w-[1500px] px-6">

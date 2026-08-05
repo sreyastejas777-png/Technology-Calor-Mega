@@ -1,40 +1,52 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { FaPlus } from 'react-icons/fa';
 
-export default function Hotspot({ x, y, title, description }) {
-  const [open, setOpen] = useState(false);
-  const flipUp = y > 55;
-
+export default function Hotspot({ x, y, title, isActive, onClick, index = 1 }) {
   return (
-    <div className="absolute" style={{ left: `${x}%`, top: `${y}%` }}>
+    <div
+      className="absolute z-20"
+      style={{
+        left: `${x}%`,
+        top: `${y}%`,
+        transform: 'translate(-50%, -50%)',
+      }}
+    >
       <motion.button
-        onClick={() => setOpen(!open)}
-        whileHover={{ scale: 1.15 }}
-        className="relative flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-accent text-primary shadow-soft"
-        aria-label={title}
+        type="button"
+        onClick={onClick}
+        whileHover={{ scale: 1.18 }}
+        whileTap={{ scale: 0.92 }}
+        className={`group relative flex h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9 items-center justify-center rounded-full transition-colors duration-300 shadow-md ${
+          isActive
+            ? 'bg-amber-500 text-slate-950 ring-4 ring-amber-400/60 shadow-amber-500/50'
+            : 'bg-amber-500/90 text-slate-950 hover:bg-amber-400 shadow-black/20'
+        }`}
+        aria-label={`Inspect ${title}`}
+        aria-pressed={isActive}
       >
-        <span className="absolute inset-0 rounded-full bg-accent animate-ping opacity-60" />
-        <FaPlus className="relative text-xs" />
-      </motion.button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: flipUp ? -10 : 10, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: flipUp ? -10 : 10, scale: 0.9 }}
-            className="glass absolute z-20 w-52 max-w-[calc(100vw-2.5rem)] -translate-x-1/2 rounded-2xl p-4 text-left shadow-glass"
-            style={
-              flipUp
-                ? { bottom: '2.2rem', left: '50%' }
-                : { top: '2.2rem', left: '50%' }
-            }
-          >
-            <p className="mb-1 font-bold text-primary dark:text-paper">{title}</p>
-            <p className="text-xs leading-relaxed text-primary/70 dark:text-paper/70">{description}</p>
-          </motion.div>
+        {/* Ambient Radar Glow Ring (pointer-events-none prevents hover glitch) */}
+        <span
+          className={`pointer-events-none absolute inset-0 rounded-full ${
+            isActive
+              ? 'bg-amber-400 animate-ping opacity-60'
+              : 'bg-amber-500 animate-pulse opacity-40 group-hover:opacity-75'
+          }`}
+        />
+
+        {/* Outer Ring Pulse for active state */}
+        {isActive && (
+          <span className="pointer-events-none absolute -inset-2 rounded-full border border-amber-400/80 animate-pulse" />
         )}
-      </AnimatePresence>
+
+        {/* Icon / Number */}
+        <motion.div
+          animate={{ rotate: isActive ? 45 : 0 }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+          className="relative z-10 flex items-center justify-center"
+        >
+          <FaPlus className={`text-[10px] sm:text-xs transition-transform duration-200 ${isActive ? 'scale-110' : ''}`} />
+        </motion.div>
+      </motion.button>
     </div>
   );
 }

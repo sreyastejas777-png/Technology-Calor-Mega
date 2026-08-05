@@ -4,3 +4,6 @@ export const stats = [
   { value: 12, suffix: ' Months', label: 'Shelf Life Achieved' },
   { value: 40, suffix: '% Less', label: 'Energy Consumption' },
 ];
+
+
+

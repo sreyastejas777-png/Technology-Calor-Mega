@@ -24,9 +24,11 @@ export default {
         whatsapp: '#25D366',
       },
       fontFamily: {
-        display: ['"Roboto"', 'sans-serif'],
-        sans: ['"Roboto"', 'sans-serif'],
-        outfit: ['"Roboto"', 'sans-serif'],
+        display: ['"Playfair Display"', 'serif'],
+        sans: ['"Roboto"', '"Inter"', 'sans-serif'],
+        roboto: ['"Roboto"', 'sans-serif'],
+        condensed: ['"Roboto Condensed"', 'sans-serif'],
+        outfit: ['"Playfair Display"', 'serif'], // Match outfit headers to main display font
       },
       boxShadow: {
         soft: '0 10px 40px -10px rgba(28, 28, 28, 0.15)',

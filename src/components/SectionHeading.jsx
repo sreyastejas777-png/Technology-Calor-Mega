@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 
-export default function SectionHeading({ eyebrow, title, subtitle, center = true }) {
+export default function SectionHeading({ eyebrow, title, subtitle, center = true, className = '' }) {
   return (
-    <div className={`max-w-2xl ${center ? 'mx-auto text-center' : ''} mb-10`}>
+    <div className={`max-w-2xl ${center ? 'mx-auto text-center' : ''} ${className || 'mb-10 sm:mb-12'}`}>
       {eyebrow && (
         <motion.p
           initial={{ opacity: 0, y: 10 }}
