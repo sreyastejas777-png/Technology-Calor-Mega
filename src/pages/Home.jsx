@@ -57,10 +57,10 @@ export default function Home() {
     offset: ['start end', 'center center'],
   });
   const smoothWhyProgress = useSpring(whyScrollProgress, springConfig);
-  const whyY = useTransform(smoothWhyProgress, [0, 1], [60, 0]);
-  const whyScale = useTransform(smoothWhyProgress, [0, 1], [0.95, 1]);
-  const whyOpacity = useTransform(smoothWhyProgress, [0, 0.35, 1], [0.35, 0.85, 1]);
-  const whyRotateBg = useTransform(smoothWhyProgress, [0, 1], [-20, 20]);
+  const whyY = useTransform(smoothWhyProgress, [0, 1], [40, 0]);
+  const whyScale = useTransform(smoothWhyProgress, [0, 1], [0.97, 1]);
+  const whyOpacity = useTransform(smoothWhyProgress, [0, 0.3, 1], [0.5, 0.9, 1]);
+  const whyRotateBg = useTransform(smoothWhyProgress, [0, 1], [-15, 15]);
 
   const testiFaqSectionRef = useRef(null);
   const { scrollYProgress: testiFaqScroll } = useScroll({
@@ -201,7 +201,7 @@ export default function Home() {
       {/* STATS */}
       <section
         ref={statsRef}
-        className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 py-10 sm:py-14 md:py-16 overflow-hidden"
+        className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 pt-8 sm:pt-12 pb-4 sm:pb-6 overflow-hidden"
       >
         {/* Subtle Ambient Golden Bloom */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-secondary/10 dark:bg-accent/10 blur-[130px] rounded-full pointer-events-none" />
@@ -217,29 +217,29 @@ export default function Home() {
         </motion.div>
 
         {/* Visual Connector Pulse to Why Choose Section */}
-        <div className="mt-10 sm:mt-14 flex flex-col items-center justify-center pointer-events-none">
+        <div className="mt-6 sm:mt-8 flex flex-col items-center justify-center pointer-events-none">
           <motion.div
             initial={{ scaleY: 0, opacity: 0 }}
             whileInView={{ scaleY: 1, opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="h-8 sm:h-12 w-[1.5px] bg-gradient-to-b from-secondary/40 via-accent/30 to-transparent"
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="h-8 sm:h-12 w-[1.5px] bg-gradient-to-b from-secondary/50 via-accent/40 to-transparent"
           />
-          <div className="h-1.5 w-1.5 rounded-full bg-accent/60 animate-pulse" />
+          <div className="h-1.5 w-1.5 rounded-full bg-accent/70 shadow-[0_0_8px_rgba(224,159,62,0.8)] animate-pulse" />
         </div>
       </section>
 
       {/* WHY CHOOSE US */}
       <section
         ref={whyChooseRef}
-        className="relative flex min-h-[100svh] w-full flex-col justify-center items-center overflow-hidden bg-white/40 dark:bg-white/[0.01] backdrop-blur-[2px] px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 py-6 sm:py-8"
+        className="relative flex w-full flex-col justify-center items-center overflow-hidden bg-white/40 dark:bg-white/[0.01] backdrop-blur-[2px] px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 pt-6 sm:pt-8 pb-14 sm:pb-18 md:pb-20"
       >
         <GradientBlobs variant="section" />
 
         {/* Interactive Rotating Tech Diagram */}
         <motion.svg
           style={{ rotate: whyRotateBg }}
-          className="pointer-events-none absolute right-8 sm:right-16 top-8 h-64 sm:h-80 w-64 sm:w-80 text-secondary/10 dark:text-white/5 opacity-35"
+          className="pointer-events-none absolute right-8 sm:right-16 top-6 h-64 sm:h-80 w-64 sm:w-80 text-secondary/10 dark:text-white/5 opacity-35"
           viewBox="0 0 200 200"
           fill="none"
           stroke="currentColor"
@@ -259,7 +259,7 @@ export default function Home() {
             eyebrow="The CALOR MEGA Difference"
             title="Why Choose CALOR MEGA"
             subtitle="Every machine is engineered for consistency, efficiency and food safety at scale."
-            className="mb-4 sm:mb-6 lg:mb-7 max-w-2xl mx-auto text-center"
+            className="mb-6 sm:mb-8 max-w-2xl mx-auto text-center"
           />
           <div className="grid gap-3.5 sm:gap-4.5 lg:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {whyChooseUs.map((item, i) => (
