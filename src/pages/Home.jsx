@@ -232,14 +232,14 @@ export default function Home() {
       {/* WHY CHOOSE US */}
       <section
         ref={whyChooseRef}
-        className="relative flex min-h-[100svh] w-full flex-col justify-center items-center overflow-hidden bg-white/40 dark:bg-white/[0.01] backdrop-blur-[2px] px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 py-8 sm:py-10"
+        className="relative flex min-h-[100svh] w-full flex-col justify-center items-center overflow-hidden bg-white/40 dark:bg-white/[0.01] backdrop-blur-[2px] px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 py-6 sm:py-8"
       >
         <GradientBlobs variant="section" />
 
         {/* Interactive Rotating Tech Diagram */}
         <motion.svg
           style={{ rotate: whyRotateBg }}
-          className="pointer-events-none absolute right-8 sm:right-16 top-10 h-72 sm:h-96 w-72 sm:w-96 text-secondary/10 dark:text-white/5 opacity-35"
+          className="pointer-events-none absolute right-8 sm:right-16 top-8 h-64 sm:h-80 w-64 sm:w-80 text-secondary/10 dark:text-white/5 opacity-35"
           viewBox="0 0 200 200"
           fill="none"
           stroke="currentColor"
@@ -253,15 +253,15 @@ export default function Home() {
 
         <motion.div
           style={{ y: whyY, scale: whyScale, opacity: whyOpacity }}
-          className="relative z-10 w-full max-w-[1600px] mx-auto"
+          className="relative z-10 w-full max-w-[1500px] mx-auto"
         >
           <SectionHeading
             eyebrow="The CALOR MEGA Difference"
             title="Why Choose CALOR MEGA"
             subtitle="Every machine is engineered for consistency, efficiency and food safety at scale."
-            className="mb-6 sm:mb-8 lg:mb-10 max-w-2xl mx-auto text-center"
+            className="mb-4 sm:mb-6 lg:mb-7 max-w-2xl mx-auto text-center"
           />
-          <div className="grid gap-4 sm:gap-5 lg:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3.5 sm:gap-4.5 lg:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {whyChooseUs.map((item, i) => (
               <FeatureCard key={item.title} {...item} index={i} />
             ))}
