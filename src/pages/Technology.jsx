@@ -98,7 +98,7 @@ export default function Technology() {
     scene.fog = new THREE.FogExp2(bgHex, 0.035);
 
     const camera = new THREE.PerspectiveCamera(39, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 1.35, 12.2);
+    camera.position.set(0, 1.35, 12.6);
     camera.lookAt(0, 1.25, 0);
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -378,8 +378,8 @@ export default function Technology() {
           gsap.set('.hero-center-block', { y: '-18vh' });
           gsap.set('#webgl-canvas', { opacity: 1, y: '8vh' });
         } else {
-          gsap.set('.hero-center-block', { x: '-26vw' });
-          gsap.set('#webgl-canvas', { opacity: 1, x: '25vw' });
+          gsap.set('.hero-center-block', { x: '-22.5vw' });
+          gsap.set('#webgl-canvas', { opacity: 1, x: '22.5vw' });
         }
 
         // -- HOLD STATE FOR FIRST SCROLL (Allowing user to read text before phase transitions start) --
@@ -485,11 +485,11 @@ export default function Technology() {
       {/* Hero Section Container (Pinned) */}
       <div id="hero-scroll-container" ref={containerRef} className="hero">
         {/* WebGL 3D Canvas */}
-        <canvas id="webgl-canvas" ref={canvasRef} style={{ opacity: 1, transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(8vh)' : 'translateX(25vw)' }} />
+        <canvas id="webgl-canvas" ref={canvasRef} style={{ opacity: 1, transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(8vh)' : 'translateX(22.5vw)' }} />
 
         {/* Fixed Hero Wrapper (Moved outside pin container to prevent flicker) */}
         <div className="fixed-hero-wrapper">
-          <div className="hero-center-block" ref={centerBlockRef} style={{ transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(-18vh)' : 'translateX(-26vw)' }}>
+          <div className="hero-center-block" ref={centerBlockRef} style={{ transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(-18vh)' : 'translateX(-22.5vw)' }}>
             <h1 className="headline">
               Preserve Today.<br />
               <span>Profit Tomorrow.</span>
