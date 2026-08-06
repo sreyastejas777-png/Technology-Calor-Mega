@@ -378,8 +378,8 @@ export default function Technology() {
           gsap.set('.hero-center-block', { y: '-18vh' });
           gsap.set('#webgl-canvas', { opacity: 1, y: '8vh' });
         } else {
-          gsap.set('.hero-center-block', { x: '-24vw' });
-          gsap.set('#webgl-canvas', { opacity: 1, x: '23vw' });
+          gsap.set('.hero-center-block', { x: '-20vw' });
+          gsap.set('#webgl-canvas', { opacity: 1, x: '20vw' });
         }
 
         // -- HOLD STATE FOR FIRST SCROLL (Allowing user to read text before phase transitions start) --
@@ -485,11 +485,11 @@ export default function Technology() {
       {/* Hero Section Container (Pinned) */}
       <div id="hero-scroll-container" ref={containerRef} className="hero">
         {/* WebGL 3D Canvas */}
-        <canvas id="webgl-canvas" ref={canvasRef} style={{ opacity: 1, transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(8vh)' : 'translateX(23vw)' }} />
+        <canvas id="webgl-canvas" ref={canvasRef} style={{ opacity: 1, transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(8vh)' : 'translateX(20vw)' }} />
 
         {/* Fixed Hero Wrapper (Moved outside pin container to prevent flicker) */}
         <div className="fixed-hero-wrapper">
-          <div className="hero-center-block" ref={centerBlockRef} style={{ transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(-18vh)' : 'translateX(-24vw)' }}>
+          <div className="hero-center-block" ref={centerBlockRef} style={{ transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(-18vh)' : 'translateX(-20vw)' }}>
             <h1 className="headline">
               Preserve Today.<br />
               <span>Profit Tomorrow.</span>
