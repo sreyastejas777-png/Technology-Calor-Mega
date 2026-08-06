@@ -37,12 +37,6 @@ export default function FeatureCard({ icon: Icon, title, description, index = 0 
           {description}
         </p>
       </div>
-
-      {/* Bottom subtle indicator tag */}
-      <div className="relative z-10 mt-3.5 pt-2.5 border-t border-primary/5 dark:border-white/5 flex items-center justify-between text-[11px] sm:text-xs font-semibold text-secondary dark:text-accent">
-        <span className="opacity-75 group-hover:opacity-100 transition-opacity">Engineered for Scale</span>
-        <span className="transform translate-x-0 group-hover:translate-x-1 transition-transform duration-200">→</span>
-      </div>
     </motion.div>
   );
 }
