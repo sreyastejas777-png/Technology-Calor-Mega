@@ -4,7 +4,7 @@ export default function TrustMarquee() {
   const track = [...applications, ...applications];
 
   return (
-    <div className="overflow-hidden border-y border-primary/10 dark:border-white/10 bg-white dark:bg-white/[0.03] py-6 sm:py-6">
+    <div className="relative z-20 overflow-hidden border-y border-primary/10 dark:border-white/10 bg-white dark:bg-[#07130f] py-6 sm:py-6 shadow-sm">
       <div className="marquee-track">
         {track.map((item, i) => (
           <div

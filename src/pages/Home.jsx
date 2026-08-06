@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -34,10 +34,55 @@ const homeCategories = ['All Featured', 'Fruits', 'Spices and Herbs', 'Plantatio
 export default function Home() {
   const [selectedApp, setSelectedApp] = useState(null);
   const [activeCategory, setActiveCategory] = useState('All Featured');
+  const springConfig = { damping: 25, stiffness: 100, mass: 0.15, restDelta: 0.001 };
+
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const heroImageY = useTransform(scrollYProgress, [0, 1], [0, 90]);
-  const heroTextY = useTransform(scrollYProgress, [0, 1], [0, 40]);
+  const smoothHeroProgress = useSpring(scrollYProgress, springConfig);
+  const heroImageY = useTransform(smoothHeroProgress, [0, 1], [0, 90]);
+  const heroTextY = useTransform(smoothHeroProgress, [0, 1], [0, 40]);
+
+  const statsRef = useRef(null);
+  const { scrollYProgress: statsScrollProgress } = useScroll({
+    target: statsRef,
+    offset: ['start end', 'center center'],
+  });
+  const smoothStatsProgress = useSpring(statsScrollProgress, springConfig);
+  const statsScale = useTransform(smoothStatsProgress, [0, 1], [0.96, 1]);
+  const statsOpacity = useTransform(smoothStatsProgress, [0, 0.4, 1], [0.4, 0.85, 1]);
+
+  const whyChooseRef = useRef(null);
+  const { scrollYProgress: whyScrollProgress } = useScroll({
+    target: whyChooseRef,
+    offset: ['start end', 'center center'],
+  });
+  const smoothWhyProgress = useSpring(whyScrollProgress, springConfig);
+  const whyY = useTransform(smoothWhyProgress, [0, 1], [60, 0]);
+  const whyScale = useTransform(smoothWhyProgress, [0, 1], [0.95, 1]);
+  const whyOpacity = useTransform(smoothWhyProgress, [0, 0.35, 1], [0.35, 0.85, 1]);
+  const whyRotateBg = useTransform(smoothWhyProgress, [0, 1], [-20, 20]);
+
+  const testiFaqSectionRef = useRef(null);
+  const { scrollYProgress: testiFaqScroll } = useScroll({
+    target: testiFaqSectionRef,
+    offset: ['start end', 'end start'],
+  });
+  const smoothTestiFaqScroll = useSpring(testiFaqScroll, { damping: 26, stiffness: 85, mass: 0.15, restDelta: 0.001 });
+
+  // Multi-layer Parallax transforms with spring-smoothed motion
+  const parallaxBlobY1 = useTransform(smoothTestiFaqScroll, [0, 1], [-120, 160]);
+  const parallaxBlobY2 = useTransform(smoothTestiFaqScroll, [0, 1], [140, -140]);
+  const parallaxRotate = useTransform(smoothTestiFaqScroll, [0, 1], [-25, 25]);
+
+  const testiHeadingY = useTransform(smoothTestiFaqScroll, [0, 0.4, 0.7], [30, 0, -40]);
+  const testiHeadingOpacity = useTransform(smoothTestiFaqScroll, [0, 0.2, 0.5, 0.75], [0.3, 1, 1, 0.4]);
+  const cardsOddY = useTransform(smoothTestiFaqScroll, [0.05, 0.45, 0.8], [40, 0, -70]);
+  const cardsEvenY = useTransform(smoothTestiFaqScroll, [0.05, 0.45, 0.8], [80, 0, -35]);
+
+  const faqSectionY = useTransform(smoothTestiFaqScroll, [0.3, 0.75], [120, 0]);
+  const faqScale = useTransform(smoothTestiFaqScroll, [0.3, 0.75], [0.93, 1]);
+  const faqOpacity = useTransform(smoothTestiFaqScroll, [0.3, 0.55, 0.95], [0.15, 1, 1]);
+  const faqAccordionY = useTransform(smoothTestiFaqScroll, [0.35, 0.8], [70, 0]);
 
   const displayedCrops = activeCategory === 'All Featured'
     ? applications.slice(0, 12)
@@ -133,7 +178,7 @@ export default function Home() {
               <FloatingBadge
                 icon={FaThermometerHalf}
                 label="Digital Precision Control"
-                className="-right-4 sm:-right-6 bottom-8 sm:bottom-10"
+                className="-right-2 sm:-right-4 lg:-right-6 bottom-8 sm:bottom-10"
                 delay={0.3}
                 floatDelay={2}
               />
@@ -154,47 +199,74 @@ export default function Home() {
       <TrustMarquee />
 
       {/* STATS */}
-      <section className="relative flex min-h-[100svh] w-full items-center justify-center px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 py-6 sm:py-8 overflow-hidden">
+      <section
+        ref={statsRef}
+        className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 py-10 sm:py-14 md:py-16 overflow-hidden"
+      >
         {/* Subtle Ambient Golden Bloom */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-secondary/10 dark:bg-accent/10 blur-[130px] rounded-full pointer-events-none" />
 
-        {/* Blurred Glass Frame with Soft Light Shade Moving Light */}
-        <div className="relative z-10 w-full max-w-[1600px] p-[1.5px] rounded-3xl sm:rounded-[2.5rem] overflow-hidden bg-secondary/15 dark:bg-white/10 shadow-[0_20px_60px_-15px_rgba(184,133,15,0.15)] dark:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.65)]">
-          {/* Gentle Light Shade Moving Glow */}
-          <div className="animate-border-beam absolute -inset-[200%] [background:conic-gradient(from_0deg_at_50%_50%,transparent_0deg,transparent_260deg,rgba(184,133,15,0.12)_290deg,rgba(251,191,36,0.35)_340deg,rgba(255,255,255,0.6)_360deg)] pointer-events-none opacity-60" />
+        {/* 4 Clean Stat Cards Grid */}
+        <motion.div
+          style={{ scale: statsScale, opacity: statsOpacity }}
+          className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6"
+        >
+          {stats.map((s, idx) => (
+            <StatCard key={s.label} {...s} index={idx} />
+          ))}
+        </motion.div>
 
-          {/* Inner Frosted Glass Body */}
-          <div className="relative w-full rounded-[calc(1.5rem-1.5px)] sm:rounded-[calc(2.5rem-1.5px)] bg-white/60 dark:bg-[#0c1613]/90 backdrop-blur-3xl p-5 sm:p-7 md:p-9 lg:p-11 overflow-hidden">
-            {/* Background Dot Grid */}
-            <div className="dot-grid absolute inset-0 opacity-25 pointer-events-none" />
-
-            {/* 4 Clean Stat Cards */}
-            <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
-              {stats.map((s, idx) => (
-                <StatCard key={s.label} {...s} index={idx} />
-              ))}
-            </div>
-          </div>
+        {/* Visual Connector Pulse to Why Choose Section */}
+        <div className="mt-10 sm:mt-14 flex flex-col items-center justify-center pointer-events-none">
+          <motion.div
+            initial={{ scaleY: 0, opacity: 0 }}
+            whileInView={{ scaleY: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="h-8 sm:h-12 w-[1.5px] bg-gradient-to-b from-secondary/40 via-accent/30 to-transparent"
+          />
+          <div className="h-1.5 w-1.5 rounded-full bg-accent/60 animate-pulse" />
         </div>
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="relative flex min-h-[100svh] w-full flex-col justify-center items-center overflow-hidden bg-white/40 dark:bg-white/[0.01] backdrop-blur-[2px] px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 py-6 sm:py-8">
+      <section
+        ref={whyChooseRef}
+        className="relative flex min-h-[100svh] w-full flex-col justify-center items-center overflow-hidden bg-white/40 dark:bg-white/[0.01] backdrop-blur-[2px] px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 py-8 sm:py-10"
+      >
         <GradientBlobs variant="section" />
 
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto">
+        {/* Interactive Rotating Tech Diagram */}
+        <motion.svg
+          style={{ rotate: whyRotateBg }}
+          className="pointer-events-none absolute right-8 sm:right-16 top-10 h-72 sm:h-96 w-72 sm:w-96 text-secondary/10 dark:text-white/5 opacity-35"
+          viewBox="0 0 200 200"
+          fill="none"
+          stroke="currentColor"
+        >
+          <circle cx="100" cy="100" r="90" strokeWidth="1" strokeDasharray="3 3" />
+          <circle cx="100" cy="100" r="60" strokeWidth="0.75" />
+          <circle cx="100" cy="100" r="30" strokeWidth="0.5" strokeDasharray="6 2" />
+          <path d="M 10 100 L 190 100 M 100 10 L 100 190" strokeWidth="0.5" strokeDasharray="4 4" />
+          <path d="M 36.4 36.4 L 163.6 163.6 M 36.4 163.6 L 163.6 36.4" strokeWidth="0.5" strokeDasharray="8 8" />
+        </motion.svg>
+
+        <motion.div
+          style={{ y: whyY, scale: whyScale, opacity: whyOpacity }}
+          className="relative z-10 w-full max-w-[1600px] mx-auto"
+        >
           <SectionHeading
             eyebrow="The CALOR MEGA Difference"
             title="Why Choose CALOR MEGA"
             subtitle="Every machine is engineered for consistency, efficiency and food safety at scale."
-            className="mb-5 sm:mb-6 lg:mb-8 max-w-2xl mx-auto text-center"
+            className="mb-6 sm:mb-8 lg:mb-10 max-w-2xl mx-auto text-center"
           />
           <div className="grid gap-4 sm:gap-5 lg:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {whyChooseUs.map((item, i) => (
               <FeatureCard key={item.title} {...item} index={i} />
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* APPLICATIONS */}
@@ -248,34 +320,67 @@ export default function Home() {
       <div className="bg-white/40 dark:bg-white/[0.01] backdrop-blur-[2px]">
         <MachineOverview />
       </div>
+      {/* TESTIMONIALS & FAQ PARALLAX CONTAINER */}
+      <div ref={testiFaqSectionRef} className="relative overflow-hidden transform-gpu">
+        {/* Ambient Parallax Background Layer */}
+        <motion.div
+          style={{ y: parallaxBlobY1, rotate: parallaxRotate }}
+          className="pointer-events-none absolute -left-20 top-1/4 h-96 w-96 rounded-full bg-accent/10 dark:bg-accent/15 blur-3xl transform-gpu"
+        />
+        <motion.div
+          style={{ y: parallaxBlobY2 }}
+          className="pointer-events-none absolute -right-20 top-1/2 h-[28rem] w-[28rem] rounded-full bg-secondary/15 dark:bg-secondary/20 blur-3xl transform-gpu"
+        />
 
-      {/* TESTIMONIALS */}
-      <section className="relative flex flex-col justify-center items-center overflow-hidden px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 py-14 sm:py-16 md:py-20">
-        <GradientBlobs variant="section" />
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto">
-          <SectionHeading
-            eyebrow="Why Farmers Trust Us"
-            title="What Our Customers Say"
-            subtitle="Real results from farmers, processors and exporters using CALOR MEGA."
-            className="mb-6 sm:mb-8 max-w-2xl mx-auto text-center"
-          />
-          <div className="grid gap-4 sm:gap-5 lg:gap-5.5 xl:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-            {testimonials.map((t, idx) => (
-              <TestimonialCard key={t.name} {...t} index={idx} />
-            ))}
+        {/* TESTIMONIALS */}
+        <section className="relative z-10 flex flex-col justify-center items-center px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 pt-14 sm:pt-20 pb-10 sm:pb-14">
+          <div className="w-full max-w-[1600px] mx-auto">
+            <motion.div style={{ y: testiHeadingY, opacity: testiHeadingOpacity }} className="transform-gpu">
+              <SectionHeading
+                eyebrow="Why Farmers Trust Us"
+                title="What Our Customers Say"
+                subtitle="Real results from farmers, processors and exporters using CALOR MEGA."
+                className="mb-8 sm:mb-10 max-w-2xl mx-auto text-center"
+              />
+            </motion.div>
+
+            <div className="grid gap-4 sm:gap-5 lg:gap-5.5 xl:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+              {testimonials.map((t, idx) => (
+                <motion.div
+                  key={t.name}
+                  style={{ y: idx % 2 === 0 ? cardsOddY : cardsEvenY }}
+                  className="h-full transform-gpu"
+                >
+                  <TestimonialCard {...t} index={idx} />
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* FAQ */}
-      <section className="mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-center px-5 py-14 md:px-8">
-        <SectionHeading eyebrow="Questions and Answers" title="Frequently Asked Questions" />
-        <FAQAccordion items={faqs} />
-      </section>
+        {/* FAQ WITH PARALLAX CURTAIN ELEVATION */}
+        <motion.section
+          style={{ y: faqSectionY, scale: faqScale, opacity: faqOpacity }}
+          className="relative z-20 flex w-full flex-col justify-center items-center px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 pt-8 sm:pt-14 pb-16 sm:pb-20 bg-white/60 dark:bg-white/[0.02] backdrop-blur-md border-t border-primary/5 dark:border-white/10 shadow-[0_-20px_50px_-20px_rgba(0,0,0,0.06)] dark:shadow-[0_-20px_50px_-20px_rgba(0,0,0,0.5)] transform-gpu"
+        >
+          <div className="w-full max-w-[1600px] mx-auto flex flex-col justify-center items-center">
+            <SectionHeading 
+              eyebrow="Questions and Answers" 
+              title="Frequently Asked Questions" 
+              className="mb-6 sm:mb-8 max-w-3xl mx-auto text-center"
+            />
+            <motion.div style={{ y: faqAccordionY }} className="w-full transform-gpu">
+              <FAQAccordion items={faqs} />
+            </motion.div>
+          </div>
+        </motion.section>
+      </div>
 
       {/* NEWSLETTER */}
-      <section className="mx-auto flex max-w-5xl flex-col justify-center px-5 py-16 md:py-20 md:px-8">
-        <Newsletter />
+      <section className="relative flex w-full flex-col justify-center items-center px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 py-12 sm:py-16 md:py-20 overflow-hidden">
+        <div className="relative z-10 w-full max-w-[1600px] mx-auto">
+          <Newsletter />
+        </div>
       </section>
 
       <ApplicationModal
