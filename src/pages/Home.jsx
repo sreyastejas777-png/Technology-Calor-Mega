@@ -258,7 +258,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="The CALOR MEGA Difference"
             title="Why Choose CALOR MEGA"
-            subtitle="Every machine is engineered for consistency, efficiency and food safety at scale."
+            subtitle="Precision moisture control, peak energy efficiency, and certified food safety."
             className="mb-6 sm:mb-8 max-w-2xl mx-auto text-center"
           />
           <div className="grid gap-3.5 sm:gap-4.5 lg:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
