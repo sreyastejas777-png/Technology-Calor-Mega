@@ -1,0 +1,704 @@
+import React, { useEffect, useRef, useState } from 'react';
+import * as THREE from 'three';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { FaFileDownload, FaWhatsapp, FaArrowRight, FaChevronDown, FaUndo } from 'react-icons/fa';
+import './Technology.css';
+
+gsap.registerPlugin(ScrollTrigger);
+
+export default function Technology() {
+  const canvasRef = useRef(null);
+  const containerRef = useRef(null);
+  const centerBlockRef = useRef(null);
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const [isReversing, setIsReversing] = useState(false);
+  const [showRestartPhases, setShowRestartPhases] = useState(false);
+
+  // ─── ZOOM LOCK (Applies strictly to Technology page) ───
+  useEffect(() => {
+    // 1. Block Ctrl + Mouse Wheel zoom and Trackpad pinch zoom
+    const handleWheel = (e) => {
+      if (e.ctrlKey) {
+        e.preventDefault();
+      }
+    };
+
+    // 2. Block Keyboard Zoom (Ctrl + '+', Ctrl + '-', Ctrl + '0', Ctrl + '=', Numpad +/-)
+    const handleKeyDown = (e) => {
+      if (
+        e.ctrlKey &&
+        (e.key === '=' ||
+          e.key === '-' ||
+          e.key === '+' ||
+          e.key === '0' ||
+          e.key === '_' ||
+          e.code === 'NumpadAdd' ||
+          e.code === 'NumpadSubtract')
+      ) {
+        e.preventDefault();
+      }
+    };
+
+    // 3. Block multi-touch pinch to zoom
+    const handleTouchMove = (e) => {
+      if (e.touches && e.touches.length > 1) {
+        e.preventDefault();
+      }
+    };
+
+    // 4. Block gesture zoom (Safari / Apple trackpads)
+    const handleGesture = (e) => {
+      e.preventDefault();
+    };
+
+    // Attach non-passive event listeners to enforce zoom prevention
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('gesturestart', handleGesture);
+    document.addEventListener('gesturechange', handleGesture);
+    document.addEventListener('gestureend', handleGesture);
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('gesturestart', handleGesture);
+      document.removeEventListener('gesturechange', handleGesture);
+      document.removeEventListener('gestureend', handleGesture);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Disable automatic browser scroll restoration to prevent timing/calculation bugs
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    // Reset scroll position to top instantly to ensure correct GSAP calculations
+    window.scrollTo(0, 0);
+
+    // Clear parent <main> transform to allow correct fixed positioning and GSAP pinning
+    const mainElement = document.querySelector('main');
+    let originalTransform = '';
+    let originalFilter = '';
+    if (mainElement) {
+      originalTransform = mainElement.style.transform;
+      originalFilter = mainElement.style.filter;
+    }
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    // ─── THREE.JS SCENE SETUP ───
+    const scene = new THREE.Scene();
+    const isDark = document.documentElement.classList.contains('dark');
+    const bgHex = isDark ? 0x0c0c0e : 0xf6f3ea;
+    scene.fog = new THREE.FogExp2(bgHex, 0.035);
+
+    const camera = new THREE.PerspectiveCamera(39, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 1.35, 12.6);
+    camera.lookAt(0, 1.25, 0);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+
+    // ─── REUSABLE MATERIALS ───
+    const matBody = new THREE.MeshStandardMaterial({ color: 0x8a8c8e, metalness: 0.4, roughness: 0.6 });
+    const matDoor = new THREE.MeshStandardMaterial({ color: 0x909295, metalness: 0.35, roughness: 0.5 });
+    const matBrushedSteel = new THREE.MeshStandardMaterial({ color: 0xd0d0d0, metalness: 0.9, roughness: 0.2 });
+    const matInterior = new THREE.MeshStandardMaterial({ color: 0xe0d8ba, metalness: 0.6, roughness: 0.3 });
+    const matTray = new THREE.MeshStandardMaterial({ color: 0xbcbcbc, metalness: 0.9, roughness: 0.2, transparent: true, opacity: 0.85 });
+    const matDisplayBg = new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.3, roughness: 0.5 });
+    const matDisplayLED = new THREE.MeshStandardMaterial({ color: 0xff3300, emissive: 0xff2200, emissiveIntensity: 2.0 });
+    const matRedButton = new THREE.MeshStandardMaterial({ color: 0xdd0000, emissive: 0x990000, emissiveIntensity: 0.5, metalness: 0.4, roughness: 0.3 });
+    const matGauge = new THREE.MeshStandardMaterial({ color: 0xeeeeee, metalness: 0.3, roughness: 0.4 });
+    const matGaugeRim = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.9, roughness: 0.15 });
+    const matWheel = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.3, roughness: 0.7 });
+    const matWheelBracket = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.7, roughness: 0.3 });
+    const matGrille = new THREE.MeshStandardMaterial({ color: 0x6a6a6a, metalness: 0.6, roughness: 0.4 });
+
+    // ─── GEOMETRY DIMENSIONS ───
+    const BODY_W = 3.6, BODY_H = 4.8, BODY_D = 3.2, WALL = 0.08, PANEL_W = 0.35;
+    const DOOR_W = (BODY_W - PANEL_W) / 2;
+    const DOOR_H = BODY_H * 0.65;
+    const DOOR_D = 0.06;
+
+    const machineGroup = new THREE.Group();
+    scene.add(machineGroup);
+
+    // Main Outer Frame
+    const backGeo = new THREE.BoxGeometry(BODY_W, BODY_H, WALL);
+    const back = new THREE.Mesh(backGeo, matBody);
+    back.position.set(0, BODY_H / 2, -BODY_D / 2);
+    machineGroup.add(back);
+
+    const topGeo = new THREE.BoxGeometry(BODY_W, WALL, BODY_D);
+    const top = new THREE.Mesh(topGeo, matBody);
+    top.position.set(0, BODY_H, 0);
+    machineGroup.add(top);
+
+    const bottom = new THREE.Mesh(topGeo, matBody);
+    bottom.position.set(0, 0, 0);
+    machineGroup.add(bottom);
+
+    const sideGeo = new THREE.BoxGeometry(WALL, BODY_H, BODY_D);
+    const leftSide = new THREE.Mesh(sideGeo, matBody);
+    leftSide.position.set(-BODY_W / 2, BODY_H / 2, 0);
+    machineGroup.add(leftSide);
+
+    const rightSide = new THREE.Mesh(sideGeo, matBody);
+    rightSide.position.set(BODY_W / 2, BODY_H / 2, 0);
+    machineGroup.add(rightSide);
+
+    const interiorGeo = new THREE.BoxGeometry(BODY_W - WALL * 2, BODY_H - WALL * 2, 0.02);
+    const interior = new THREE.Mesh(interiorGeo, matInterior);
+    interior.position.set(0, BODY_H / 2, -BODY_D / 2 + WALL + 0.01);
+    machineGroup.add(interior);
+
+    // Doors & Hinged Pivots
+    const doorY = BODY_H * 0.35;
+    const doorZ = BODY_D / 2;
+    const doorGeo = new THREE.BoxGeometry(DOOR_W, DOOR_H, DOOR_D);
+
+    const leftDoorPivot = new THREE.Group();
+    leftDoorPivot.position.set(-PANEL_W / 2, doorY, doorZ);
+    machineGroup.add(leftDoorPivot);
+
+    const leftDoor = new THREE.Mesh(doorGeo, matDoor);
+    leftDoor.position.set(-DOOR_W / 2, 0, DOOR_D / 2);
+    leftDoorPivot.add(leftDoor);
+
+    const rightDoorPivot = new THREE.Group();
+    rightDoorPivot.position.set(PANEL_W / 2, doorY, doorZ);
+    machineGroup.add(rightDoorPivot);
+
+    const rightDoor = new THREE.Mesh(doorGeo, matDoor);
+    rightDoor.position.set(DOOR_W / 2, 0, DOOR_D / 2);
+    rightDoorPivot.add(rightDoor);
+
+    // Center Siemens Control Panel Strip
+    const controlPanelGroup = new THREE.Group();
+    controlPanelGroup.position.set(0, doorY, doorZ + 0.01);
+    machineGroup.add(controlPanelGroup);
+
+    const stripGeo = new THREE.BoxGeometry(PANEL_W, BODY_H * 0.75, 0.03);
+    const strip = new THREE.Mesh(stripGeo, matBrushedSteel);
+    controlPanelGroup.add(strip);
+
+    const displayBgGeo = new THREE.BoxGeometry(0.2, 0.12, 0.02);
+    const displayBg = new THREE.Mesh(displayBgGeo, matDisplayBg);
+    displayBg.position.set(0, DOOR_H * 0.25, 0.025);
+    controlPanelGroup.add(displayBg);
+
+    const ledGeo = new THREE.BoxGeometry(0.14, 0.04, 0.005);
+    const led1 = new THREE.Mesh(ledGeo, matDisplayLED);
+    led1.position.set(0, DOOR_H * 0.27, 0.04);
+    controlPanelGroup.add(led1);
+
+    const buttonGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.025, 16);
+    const button = new THREE.Mesh(buttonGeo, matRedButton);
+    button.rotation.x = Math.PI / 2;
+    button.position.set(0, DOOR_H * 0.12, 0.03);
+    controlPanelGroup.add(button);
+
+    // Pressure Gauges
+    [0.0, -0.12].forEach(yOffset => {
+      const rimGeo = new THREE.TorusGeometry(0.08, 0.008, 8, 32);
+      const rim = new THREE.Mesh(rimGeo, matGaugeRim);
+      rim.position.set(0, DOOR_H * yOffset, 0.03);
+      controlPanelGroup.add(rim);
+
+      const faceGeo = new THREE.CircleGeometry(0.075, 32);
+      const face = new THREE.Mesh(faceGeo, matGauge);
+      face.position.set(0, DOOR_H * yOffset, 0.028);
+      controlPanelGroup.add(face);
+    });
+
+    // Internal Trays & Heating Elements
+    const trayCount = 5;
+    const trayW = DOOR_W - 0.15;
+    const trayD = BODY_D - 0.3;
+    const trayGeo = new THREE.BoxGeometry(trayW, 0.02, trayD);
+    const spacing = (DOOR_H * 0.85) / (trayCount + 1);
+
+    const traysLeft = [];
+    const traysRight = [];
+
+    for (let i = 0; i < trayCount; i++) {
+      const yPos = -DOOR_H * 0.4 + spacing * (i + 1);
+
+      const trayL = new THREE.Mesh(trayGeo, matTray.clone());
+      trayL.position.set(-PANEL_W / 2 - DOOR_W / 2, BODY_H * 0.35 + yPos, 0);
+      machineGroup.add(trayL);
+      traysLeft.push(trayL);
+
+      const trayR = new THREE.Mesh(trayGeo, matTray.clone());
+      trayR.position.set(PANEL_W / 2 + DOOR_W / 2, BODY_H * 0.35 + yPos, 0);
+      machineGroup.add(trayR);
+      traysRight.push(trayR);
+    }
+
+    // Top & Side Ventilation Grilles
+    const slotCount = 8;
+    const slotW = BODY_W * 0.6;
+    const slotH = 0.015;
+    const slotGap = 0.03;
+    const slotGeo = new THREE.BoxGeometry(slotW, slotH, 0.01);
+
+    for (let i = 0; i < slotCount; i++) {
+      const slatTop = new THREE.Mesh(slotGeo, matGrille);
+      slatTop.position.set(0, BODY_H - 0.15 - i * slotGap, BODY_D / 2 + 0.01);
+      machineGroup.add(slatTop);
+    }
+
+    // Wheels
+    const wheelPositions = [
+      [-BODY_W / 2 + 0.25, -0.15, BODY_D / 2 - 0.25],
+      [BODY_W / 2 - 0.25, -0.15, BODY_D / 2 - 0.25],
+      [-BODY_W / 2 + 0.25, -0.15, -BODY_D / 2 + 0.25],
+      [BODY_W / 2 - 0.25, -0.15, -BODY_D / 2 + 0.25]
+    ];
+
+    wheelPositions.forEach(pos => {
+      const bracket = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, 0.08), matWheelBracket);
+      bracket.position.set(pos[0], pos[1] + 0.06, pos[2]);
+      machineGroup.add(bracket);
+
+      const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.04, 16), matWheel);
+      wheel.rotation.x = Math.PI / 2;
+      wheel.position.set(pos[0], pos[1], pos[2]);
+      machineGroup.add(wheel);
+    });
+
+    machineGroup.scale.set(1.10, 1.10, 1.10);
+    machineGroup.position.y = -1.35;
+    machineGroup.rotation.y = -0.15; // Slight initial angle for closed state
+
+    // ─── LIGHTING SETUP ───
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    keyLight.position.set(5, 8, 6);
+    keyLight.castShadow = true;
+    scene.add(keyLight);
+
+    const fillLight = new THREE.PointLight(0x88aacc, 0.6, 20);
+    fillLight.position.set(-6, 4, 3);
+    scene.add(fillLight);
+
+    const internalLightL = new THREE.PointLight(0xffdd88, 0, 5); // Start at 0 intensity
+    internalLightL.position.set(-PANEL_W / 2 - DOOR_W / 2, BODY_H * 0.7, 0);
+    machineGroup.add(internalLightL);
+
+    const internalLightR = new THREE.PointLight(0xffdd88, 0, 5); // Start at 0 intensity
+    internalLightR.position.set(PANEL_W / 2 + DOOR_W / 2, BODY_H * 0.7, 0);
+    machineGroup.add(internalLightR);
+
+    // Initial doors completely closed
+    leftDoorPivot.rotation.y = 0;
+    rightDoorPivot.rotation.y = 0;
+
+    // Ground Plane Shadow
+    const groundGeo = new THREE.PlaneGeometry(30, 30);
+    const groundMat = new THREE.ShadowMaterial({ opacity: 0.3 });
+    const ground = new THREE.Mesh(groundGeo, groundMat);
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -1.48;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // ─── ANIMATION LOOP ───
+    let reqId;
+    const animate = () => {
+      reqId = requestAnimationFrame(animate);
+
+      if (machineGroup && machineGroup.userData.thermalActive) {
+        const t = Date.now() * 0.001;
+        [...traysLeft, ...traysRight].forEach((tray, i) => {
+          const heat = (Math.sin(t * 2.5 + i * 0.6) + 1) / 2;
+          tray.material.color.setRGB(0.85 + heat * 0.15, 0.3 + heat * 0.5, heat * 0.05);
+        });
+      }
+
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    // ─── RESIZE LISTENER ───
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    // ─── GSAP MASTER SCROLLTIMELINE ───
+    const isMobile = window.innerWidth < 768;
+
+    // Initialize GSAP & ScrollTrigger after route transition and layout have fully settled
+    let ctx;
+    const initTimer = setTimeout(() => {
+      if (mainElement) {
+        mainElement.style.transform = 'none';
+        mainElement.style.filter = 'none';
+      }
+      ctx = gsap.context(() => {
+        const mainTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: '#hero-scroll-container',
+            start: 'top top',
+            end: '+=350%',
+            pin: true,
+            scrub: 1.2,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+              const p = self.progress;
+              setIsScrolledToBottom(p >= 0.98);
+              setShowRestartPhases(p > 0.03 && p < 0.98);
+
+              // Track reverse scrolling direction
+              if (self.direction === -1 && p > 0.1 && p < 0.95) {
+                setIsReversing(true);
+              } else if (self.direction === 1 || p <= 0.1 || p >= 0.95) {
+                setIsReversing(false);
+              }
+            }
+          }
+        });
+
+        // 1. Initial State Setup: Text shifted to left, 3D object shifted to right
+        if (isMobile) {
+          gsap.set('.hero-center-block', { y: '-18vh' });
+          gsap.set('#webgl-canvas', { opacity: 1, y: '8vh' });
+        } else {
+          gsap.set('.hero-center-block', { x: '-22.5vw' });
+          gsap.set('#webgl-canvas', { opacity: 1, x: '22.5vw' });
+        }
+
+        // -- HOLD STATE FOR FIRST SCROLL (Allowing user to read text before phase transitions start) --
+        mainTl.to({}, { duration: 0.5 }, 0.5); // dummy tween to pad timeline
+
+        // Fade out text when scroll begins to approach phase 1
+        mainTl.to('.hero-center-block', { autoAlpha: 0, duration: 0.5 }, 1.5);
+
+        // Center the canvas smoothly and transition machine size to standard phase scale
+        if (!isMobile) {
+          mainTl.to('#webgl-canvas', { x: '0vw', duration: 0.8, ease: 'power1.inOut' }, 1.8);
+        }
+        mainTl.to(machineGroup.scale, { x: 1.0, y: 1.0, z: 1.0, duration: 0.8, ease: 'power1.inOut' }, 1.8);
+        mainTl.to(machineGroup.position, { y: -1.2, duration: 0.8, ease: 'power1.inOut' }, 1.8);
+        mainTl.to(camera.position, { x: 0, y: 1.4, z: 14.2, duration: 0.8, ease: 'power1.inOut' }, 1.8);
+
+        // 2. Phase 1: Structure & Controls (Model & Parts Callouts Appear TOGETHER)
+        // Model rotates to center
+        mainTl.to(machineGroup.rotation, { y: 0, duration: 0.8, ease: 'power1.inOut' }, 2.2);
+
+        // Doors physically swing open
+        mainTl.to(leftDoorPivot.rotation, { y: -Math.PI * 0.55, duration: 1.0, ease: 'power2.inOut' }, 2.5);
+        mainTl.to(rightDoorPivot.rotation, { y: Math.PI * 0.55, duration: 1.0, ease: 'power2.inOut' }, 2.5);
+
+        // Internal warm lights fade up as doors open
+        mainTl.to(internalLightL, { intensity: 1.5, duration: 1 }, 2.7);
+        mainTl.to(internalLightR, { intensity: 1.5, duration: 1 }, 2.7);
+
+        // 3. Phase 2: Thermal Engine & Airflow (Rotate to angled view, thermal pulse)
+        mainTl.to(machineGroup.rotation, { y: -0.45, duration: 1.2 }, 4.0);
+        mainTl.to(camera.position, { x: 0.4, z: 14.2, y: 1.4, duration: 1.2 }, 4.0);
+        mainTl.call(() => { machineGroup.userData.thermalActive = true; }, null, 4.5);
+
+        // 4. Phase 3: The Dynamic ROI Engine & Smart Control (Close doors, pull back, disable thermal)
+        mainTl.call(() => {
+          machineGroup.userData.thermalActive = false;
+          [...machineGroup.children].forEach(child => {
+            if (child.geometry && child.geometry.type === 'BoxGeometry' && child.material.transparent) {
+              child.material.color.setHex(0xbcbcbc);
+              child.material.emissiveIntensity = 0;
+            }
+          });
+        }, null, 7.0);
+        mainTl.to(leftDoorPivot.rotation, { y: 0, duration: 1, ease: 'power2.inOut' }, 7.0);
+        mainTl.to(rightDoorPivot.rotation, { y: 0, duration: 1, ease: 'power2.inOut' }, 7.0);
+        mainTl.to(internalLightL, { intensity: 0, duration: 0.5 }, 7.0);
+        mainTl.to(internalLightR, { intensity: 0, duration: 0.5 }, 7.0);
+        mainTl.to(machineGroup.rotation, { y: 0, duration: 1.0 }, 7.0);
+        mainTl.to(camera.position, { x: 0, z: 14.8, y: 1.3, duration: 1.0 }, 7.0);
+
+        // ─── UI UX Boxes (Phase Groups) Synchronized with 3D Timeline ───
+        // Phase 1 (Delay slightly so it appears as doors are opening)
+        mainTl.fromTo('.phase-1-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 3.0);
+        mainTl.to('.phase-1-group', { autoAlpha: 0, duration: 0.3 }, 4.0);
+
+        // Phase 2
+        mainTl.fromTo('.phase-2-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 4.3);
+        mainTl.to('.phase-2-group', { autoAlpha: 0, duration: 0.3 }, 6.8);
+
+        // Phase 3 (Combined final phase)
+        mainTl.fromTo('.phase-3-group', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 7.1);
+
+        // Hold Phase 3 on screen slightly longer before unpinning
+        mainTl.to({}, { duration: 1.5 });
+      });
+
+      // Force a manual refresh to calculate coordinates correctly
+      ScrollTrigger.refresh();
+    }, 800);
+
+    return () => {
+      if (mainElement) {
+        mainElement.style.transform = originalTransform;
+        mainElement.style.filter = originalFilter;
+      }
+      if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'auto';
+      }
+      clearTimeout(initTimer);
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(reqId);
+      renderer.dispose();
+      if (ctx) ctx.revert();
+    };
+  }, []);
+
+  const handleScrollToggle = () => {
+    if (isScrolledToBottom) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const pinDistance = window.innerHeight * 3.5;
+      window.scrollTo({ top: pinDistance + 100, behavior: 'smooth' });
+    }
+  };
+
+  const handleRestartPhases = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsReversing(false);
+  };
+
+  return (
+    <div className="relative w-full bg-bg text-primary-text transition-colors duration-300">
+      {/* Hero Section Container (Pinned) */}
+      <div id="hero-scroll-container" ref={containerRef} className="hero">
+        {/* WebGL 3D Canvas */}
+        <canvas id="webgl-canvas" ref={canvasRef} style={{ opacity: 1, transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(8vh)' : 'translateX(22.5vw)' }} />
+
+        {/* Fixed Hero Wrapper (Moved outside pin container to prevent flicker) */}
+        <div className="fixed-hero-wrapper">
+          <div className="hero-center-block" ref={centerBlockRef} style={{ transform: typeof window !== 'undefined' && window.innerWidth < 768 ? 'translateY(-18vh)' : 'translateX(-22.5vw)' }}>
+            <h1 className="headline">
+              Preserve Today.<br />
+              <span>Profit Tomorrow.</span>
+            </h1>
+            <p>
+              CALOR MEGA Industrial Dehydration Systems deliver premium drying performance with maximum product quality and extended shelf life.
+            </p>
+
+            <div className="hero-stats-mini">
+              <span className="split-stat"><strong>5%</strong> Final Moisture</span>
+              <span className="split-stat"><strong>12+ Months</strong> Shelf Life</span>
+              <span className="split-stat"><strong>Food Grade</strong> SS304 Steel</span>
+              <span className="split-stat"><strong>Industrial</strong> Capacity</span>
+            </div>
+
+            <div className="hero-cta">
+              <a
+                href="https://wa.me/1234567890?text=Hello%2C%20I%20am%20interested%20in%20CALOR%20MEGA.%20Can%20I%20get%20more%20details%3F"
+                className="inline-flex items-center gap-2.5 rounded-full bg-accent px-7 py-3.5 text-base sm:text-lg font-semibold text-white shadow-soft transition-transform hover:scale-105"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaWhatsapp className="text-xl" /> Get a Custom Quote
+              </a>
+              <button
+                onClick={handleScrollToggle}
+                className="inline-flex items-center gap-2.5 rounded-full border border-surface-border bg-surface/60 backdrop-blur-md px-7 py-3.5 text-base sm:text-lg font-semibold text-primary-text shadow-soft transition-transform hover:scale-105"
+              >
+                View Specs <FaArrowRight />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Fixed UI Overlays grouped by phase with golden connecting pointer lines */}
+        <div id="fixed-ui-overlay">
+          {/* Phase 1 Group - Appears TOGETHER with 3D model appearance */}
+          <div className="phase-group phase-1-group">
+            <div className="card-column left">
+              <div className="ui-card card-shell line-right">
+                <h4>SS 304 Stainless Steel Shell</h4>
+                <p>10x10 foot premium food-grade construction. Zero contamination.</p>
+              </div>
+              <div className="ui-card card-foam line-right">
+                <h4>Thermal Insulation</h4>
+                <p>High-density foam retains 99% of internal heat for maximum energy efficiency.</p>
+              </div>
+              <div className="ui-card card-panel line-right">
+                <h4>Siemens PLC Control</h4>
+                <p>Precision PID temperature and humidity control via 10" HMI interface.</p>
+              </div>
+            </div>
+            <div className="card-column right">
+              <div className="ui-card card-trays line-left">
+                <h4>Drying Trays and Coils</h4>
+                <p>Precision electric heating elements and uniform cross-flow blower fans.</p>
+              </div>
+              <div className="ui-card card-fans line-left">
+                <h4>Dual Centrifugal Fans</h4>
+                <p>High-velocity uniform cross-flow aerodynamics for consistent drying.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Phase 2 Group */}
+          <div className="phase-group phase-2-group">
+            <div className="card-column left">
+              <div className="ui-card card-heating line-right">
+                <h4>Electric Heating Elements</h4>
+                <p>Rapid thermal induction reaching optimal drying temperatures in minutes.</p>
+              </div>
+              <div className="ui-card card-probes line-right">
+                <h4>Precision Thermal Probes</h4>
+                <p>Multi-point temperature sensing ensures absolute thermal consistency.</p>
+              </div>
+            </div>
+            <div className="card-column right">
+              <div className="ui-card card-airflow line-left">
+                <h4>360° Cross-Flow Airflow</h4>
+                <p>Engineered aerodynamics eliminate cold spots and speed up batch times.</p>
+              </div>
+              <div className="ui-card card-motor line-left">
+                <h4>Industrial Blower Motors</h4>
+                <p>Continuous heavy-duty operation rated for 50,000+ uninterrupted hours.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Phase 3 Group (Combined Command & ROI) */}
+          <div className="phase-group phase-3-group">
+            <div className="card-column left">
+              <div className="ui-card command-card line-right">
+                <h3 className="text-accent">Precision Command Center</h3>
+                <p>Industrial-grade digital controllers, intuitive LED readouts, and fail-safe analog pressure gauges put you in total control.</p>
+              </div>
+              <div className="ui-card card-exhaust line-right">
+                <h3 style={{ color: '#25D366' }}>Smart Moisture Exhaust</h3>
+                <p>Automated top-venting system expels humidity while retaining thermal energy for maximum processing speed.</p>
+              </div>
+            </div>
+            <div className="card-column right">
+              <div className="ui-card card-sensors line-left">
+                <h3 className="text-accent">Real-time Humidity Sensors</h3>
+                <p>Continuously monitors internal moisture levels to dynamically adjust airflow and maintain the perfect climate.</p>
+              </div>
+              <div className="ui-card roi-card line-left">
+                <h3 style={{ color: '#25D366' }}>Maximum Efficiency</h3>
+                <p>Engineered with dual ventilation grilles to optimize cross-flow aerodynamics. Superior heat retention translates to a faster ROI.</p>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      {/* Floating Restart Phase Option (Visible during all 3D phases, hidden in datasheet) */}
+      <div className={`phase-nav-pill-bar ${showRestartPhases && !isScrolledToBottom ? 'visible' : ''}`}>
+        <button
+          onClick={handleRestartPhases}
+          className="phase-restart-btn"
+          title="Restart 3D Phase Animation from the Beginning"
+          aria-label="Restart 3D Phase Animation"
+        >
+          <FaUndo className="phase-restart-icon" />
+          <span>Restart Phases</span>
+        </button>
+      </div>
+
+
+      {/* Technical Data Sheet Section */}
+      <section id="datasheet" className="datasheet-section">
+        <div className="mx-auto max-w-[1500px] px-6">
+          <div className="datasheet-header">
+            <div className="engineering-label">Engineering Specs</div>
+            <h2>Technical Data Sheet</h2>
+            <div className="system-params">CALOR MEGA Batch System Parameters</div>
+          </div>
+
+          <table className="specs-table">
+            <thead>
+              <tr>
+                <th>Specification Category</th>
+                <th>Engineering Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Construction</td>
+                <td>Double-walled heavy gauge Stainless Steel (SS304 outer/inner, optional SS316 internal chamber for high-acid produce). Reinforced structural framing.</td>
+              </tr>
+              <tr>
+                <td>Thermal Insulation</td>
+                <td>75mm high-density rockwool / mineral wool insulation, minimizing heat dissipation and casing temperature.</td>
+              </tr>
+              <tr>
+                <td>Control System</td>
+                <td>Microprocessor-based PID Digital Controller with dual displays for PV (Process Value) and SV (Set Value). Dynamic Pt100 RTD sensor.</td>
+              </tr>
+              <tr>
+                <td>Capacity Range</td>
+                <td>Standard industrial configurations of 50 kg, 100 kg, 200 kg, 500 kg, and custom 1000+ kg continuous batch processing setups.</td>
+              </tr>
+              <tr>
+                <td>Drying Trays</td>
+                <td>Removable SS304 mesh tray racks. Wire mesh spacing customized for tiny seeds, herbs, or large fruit chunks.</td>
+              </tr>
+              <tr>
+                <td>Heating Method</td>
+                <td>Finned stainless steel armored electric heating elements, with support for steam heating coils or hot water heat exchangers.</td>
+              </tr>
+              <tr>
+                <td>Airflow System</td>
+                <td>Direct-drive, dynamically balanced axial flow fans with high-temperature resistance and adjustable speed control for tailored laminar airflow.</td>
+              </tr>
+              <tr>
+                <td>Temperature Range</td>
+                <td>Ambient to 90°C, adjustable with ±1°C accuracy. Built-in thermal safety override cut-off.</td>
+              </tr>
+              <tr>
+                <td>Humidity Control</td>
+                <td>Active electronic humidity transmitter. Automated electric actuator dampers for exhaust air evacuation.</td>
+              </tr>
+              <tr>
+                <td>Installation and Service</td>
+                <td>Factory-assembled skid-mounted design for rapid commissioning. Simple three-phase electrical input connection.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          {/* Download Brochure CTA */}
+          <div className="download-cta">
+            <div className="download-cta-icon">
+              <FaFileDownload />
+            </div>
+            <div className="download-cta-text">
+              <h3>Technical Blueprints and Brochure</h3>
+              <p>Download full dimensional drawings, wiring guides, power ratings, and tray loading density sheets.</p>
+            </div>
+            <a
+              href="/assets/downloads/CALOR_MEGA_Specs.pdf"
+              download="CALOR_MEGA_Specs.pdf"
+              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-semibold text-white shadow-soft transition-transform hover:scale-105"
+            >
+              <FaFileDownload /> Download PDF Specs
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

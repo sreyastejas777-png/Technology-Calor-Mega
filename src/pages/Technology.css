@@ -1,0 +1,723 @@
+/* ================================================================
+   CALOR MEGA — Interactive 3D WebGL Technology Page Stylesheet
+   Integrated with Team Theme Variables (src/index.css)
+   ================================================================ */
+
+
+
+#webgl-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 92svh;
+  min-height: 92svh;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 1;
+}
+
+.tech-hero-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 92svh;
+  height: 92svh;
+  z-index: 10;
+}
+
+#hero-scroll-container {
+  position: relative;
+  width: 100%;
+  height: 92svh;
+  min-height: 92svh;
+  z-index: 10;
+}
+
+.hero {
+  position: relative;
+  height: 92svh;
+  min-height: 92svh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fixed-hero-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 92svh;
+  min-height: 92svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.hero-center-block {
+  text-align: left;
+  max-width: 680px;
+  width: 100%;
+  padding: 0 clamp(20px, 3vw, 40px);
+  pointer-events: auto;
+  will-change: transform, opacity;
+  transform: translateX(-22.5vw);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@media (max-width: 767px) {
+  .hero-center-block {
+    text-align: center;
+    align-items: center;
+    max-width: 92%;
+    padding: 0 16px;
+    transform: translateY(-18vh);
+  }
+}
+
+.headline {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: clamp(2.6rem, 4.8vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin-bottom: 22px;
+}
+
+.headline span {
+  color: var(--accent-color);
+  background: linear-gradient(120deg, var(--accent-color), #B8850F);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-center-block p {
+  font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 28px;
+  max-width: 540px;
+}
+
+.hero-stats-mini {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-bottom: 32px;
+  max-width: 560px;
+}
+
+@media (max-width: 767px) {
+  .hero-stats-mini {
+    justify-content: center;
+  }
+}
+
+.split-stat {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  background: var(--surface-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--surface-border);
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.split-stat strong {
+  color: var(--accent-color);
+}
+
+.hero-cta {
+  display: flex;
+  justify-content: flex-start;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+  .hero-cta {
+    justify-content: center;
+  }
+}
+
+
+/* Restart Phase Floating Pill Button */
+.phase-nav-pill-bar {
+  position: fixed;
+  top: 96px;
+  right: 28px;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  background: var(--surface-color);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid var(--surface-border);
+  border-radius: 9999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-12px);
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.phase-nav-pill-bar.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.phase-restart-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(224, 159, 62, 0.15);
+  border: 1px solid rgba(224, 159, 62, 0.35);
+  border-radius: 9999px;
+  color: var(--accent-color);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.phase-restart-btn:hover {
+  background: var(--accent-color);
+  color: #ffffff;
+  transform: scale(1.03);
+  box-shadow: 0 4px 14px rgba(224, 159, 62, 0.35);
+}
+
+.phase-restart-btn:hover .phase-restart-icon {
+  transform: rotate(-180deg);
+}
+
+.phase-restart-icon {
+  font-size: 0.9rem;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Mobile Adjustments for Restart Phase Pill */
+@media (max-width: 768px) {
+  .phase-nav-pill-bar {
+    top: auto;
+    bottom: 84px;
+    right: 50%;
+    transform: translateX(50%) translateY(12px);
+    width: max-content;
+  }
+
+  .phase-nav-pill-bar.visible {
+    transform: translateX(50%) translateY(0);
+  }
+}
+
+/* Fixed Overlay Cards Container */
+#fixed-ui-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 92svh;
+  min-height: 92svh;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.phase-group {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 0 8vw;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.card-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  pointer-events: auto;
+}
+
+.card-column.left {
+  align-items: flex-start;
+}
+
+.card-column.right {
+  align-items: flex-end;
+}
+
+/* Glass UI Cards */
+.ui-card {
+  position: relative;
+  background: var(--surface-color);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  padding: 24px;
+  width: 320px;
+  max-width: 100%;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ui-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(224, 159, 62, 0.18);
+}
+
+.ui-card h4,
+.ui-card h3 {
+  font-family: var(--font-heading, 'Roboto', sans-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  border-bottom: 1px solid var(--surface-border);
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.ui-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Connecting Lines (Fixed Minimal Pointer) */
+.ui-card {
+  --line-reach: 130px;
+  /* Fixed length pointer line to leave a clean gap before the 3D model */
+}
+
+.ui-card.line-right::before,
+.ui-card.line-left::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  width: var(--line-reach);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.ui-card.line-right::before {
+  left: 100%;
+  /* Anchored to the card on the right edge */
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(224, 159, 62, 0.1) 0%, rgba(224, 159, 62, 1) 50%, rgba(224, 159, 62, 0.1) 100%);
+  background-size: 200% 100%;
+  animation:
+    drawLineScale 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.2s,
+    scanPulseRight 2.5s infinite linear 0.8s;
+}
+
+.ui-card.line-left::before {
+  right: 100%;
+  /* Anchored to the card on the left edge */
+  transform-origin: right center;
+  background: linear-gradient(-90deg, rgba(224, 159, 62, 0.1) 0%, rgba(224, 159, 62, 1) 50%, rgba(224, 159, 62, 0.1) 100%);
+  background-size: 200% 100%;
+  animation:
+    drawLineScale 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.2s,
+    scanPulseLeft 2.5s infinite linear 0.8s;
+}
+
+/* The Connecting Node (Dot on the Machine) */
+.ui-card.line-right::after,
+.ui-card.line-left::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ui-card.line-right::after {
+  left: calc(100% + var(--line-reach) - 3.5px);
+  /* Positioned precisely at machine anchor */
+  transform: translateY(-50%) scale(0);
+  animation: popNode 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.6s, rippleNode 2s infinite ease-in-out 1.0s;
+}
+
+.ui-card.line-left::after {
+  right: calc(100% + var(--line-reach) - 3.5px);
+  /* Positioned precisely at machine anchor */
+  transform: translateY(-50%) scale(0);
+  animation: popNode 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.6s, rippleNode 2s infinite ease-in-out 1.0s;
+}
+
+/* Animations for Drawing, Scanning, and Nodes */
+@keyframes drawLineScale {
+  0% {
+    transform: translateY(-50%) scaleX(0);
+  }
+
+  100% {
+    transform: translateY(-50%) scaleX(1);
+  }
+}
+
+@keyframes scanPulseRight {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes scanPulseLeft {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes popNode {
+  0% {
+    transform: translateY(-50%) scale(0);
+  }
+
+  70% {
+    transform: translateY(-50%) scale(1.3);
+  }
+
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes rippleNode {
+  0% {
+    box-shadow: 0 0 0 0 rgba(224, 159, 62, 0.8);
+    transform: translateY(-50%) scale(1);
+  }
+
+  70% {
+    box-shadow: 0 0 0 12px rgba(224, 159, 62, 0);
+    transform: translateY(-50%) scale(1);
+  }
+
+  100% {
+    box-shadow: 0 0 0 12px rgba(224, 159, 62, 0);
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+/* Specs Table Section */
+.datasheet-section {
+  position: relative;
+  z-index: 30;
+  background-color: var(--bg-color);
+  padding: 60px 0 80px;
+  border-top: 1px solid var(--surface-border);
+}
+
+.datasheet-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.engineering-label {
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  margin-bottom: 6px;
+}
+
+.datasheet-header h2 {
+  font-family: var(--font-heading, 'Roboto', sans-serif);
+  font-size: clamp(1.65rem, 3.2vw, 2.5rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.system-params {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+}
+
+.specs-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  background: var(--surface-color);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 40px;
+}
+
+.specs-table th {
+  background: rgba(224, 159, 62, 0.1);
+  color: var(--text-secondary);
+  font-family: var(--font-primary, 'Roboto', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding: 14px 22px;
+  text-align: left;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.specs-table td {
+  padding: 15px 22px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--surface-border);
+  line-height: 1.55;
+}
+
+.specs-table td:first-child {
+  font-weight: 700;
+  color: var(--text-primary);
+  width: 28%;
+  font-size: 0.88rem;
+}
+
+.specs-table tbody tr {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.specs-table tbody tr:hover {
+  background-color: rgba(224, 159, 62, 0.04);
+  transform: scale(1.01);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  position: relative;
+  z-index: 10;
+}
+
+.specs-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Download CTA Card */
+.download-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: linear-gradient(135deg, rgba(224, 159, 62, 0.12), rgba(184, 133, 15, 0.05));
+  border: 1px solid var(--surface-border);
+  border-radius: 24px;
+  padding: 20px 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.download-cta-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--accent-color);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.download-cta-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.download-cta-text {
+  flex: 1;
+}
+
+.download-cta-text h3 {
+  font-family: var(--font-heading, 'Roboto', sans-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.download-cta-text p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Specific Card Positioning for 3D Object Pointers (Desktop Only) */
+@media (min-width: 1025px) {
+  .phase-group {
+    display: block;
+    padding: 0;
+  }
+
+  .card-column {
+    display: block;
+    gap: 0;
+  }
+
+  .ui-card {
+    position: absolute;
+  }
+
+  /* ========================================================
+     Phase 1 Classification
+     ======================================================== */
+  /* Shell (Left Top) */
+  .card-shell {
+    top: 15%;
+    left: 8vw;
+  }
+
+  /* Foam Insulation (Left Middle) */
+  .card-foam {
+    top: 35%;
+    left: 8vw;
+  }
+
+  /* PLC Control (Left Bottom) */
+  .card-panel {
+    top: 65%;
+    left: 8vw;
+  }
+
+  /* Fans (Right Top) */
+  .card-fans {
+    top: 15%;
+    right: 8vw;
+  }
+
+  /* Trays (Right Bottom) */
+  .card-trays {
+    top: 55%;
+    right: 8vw;
+  }
+
+  /* ========================================================
+     Phase 2 Classification
+     ======================================================== */
+  .card-heating {
+    top: 22%;
+    left: 8vw;
+  }
+
+  .card-probes {
+    top: 62%;
+    left: 8vw;
+  }
+
+  .card-airflow {
+    top: 28%;
+    right: 14vw;
+  }
+
+  .card-motor {
+    top: 68%;
+    right: 14vw;
+  }
+
+  /* ========================================================
+     Phase 3 (Combined Final Phase) Classification
+     ======================================================== */
+  .phase-3-group .ui-card {
+    --line-reach: 220px;
+    /* Longer lines for this phase to close the wide gap */
+  }
+
+  /* Left Side */
+  .card-exhaust {
+    top: 22%;
+    left: 8vw;
+  }
+
+  .command-card {
+    top: 62%;
+    left: 8vw;
+  }
+
+  /* Right Side */
+  .card-sensors {
+    top: 22%;
+    right: 8vw;
+  }
+
+  .roi-card {
+    top: 62%;
+    right: 8vw;
+  }
+}
+
+
+/* Mobile responsive layout */
+@media (max-width: 1024px) {
+
+  .ui-card.line-right::before,
+  .ui-card.line-right::after,
+  .ui-card.line-left::before,
+  .ui-card.line-left::after {
+    display: none;
+  }
+
+  .phase-group {
+    padding: 0 4vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .phase-group {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
+
+  .card-column.right {
+    align-items: flex-start;
+  }
+
+  .ui-card {
+    width: 100%;
+  }
+
+  .download-cta {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px;
+  }
+
+  .download-cta-text {
+    text-align: center;
+  }
+
+  .specs-table td:first-child {
+    width: 40%;
+  }
+}

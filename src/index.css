@@ -1,0 +1,332 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500..800;1,500..800&family=Roboto+Condensed:wght@400;600;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-overflow-scrolling: touch;
+}
+
+html,
+body {
+  background-color: #FEFAF1;
+}
+
+html.dark body {
+  background-color: #0c0c0e;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+p {
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: 'Roboto', sans-serif;
+}
+
+.font-roboto {
+  font-family: 'Roboto', sans-serif;
+}
+
+.font-roboto-condensed {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3d5a80;
+  border-radius: 999px;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+html.dark .glass {
+  background: rgba(28, 28, 28, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, #1c1c1c, #3d5a80);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+html.dark .text-gradient {
+  background: linear-gradient(120deg, #f8f9fa, #e09f3e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.ripple:active::after {
+  opacity: 1;
+  transform: scale(1.5);
+  transition: 0s;
+}
+
+.glow-accent {
+  box-shadow: 0 20px 45px -15px rgba(224, 159, 62, 0.45);
+}
+
+.glow-secondary {
+  box-shadow: 0 20px 45px -15px rgba(61, 90, 128, 0.4);
+}
+
+.swiper {
+  --swiper-theme-color: #e09f3e;
+}
+
+.dot-grid {
+  background-image: radial-gradient(rgba(61, 90, 128, 0.18) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+html.dark .dot-grid {
+  background-image: radial-gradient(rgba(224, 159, 62, 0.16) 1px, transparent 1px);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Premium Slow Fluid Background Animations */
+.animate-float-slow-1 {
+  animation: float-slow-1 25s ease-in-out infinite;
+}
+
+.animate-float-slow-2 {
+  animation: float-slow-2 30s ease-in-out infinite;
+}
+
+.animate-float-slow-3 {
+  animation: float-slow-3 28s ease-in-out infinite;
+}
+
+@keyframes float-slow-1 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-40px) translateX(30px) scale(1.08) rotate(3deg);
+  }
+  66% {
+    transform: translateY(20px) translateX(-20px) scale(0.95) rotate(-3deg);
+  }
+}
+
+@keyframes float-slow-2 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translateY(50px) translateX(-35px) scale(1.05) rotate(-4deg);
+  }
+}
+
+@keyframes float-slow-3 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(1) rotate(0deg);
+  }
+  40% {
+    transform: translateY(-30px) translateX(35px) scale(0.92) rotate(4deg);
+  }
+  80% {
+    transform: translateY(15px) translateX(-15px) scale(1.03) rotate(-2deg);
+  }
+}
+
+/* Luxury 3D Floating Gold Bubbles */
+@keyframes rise-bubble {
+  0% {
+    transform: translateY(105vh) scale(0.8) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--bubble-opacity, 0.2);
+  }
+  92% {
+    opacity: var(--bubble-opacity, 0.2);
+  }
+  100% {
+    transform: translateY(-10vh) scale(1.15) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.gold-bubble {
+  animation: rise-bubble var(--bubble-duration, 15s) linear infinite;
+  animation-delay: var(--bubble-delay, 0s);
+  background: radial-gradient(circle at 35% 35%, rgba(224, 159, 62, 0.65) 0%, rgba(184, 133, 15, 0.32) 60%, rgba(184, 133, 15, 0.1) 100%);
+  border: 1px solid rgba(224, 159, 62, 0.45);
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.5), 0 4px 14px rgba(184, 133, 15, 0.18);
+  border-radius: 50%;
+  position: absolute;
+  pointer-events: none;
+}
+
+.gold-bubble::after {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  width: 25%;
+  height: 25%;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+}
+
+/* Color Palette Mapping variables for integrated pages */
+:root {
+  /* Transitions & Curves */
+  --transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  --transition-slow: 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Layout Constants */
+  --max-width: 1440px;
+  --navbar-height: 80px;
+  --backdrop-blur: 12px;
+  --font-heading: 'Roboto', sans-serif;
+  --font-primary: 'Roboto', sans-serif;
+
+  /* LIGHT MODE (Matches main website's light warm beige theme) */
+  --bg-color: #FEFAF1;
+  --surface-color: rgba(255, 255, 255, 0.6);
+  --surface-glow: rgba(224, 159, 62, 0.03);
+  --surface-border: rgba(224, 159, 62, 0.15);
+  --text-primary: #1C1C1C;
+  --text-secondary: rgba(28, 28, 28, 0.7);
+  --accent-color: #E09F3E;
+  --accent-glow: rgba(224, 159, 62, 0.3);
+  --toggle-bg: #E2C895;
+  --toggle-thumb-bg: #FEFAF1;
+  --toggle-accent: #E09F3E;
+  --brand-light: #FAF0DC;
+
+  /* Skeuomorphic Shadow Schemes */
+  --skeuo-inset: inset -3px -3px 7px rgba(255, 255, 255, 0.9), inset 3px 3px 7px rgba(28, 28, 28, 0.12);
+  --skeuo-outset: -5px -5px 12px rgba(255, 255, 255, 0.85), 5px 5px 15px rgba(28, 28, 28, 0.08);
+  --skeuo-card-hover: 0 15px 35px rgba(28, 28, 28, 0.08), 0 0 15px rgba(224, 159, 62, 0.08);
+  --btn-shadow: 0 4px 15px rgba(224, 159, 62, 0.2);
+
+  /* Glow/Ambient Lighting */
+  --ambient-light: radial-gradient(circle, rgba(224, 159, 62, 0.08) 0%, rgba(0,0,0,0) 70%);
+}
+
+html.dark {
+  /* DARK MODE (Matches main website's dark mode palette) */
+  --bg-color: #0c0c0e;
+  --surface-color: rgba(28, 28, 28, 0.6);
+  --surface-glow: rgba(224, 159, 62, 0.03);
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #FEFAF1;
+  --text-secondary: rgba(254, 250, 241, 0.7);
+  --accent-color: #E09F3E;
+  --accent-glow: rgba(224, 159, 62, 0.4);
+  --toggle-bg: #1C1C1C;
+  --toggle-thumb-bg: #E09F3E;
+  --toggle-accent: #FEFAF1;
+  --brand-light: rgba(28, 28, 28, 0.4);
+
+  /* Skeuomorphic Shadow Schemes */
+  --skeuo-inset: inset -3px -3px 7px rgba(255, 255, 255, 0.03), inset 3px 3px 7px rgba(0, 0, 0, 0.8);
+  --skeuo-outset: -5px -5px 12px rgba(255, 255, 255, 0.01), 5px 5px 15px rgba(0, 0, 0, 0.8);
+  --skeuo-card-hover: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(224, 159, 62, 0.1);
+  --btn-shadow: 0 4px 15px rgba(224, 159, 62, 0.2);
+
+  /* Glow/Ambient Lighting */
+  --ambient-light: radial-gradient(circle, rgba(224, 159, 62, 0.15) 0%, rgba(0,0,0,0) 70%);
+}
+
+/* Animations for integrated pages */
+@keyframes rotateBox {
+  0% { transform: rotateX(0deg) rotateY(0deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+.wireframe-box-animate {
+  transform-style: preserve-3d;
+  animation: rotateBox 25s infinite linear;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 0; }
+  100% { transform: scale(0.9); opacity: 0; }
+}
+
+.hotspot-pulse-anim {
+  animation: pulseGlow 2s infinite ease-out;
+}
+
+@keyframes borderBeamRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-border-beam {
+  animation: borderBeamRotate 6s linear infinite;
+}
