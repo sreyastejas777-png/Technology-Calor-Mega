@@ -51,10 +51,10 @@ export default function Products() {
       <div className="max-w-[1440px] min-[1600px]:max-w-[98vw] mx-auto flex flex-col gap-12">
         {/* Header */}
         <div className="text-center max-w-[800px] mx-auto flex flex-col gap-4">
-          <h1 className="text-4xl md:text-5xl font-black font-outfit text-primary-text">
+          <h1 className="text-4xl md:text-6xl font-black font-outfit text-transparent bg-clip-text bg-gradient-to-r from-accent via-yellow-500 to-secondary drop-shadow-sm pb-1">
             Calor Tech Product Catalog
           </h1>
-          <p className="text-[20px] md:text-[22px] text-secondary-text leading-relaxed font-semibold">
+          <p className="text-[20px] md:text-[22px] text-transparent bg-clip-text bg-gradient-to-r from-secondary-text to-accent leading-relaxed font-bold">
             Explore our line of high-capacity post-harvest dehydration hardware. Engineered for maximum reliability and ease of use.
           </p>
         </div>
@@ -127,7 +127,7 @@ export default function Products() {
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-4 border-t border-border/40">
                   <div className="flex flex-col">
                     <span className="text-secondary-text text-[18px]">Starting Price</span>
-                    <span className="text-3xl font-extrabold text-primary-text">{product.price} USD</span>
+                    <span className="text-3xl font-extrabold text-primary-text">{product.price}</span>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                     <Link

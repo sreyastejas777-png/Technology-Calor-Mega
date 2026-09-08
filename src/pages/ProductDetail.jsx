@@ -176,7 +176,7 @@ export default function ProductDetail() {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 rounded-2xl bg-brand-light border border-border mt-4">
               <div className="flex flex-col">
                 <span className="text-secondary-text text-[18px] font-bold">Pricing Starts At</span>
-                <span className="text-4xl font-extrabold text-primary-text">{product.price} USD</span>
+                <span className="text-4xl font-extrabold text-primary-text">{product.price}</span>
               </div>
               <a
                 href={`https://wa.me/1234567890?text=Hello%20CalorTech%2C%20I%20would%20like%20to%20request%20information%20and%20purchase%20enquiry%20on%20the%20${encodeURIComponent(product.name)}.`}
