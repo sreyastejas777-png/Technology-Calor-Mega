@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBars, FaTimes, FaSun, FaMoon, FaSearch } from 'react-icons/fa';
-import { ChevronDown, Cpu, Layers, Sparkles, Compass, Info, Calendar, HelpCircle, ArrowRight, Sun, Moon } from 'lucide-react';
+import { ChevronDown, Cpu, Layers, Sparkles, Compass, Target, Users, Building2, ArrowRight, Sun, Moon } from 'lucide-react';
 import { navLinks } from '../data/navigation';
 import { useTheme } from '../context/ThemeContext';
 import Button from '../components/Button';
@@ -208,9 +208,9 @@ export default function Navbar() {
                 {/* Column 1: Core Mission Statement */}
                 <div className="col-span-5 flex flex-col gap-3">
                   <span className="text-[11px] font-black uppercase tracking-wider text-accent font-sans">Our Mission</span>
-                  <h4 className="text-[15px] font-black text-primary dark:text-paper leading-tight font-sans">Preserving Yields, Eliminating Waste</h4>
+                  <h4 className="text-[15px] font-black text-primary dark:text-paper leading-tight font-sans">Student-Led Industrial Engineering</h4>
                   <p className="text-[12px] text-primary/60 dark:text-paper/60 leading-relaxed font-sans">
-                    CalorTech Systems designs high-efficiency drying equipment that allows cooperatives and family farms to add long-term value to their harvests.
+                    To design and build high-performance industrial machinery through practical innovation under the IHRD "Earn While Learn" framework.
                   </p>
                   <Link to="/about" className="inline-flex items-center gap-1 text-[12px] font-black text-accent hover:underline mt-1 font-sans">
                     Read Our Story <ArrowRight className="w-3.5 h-3.5" />
@@ -226,28 +226,28 @@ export default function Navbar() {
                         <Compass className="w-3.5 h-3.5 text-accent" />
                         Our Vision
                       </span>
-                      <span className="text-[10px] text-primary/50 dark:text-paper/50 font-sans">Agro-tech goals.</span>
+                      <span className="text-[10px] text-primary/50 dark:text-paper/50 font-sans">Pioneering innovation.</span>
                     </Link>
-                    <Link to="/about#humidity-control" className="p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 flex flex-col gap-1 transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10">
+                    <Link to="/about#mission" className="p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 flex flex-col gap-1 transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10">
                       <span className="text-[13px] font-bold text-primary dark:text-paper flex items-center gap-1.5 font-sans">
-                        <Info className="w-3.5 h-3.5 text-accent" />
-                        Humidity Control
+                        <Target className="w-3.5 h-3.5 text-accent" />
+                        Our Mission
                       </span>
-                      <span className="text-[10px] text-primary/50 dark:text-paper/50 font-sans">Dehumidifier loop.</span>
+                      <span className="text-[10px] text-primary/50 dark:text-paper/50 font-sans">Practical engineering.</span>
                     </Link>
-                    <Link to="/about#journey" className="p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 flex flex-col gap-1 transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10">
+                    <Link to="/about#leadership" className="p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 flex flex-col gap-1 transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10">
                       <span className="text-[13px] font-bold text-primary dark:text-paper flex items-center gap-1.5 font-sans">
-                        <Calendar className="w-3.5 h-3.5 text-accent" />
-                        Our Journey
+                        <Users className="w-3.5 h-3.5 text-accent" />
+                        Leadership
                       </span>
-                      <span className="text-[10px] text-primary/50 dark:text-paper/50 font-sans">Growth timeline.</span>
+                      <span className="text-[10px] text-primary/50 dark:text-paper/50 font-sans">Meet our team.</span>
                     </Link>
-                    <Link to="/about#standards" className="p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 flex flex-col gap-1 transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10">
+                    <Link to="/about#profile" className="p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 flex flex-col gap-1 transition-all border border-transparent hover:border-primary/10 dark:hover:border-white/10">
                       <span className="text-[13px] font-bold text-primary dark:text-paper flex items-center gap-1.5 font-sans">
-                        <HelpCircle className="w-3.5 h-3.5 text-accent" />
-                        Standards
+                        <Building2 className="w-3.5 h-3.5 text-accent" />
+                        Company Profile
                       </span>
-                      <span className="text-[10px] text-primary/50 dark:text-paper/50 font-sans">Quality certs.</span>
+                      <span className="text-[10px] text-primary/50 dark:text-paper/50 font-sans">Our background.</span>
                     </Link>
                   </div>
                 </div>
@@ -436,14 +436,14 @@ export default function Navbar() {
                     <Link to="/about#vision" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-1 text-primary/90 dark:text-paper/90">
                       <Compass className="w-3.5 h-3.5 text-accent" /> Our Vision
                     </Link>
-                    <Link to="/about#humidity-control" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-1 text-primary/90 dark:text-paper/90">
-                      <Info className="w-3.5 h-3.5 text-accent" /> Humidity Control
+                    <Link to="/about#mission" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-1 text-primary/90 dark:text-paper/90">
+                      <Target className="w-3.5 h-3.5 text-accent" /> Our Mission
                     </Link>
-                    <Link to="/about#journey" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-1 text-primary/90 dark:text-paper/90">
-                      <Calendar className="w-3.5 h-3.5 text-accent" /> Our Journey
+                    <Link to="/about#leadership" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-1 text-primary/90 dark:text-paper/90">
+                      <Users className="w-3.5 h-3.5 text-accent" /> Leadership
                     </Link>
-                    <Link to="/about#standards" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-1 text-primary/90 dark:text-paper/90">
-                      <HelpCircle className="w-3.5 h-3.5 text-accent" /> Standards
+                    <Link to="/about#profile" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-1 text-primary/90 dark:text-paper/90">
+                      <Building2 className="w-3.5 h-3.5 text-accent" /> Company Profile
                     </Link>
                   </div>
                 )}
