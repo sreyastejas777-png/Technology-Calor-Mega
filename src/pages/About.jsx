@@ -84,6 +84,73 @@ export default function About() {
               To design and build high-performance industrial machinery through practical innovation under the IHRD "Earn While Learn" framework, empowering engineering talent while delivering reliable, market-ready equipment and research solutions to industry partners.
             </p>
           </motion.div>
+        {/* NEW SECTION: WEBSITE STRUCTURE (PROPOSED SITE ARCHITECTURE) */}
+        <div className="flex flex-col gap-12 pt-8 border-t border-border/50">
+          <div className="text-center max-w-[800px] mx-auto flex flex-col gap-4">
+            <h2 className="text-4xl font-extrabold font-outfit text-primary-text">
+              Website Structure & Requirements
+            </h2>
+            <p className="text-[20px] text-secondary-text">
+              Proposed Site Architecture
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <motion.div
+              className="p-6 rounded-2xl bg-surface border border-border shadow-soft flex flex-col gap-3"
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              viewport={fadeUp.viewport}
+              transition={{ ...fadeUp.transition, delay: 0.1 }}
+            >
+              <h3 className="text-xl font-bold text-primary-text border-l-4 border-accent pl-3">Home</h3>
+              <p className="text-secondary-text">Hero section featuring the launch milestone (Inaugurated by Dr. Arunkumar under IHRD), primary core capabilities, and rapid contact access.</p>
+            </motion.div>
+
+            <motion.div
+              className="p-6 rounded-2xl bg-surface border border-border shadow-soft flex flex-col gap-3"
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              viewport={fadeUp.viewport}
+              transition={{ ...fadeUp.transition, delay: 0.2 }}
+            >
+              <h3 className="text-xl font-bold text-primary-text border-l-4 border-accent pl-3">About Us</h3>
+              <p className="text-secondary-text">Background on the company's inception, the IHRD Earn While Learn initiative, vision, mission, and team structure.</p>
+            </motion.div>
+
+            <motion.div
+              className="p-6 rounded-2xl bg-surface border border-border shadow-soft flex flex-col gap-3"
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              viewport={fadeUp.viewport}
+              transition={{ ...fadeUp.transition, delay: 0.3 }}
+            >
+              <h3 className="text-xl font-bold text-primary-text border-l-4 border-accent pl-3">Machinery & R&D</h3>
+              <p className="text-secondary-text">Portfolio of machinery products, custom fabrication capabilities, technical design specs, and ongoing research projects.</p>
+            </motion.div>
+
+            <motion.div
+              className="p-6 rounded-2xl bg-surface border border-border shadow-soft flex flex-col gap-3"
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              viewport={fadeUp.viewport}
+              transition={{ ...fadeUp.transition, delay: 0.4 }}
+            >
+              <h3 className="text-xl font-bold text-primary-text border-l-4 border-accent pl-3">Team & Mentorship</h3>
+              <p className="text-secondary-text">Dedicated section showcasing the leadership team and institutional guidance.</p>
+            </motion.div>
+
+            <motion.div
+              className="p-6 rounded-2xl bg-surface border border-border shadow-soft flex flex-col gap-3"
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              viewport={fadeUp.viewport}
+              transition={{ ...fadeUp.transition, delay: 0.5 }}
+            >
+              <h3 className="text-xl font-bold text-primary-text border-l-4 border-accent pl-3">Contact & Inquiries</h3>
+              <p className="text-secondary-text">Inquiry form for sales, supply coordination, and technical collaborations.</p>
+            </motion.div>
+          </div>
         </div>
 
         {/* NEW SECTION: TECHNICAL & DESIGN REQUIREMENTS */}
