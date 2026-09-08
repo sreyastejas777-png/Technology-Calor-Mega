@@ -84,6 +84,7 @@ export default function About() {
               To design and build high-performance industrial machinery through practical innovation under the IHRD "Earn While Learn" framework, empowering engineering talent while delivering reliable, market-ready equipment and research solutions to industry partners.
             </p>
           </motion.div>
+        </div>
         {/* NEW SECTION: WEBSITE STRUCTURE (PROPOSED SITE ARCHITECTURE) */}
         <div className="flex flex-col gap-12 pt-8 border-t border-border/50">
           <div className="text-center max-w-[800px] mx-auto flex flex-col gap-4">
