@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Target, Lightbulb, CheckCircle2, User, Building2, Calendar, BookOpen, PenTool } from 'lucide-react';
+import { Target, Lightbulb, CheckCircle2, User, Building2, Calendar, BookOpen, PenTool, Layout, FileText, PhoneCall } from 'lucide-react';
 
 export default function About() {
   const team = [
@@ -27,10 +27,10 @@ export default function About() {
           className="text-center max-w-[900px] mx-auto flex flex-col gap-6"
           {...fadeUp}
         >
-          <span className="text-[18px] font-black uppercase tracking-[0.2em] text-accent" style={{ WebkitTextStroke: '1px black' }}>
+          <span className="text-[18px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 drop-shadow-sm">
             IHRD "Earn While Learn" Initiative
           </span>
-          <h1 className="text-5xl md:text-7xl font-black font-outfit text-transparent bg-clip-text bg-gradient-to-r from-accent via-yellow-500 to-secondary drop-shadow-sm pb-2" style={{ WebkitTextStroke: '1.5px black' }}>
+          <h1 className="text-5xl md:text-7xl font-black font-outfit text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-slate-500 to-blue-600 dark:from-slate-200 dark:via-slate-400 dark:to-blue-400 drop-shadow-md pb-2">
             INNOVA TECH
           </h1>
           <p className="text-[20px] md:text-[24px] text-transparent bg-clip-text bg-gradient-to-r from-primary-text to-secondary-text leading-relaxed font-bold">
@@ -84,6 +84,84 @@ export default function About() {
               To design and build high-performance industrial machinery through practical innovation under the IHRD "Earn While Learn" framework, empowering engineering talent while delivering reliable, market-ready equipment and research solutions to industry partners.
             </p>
           </motion.div>
+        </div>
+
+        {/* NEW SECTION: TECHNICAL & DESIGN REQUIREMENTS */}
+        <div className="flex flex-col gap-12 pt-8 border-t border-border/50">
+          <div className="text-center max-w-[800px] mx-auto flex flex-col gap-4">
+            <h2 className="text-4xl font-extrabold font-outfit text-primary-text">
+              Technical & Design Capabilities
+            </h2>
+            <p className="text-[20px] text-secondary-text">
+              The foundational pillars of our industrial engineering methodology.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div
+              className="p-6 rounded-2xl bg-surface border border-border shadow-soft flex gap-4 items-start"
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              viewport={fadeUp.viewport}
+              transition={{ ...fadeUp.transition, delay: 0.1 }}
+            >
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600 dark:text-blue-400 mt-1 shrink-0">
+                <Layout className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-primary-text mb-2">Industrial Aesthetics</h3>
+                <p className="text-secondary-text">Clean, industrial layouts designed with dark slate, metallic silver, and energetic blue accents.</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="p-6 rounded-2xl bg-surface border border-border shadow-soft flex gap-4 items-start"
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              viewport={fadeUp.viewport}
+              transition={{ ...fadeUp.transition, delay: 0.2 }}
+            >
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600 dark:text-blue-400 mt-1 shrink-0">
+                <CheckCircle2 className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-primary-text mb-2">Responsive Platforms</h3>
+                <p className="text-secondary-text">Mobile-responsive ecosystems with fast-loading media galleries for CAD models and machinery showcase.</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="p-6 rounded-2xl bg-surface border border-border shadow-soft flex gap-4 items-start"
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              viewport={fadeUp.viewport}
+              transition={{ ...fadeUp.transition, delay: 0.3 }}
+            >
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600 dark:text-blue-400 mt-1 shrink-0">
+                <FileText className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-primary-text mb-2">Technical Documentation</h3>
+                <p className="text-secondary-text">Comprehensive, downloadable PDF spec sheets rigorously managed by our Documentation department.</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="p-6 rounded-2xl bg-surface border border-border shadow-soft flex gap-4 items-start"
+              initial={fadeUp.initial}
+              whileInView={fadeUp.whileInView}
+              viewport={fadeUp.viewport}
+              transition={{ ...fadeUp.transition, delay: 0.4 }}
+            >
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600 dark:text-blue-400 mt-1 shrink-0">
+                <PhoneCall className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-primary-text mb-2">Streamlined Inquiries</h3>
+                <p className="text-secondary-text">Direct contact routing to the Sales & Supply team ensuring rapid turnarounds on technical inquiries.</p>
+              </div>
+            </motion.div>
+          </div>
         </div>
 
         {/* 3. TEAM HIERARCHY & LEADERSHIP */}
