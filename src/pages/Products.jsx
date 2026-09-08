@@ -64,10 +64,10 @@ export default function Products() {
           {products.map((product, idx) => (
             <motion.div
               key={product.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 50, scale: 0.95, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, delay: idx * 0.1 }}
+              transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="p-5 md:p-6 rounded-3xl bg-surface border border-border shadow-skeuo-out hover:shadow-card-hover hover:scale-[1.005] transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
             >
               {/* Product Image Column */}
