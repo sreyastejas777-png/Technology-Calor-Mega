@@ -6,14 +6,23 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const dataDir = path.join(__dirname, 'data');
+const isVercel = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const dataDir = isVercel ? path.join('/tmp', 'data') : path.join(__dirname, 'data');
 if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
+  try {
+    fs.mkdirSync(dataDir, { recursive: true });
+  } catch (e) {
+    console.warn('Could not create dataDir:', e.message);
+  }
 }
 
-const uploadsDir = path.join(__dirname, '../public/uploads');
+const uploadsDir = isVercel ? path.join('/tmp', 'uploads') : path.join(__dirname, '../public/uploads');
 if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
+  try {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  } catch (e) {
+    console.warn('Could not create uploadsDir:', e.message);
+  }
 }
 
 const dbPath = path.join(dataDir, 'calor_mega.db');

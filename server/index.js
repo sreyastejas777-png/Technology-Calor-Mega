@@ -50,6 +50,11 @@ const startServer = async () => {
     console.error('Failed to start CMS server:', err);
     process.exit(1);
   }
-};
+// Export express app for serverless function usage
+export { app, startServer, initDb, seedData };
+export default app;
 
-startServer();
+// In standalone local Node.js environment, listen to PORT
+if (!process.env.VERCEL) {
+  startServer();
+}

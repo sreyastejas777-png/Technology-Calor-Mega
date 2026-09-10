@@ -1,4 +1,7 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+const isLocalHost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const API_BASE_URL = isLocalHost
+  ? (import.meta.env.VITE_API_URL || 'http://localhost:5000/api')
+  : '/api';
 
 export const getAuthToken = () => {
   return localStorage.getItem('calor_mega_cms_token') || localStorage.getItem('calor_mega_admin_token');
