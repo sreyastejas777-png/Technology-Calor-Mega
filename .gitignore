@@ -31,3 +31,8 @@ dist-ssr
 *.sln
 *.sw?
 
+# SQLite database
+*.db
+*.sqlite
+
+

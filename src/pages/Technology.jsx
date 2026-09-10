@@ -5,9 +5,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FaFileDownload, FaWhatsapp, FaArrowRight, FaChevronDown } from 'react-icons/fa';
 import './Technology.css';
 
+import { useCMS, defaultTechnicalSpecs } from '../context/CMSContext';
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Technology() {
+  const cms = useCMS();
+  const datasheetList = cms.technicalDatasheet?.length ? cms.technicalDatasheet : defaultTechnicalSpecs;
+
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const centerBlockRef = useRef(null);
@@ -608,46 +613,12 @@ export default function Technology() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Construction</td>
-                <td>Double-walled heavy gauge Stainless Steel (SS304 outer/inner, optional SS316 internal chamber for high-acid produce). Reinforced structural framing.</td>
-              </tr>
-              <tr>
-                <td>Thermal Insulation</td>
-                <td>75mm high-density rockwool / mineral wool insulation, minimizing heat dissipation and casing temperature.</td>
-              </tr>
-              <tr>
-                <td>Control System</td>
-                <td>Microprocessor-based PID Digital Controller with dual displays for PV (Process Value) and SV (Set Value). Dynamic Pt100 RTD sensor.</td>
-              </tr>
-              <tr>
-                <td>Capacity Range</td>
-                <td>Standard industrial configurations of 50 kg, 100 kg, 200 kg, 500 kg, and custom 1000+ kg continuous batch processing setups.</td>
-              </tr>
-              <tr>
-                <td>Drying Trays</td>
-                <td>Removable SS304 mesh tray racks. Wire mesh spacing customized for tiny seeds, herbs, or large fruit chunks.</td>
-              </tr>
-              <tr>
-                <td>Heating Method</td>
-                <td>Finned stainless steel armored electric heating elements, with support for steam heating coils or hot water heat exchangers.</td>
-              </tr>
-              <tr>
-                <td>Airflow System</td>
-                <td>Direct-drive, dynamically balanced axial flow fans with high-temperature resistance and adjustable speed control for tailored laminar airflow.</td>
-              </tr>
-              <tr>
-                <td>Temperature Range</td>
-                <td>Ambient to 90°C, adjustable with ±1°C accuracy. Built-in thermal safety override cut-off.</td>
-              </tr>
-              <tr>
-                <td>Humidity Control</td>
-                <td>Active electronic humidity transmitter. Automated electric actuator dampers for exhaust air evacuation.</td>
-              </tr>
-              <tr>
-                <td>Installation and Service</td>
-                <td>Factory-assembled skid-mounted design for rapid commissioning. Simple three-phase electrical input connection.</td>
-              </tr>
+              {datasheetList.map((row, idx) => (
+                <tr key={row.id || idx}>
+                  <td className="font-bold">{row.category}</td>
+                  <td>{row.details}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
 

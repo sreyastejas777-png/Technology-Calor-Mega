@@ -16,9 +16,20 @@
     />
     <title>CALOR MEGA | Premium Industrial Food Drying Solutions</title>
     <script>
-      if (window.innerWidth <= 768 && !window.location.pathname.includes('/mobile/')) {
-        window.location.replace('./mobile/');
-      }
+      (function() {
+        var path = window.location.pathname;
+        if (path === '/admin' || path === '/admin/' || path === '/admin-dashboard' || path.endsWith('/admin')) {
+          window.location.replace('/admin.html');
+        }
+      })();
+      (function() {
+        var isIframe = window.self !== window.top;
+        var isPreview = window.location.search.includes('preview=true') || window.location.hash.includes('preview=true');
+        var isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        if (!isIframe && !isPreview && !isLocal && window.innerWidth <= 768 && !window.location.pathname.includes('/mobile/')) {
+          window.location.replace('./mobile/');
+        }
+      })();
     </script>
   </head>
   <body>

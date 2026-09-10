@@ -1,13 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Sparkles, Thermometer, Battery, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useCMS } from '../context/CMSContext';
 import calorMegaImg from '../assets/calor_mega.png';
-import calorMiniImg from '../assets/calor_mini.png';
 import calorStandardImg from '../assets/calor_standard.png';
+import calorMiniImg from '../assets/calor_mini.png';
 
 export default function Products() {
-  const products = [
+  const cms = useCMS();
+  const defaultProductsList = [
     {
       id: 'mega',
       name: 'Calor Mega',
@@ -43,8 +43,33 @@ export default function Products() {
       energy: '4-Star Energy Rating',
       specs: ['Desktop footprint (2x2 ft)', 'Smart touchscreen control panel', '6 slide-out stainless steel mesh trays', 'Dual-axis micro-circulation fans'],
       price: '$1,800',
-    }
+    },
   ];
+
+  const resolveProductImg = (p, idx) => {
+    const candidate = p.image || p.img;
+    if (!candidate) return idx === 0 ? calorMegaImg : idx === 1 ? calorStandardImg : calorMiniImg;
+    if (typeof candidate !== 'string') return candidate;
+    if (candidate.includes('calor_mega') || candidate === 'mega' || candidate === 'calor-mega') return calorMegaImg;
+    if (candidate.includes('calor_standard') || candidate === 'standard' || candidate === 'calor-standard') return calorStandardImg;
+    if (candidate.includes('calor_mini') || candidate === 'mini' || candidate === 'calor-mini') return calorMiniImg;
+    return candidate;
+  };
+
+  const products = cms.products?.length
+    ? cms.products.map((p, idx) => ({
+        id: p.id || (idx === 0 ? 'mega' : idx === 1 ? 'standard' : 'mini'),
+        name: p.name || (idx === 0 ? 'Calor Mega' : idx === 1 ? 'Calor Standard' : 'Calor Mini'),
+        tagline: p.tagline || (idx === 0 ? 'The Complete Dehydration System' : idx === 1 ? 'Artisanal & Cooperative Mid-Range' : 'Desktop Precision Dehumidifier'),
+        img: resolveProductImg(p, idx),
+        desc: p.desc || p.description || p.shortDescription || (idx === 0 ? defaultProductsList[0].desc : idx === 1 ? defaultProductsList[1].desc : defaultProductsList[2].desc),
+        capacity: p.capacity || (idx === 0 ? '1200 Liters / 24 hrs' : idx === 1 ? '350 Liters / 24 hrs' : '80 Liters / 24 hrs'),
+        energy: p.energy || (idx === 0 ? '5-Star Energy Rating (Heat-Pump Tech)' : idx === 1 ? '4.5-Star Energy Rating' : '4-Star Energy Rating'),
+        sizing: p.sizing || (idx === 0 ? 'Suitable for spaces up to 1,000 sq ft' : idx === 1 ? 'Suitable for spaces up to 350 sq ft' : 'Suitable for spaces up to 80 sq ft'),
+        specs: Array.isArray(p.specs) && p.specs.length ? p.specs.map(s => typeof s === 'string' ? s : `${s.label || ''}: ${s.value || ''}`) : (idx === 0 ? defaultProductsList[0].specs : idx === 1 ? defaultProductsList[1].specs : defaultProductsList[2].specs),
+        price: p.price ? (String(p.price).startsWith('$') ? String(p.price) : '$' + p.price) : (idx === 0 ? '$12,500' : idx === 1 ? '$4,200' : '$1,800'),
+      }))
+    : defaultProductsList;
 
   return (
     <div className="w-full py-16 px-6 md:px-12 bg-bg transition-colors duration-300">

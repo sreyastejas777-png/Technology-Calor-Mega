@@ -4,7 +4,8 @@ import SectionHeading from '../components/SectionHeading';
 import ApplicationCard from '../components/ApplicationCard';
 import ApplicationModal from '../components/ApplicationModal';
 
-import { applications } from '../data/applications';
+import { applications as fallbackApplications } from '../data/applications';
+import { useCMS } from '../context/CMSContext';
 
 const categories = [
   'All',
@@ -18,12 +19,15 @@ const categories = [
 ];
 
 export default function Applications() {
+  const cms = useCMS();
+  const applications = cms.applications?.length ? cms.applications : fallbackApplications;
+
   const [selectedApp, setSelectedApp] = useState(null);
   const [activeCategory, setActiveCategory] = useState('All');
 
   const filteredApps = activeCategory === 'All'
     ? applications
-    : applications.filter(app => app.category === activeCategory);
+    : applications.filter(app => (app.category_tag || app.category) === activeCategory);
 
   return (
     <section className="mx-auto max-w-[1600px] min-[1600px]:max-w-[98vw] px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12 py-10 md:py-16">
@@ -58,7 +62,7 @@ export default function Applications() {
         <AnimatePresence mode="popLayout">
           {filteredApps.map((app, i) => (
             <ApplicationCard
-              key={app.title}
+              key={app.title || `app-${i}`}
               application={app}
               index={i}
               onSelect={setSelectedApp}

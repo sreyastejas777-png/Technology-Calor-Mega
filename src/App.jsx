@@ -10,6 +10,10 @@ import Products from './pages/Products';
 import Contact from './pages/Contact';
 import WorkingProcess from './pages/WorkingProcess';
 
+import { CMSProvider } from './context/CMSContext';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute';
+import AdminDashboard from './pages/AdminDashboard';
+
 const ProductDetail = lazy(() => import('./pages/ProductDetail'));
 const Applications = lazy(() => import('./pages/Applications'));
 const Technology = lazy(() => import('./pages/Technology'));
@@ -39,10 +43,26 @@ function App() {
   }, []);
 
   return (
-    <>
+    <CMSProvider>
       <LoadingScreen show={loading} />
       <Suspense fallback={<RouteFallback />}>
         <Routes>
+          <Route
+            path="/admin"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboard />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin-dashboard"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboard />
+              </ProtectedAdminRoute>
+            }
+          />
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
@@ -61,7 +81,7 @@ function App() {
           </Route>
         </Routes>
       </Suspense>
-    </>
+    </CMSProvider>
   );
 }
 

@@ -2,14 +2,18 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaChevronLeft, FaChevronRight, FaSearchPlus } from 'react-icons/fa';
 import SectionHeading from '../components/SectionHeading';
-import { galleryCategories, galleryItems } from '../data/gallery';
+import { galleryCategories, galleryItems as fallbackGallery } from '../data/gallery';
+import { useCMS } from '../context/CMSContext';
 
 export default function Gallery() {
+  const cms = useCMS();
+  const galleryItems = cms.galleryMedia?.length ? cms.galleryMedia : fallbackGallery;
+
   const [activeCategory, setActiveCategory] = useState('All');
   const [lightboxIndex, setLightboxIndex] = useState(null);
 
   const filtered =
-    activeCategory === 'All' ? galleryItems : galleryItems.filter((g) => g.category === activeCategory);
+    activeCategory === 'All' ? galleryItems : galleryItems.filter((g) => (g.category_tag || g.category) === activeCategory);
 
   const openLightbox = (id) => {
     const index = filtered.findIndex((g) => g.id === id);

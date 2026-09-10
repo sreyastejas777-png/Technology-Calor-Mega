@@ -4,9 +4,14 @@ import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaClock, FaCheckCircle } from '
 import Button from '../components/Button';
 import SectionHeading from '../components/SectionHeading';
 
+import { useCMS } from '../context/CMSContext';
+
 const initialForm = { name: '', email: '', phone: '', business: '', message: '' };
 
 export default function Contact() {
+  const cms = useCMS();
+  const settings = cms.siteSettings || {};
+
   const [form, setForm] = useState(initialForm);
   const [submitted, setSubmitted] = useState(false);
 
@@ -39,7 +44,7 @@ export default function Contact() {
               </span>
               <div>
                 <p className="font-semibold text-primary dark:text-paper">Address</p>
-                <p className="text-sm text-primary/65 dark:text-paper/65">Industrial Estate, Kochi, Kerala, India</p>
+                <p className="text-sm text-primary/65 dark:text-paper/65">{settings.factory_address || 'Industrial Estate, Kochi, Kerala, India'}</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -48,8 +53,8 @@ export default function Contact() {
               </span>
               <div>
                 <p className="font-semibold text-primary dark:text-paper">Phone</p>
-                <a href="tel:+919999999999" className="text-sm text-primary/65 dark:text-paper/65 hover:text-accent">
-                  +91 99999 99999
+                <a href={`tel:${settings.contact_phone}`} className="text-sm text-primary/65 dark:text-paper/65 hover:text-accent">
+                  {settings.contact_phone || '+91 98765 43210'}
                 </a>
               </div>
             </div>
@@ -59,8 +64,8 @@ export default function Contact() {
               </span>
               <div>
                 <p className="font-semibold text-primary dark:text-paper">Email</p>
-                <a href="mailto:info@calormega.com" className="text-sm text-primary/65 dark:text-paper/65 hover:text-accent">
-                  info@calormega.com
+                <a href={`mailto:${settings.contact_email}`} className="text-sm text-primary/65 dark:text-paper/65 hover:text-accent">
+                  {settings.contact_email || 'contact@calormega.com'}
                 </a>
               </div>
             </div>
@@ -70,7 +75,7 @@ export default function Contact() {
               </span>
               <div>
                 <p className="font-semibold text-primary dark:text-paper">Working Hours</p>
-                <p className="text-sm text-primary/65 dark:text-paper/65">Mon - Sat: 9:00 AM - 6:00 PM</p>
+                <p className="text-sm text-primary/65 dark:text-paper/65">{settings.working_hours || 'Mon - Sat: 9:00 AM - 6:00 PM'}</p>
               </div>
             </div>
           </div>

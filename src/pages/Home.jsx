@@ -25,15 +25,66 @@ import FAQAccordion from '../components/FAQAccordion';
 import slideMachine from '../assets/images/slide-machine.svg';
 import slideTrays from '../assets/images/slide-trays.svg';
 import slideControl from '../assets/images/slide-control.svg';
-import { stats } from '../data/stats';
+import { useCMS } from '../context/CMSContext';
+import { stats as fallbackStats } from '../data/stats';
 import { whyChooseUs } from '../data/whyChooseUs';
-import { applications } from '../data/applications';
-import { testimonials } from '../data/testimonials';
-import { faqs } from '../data/faqs';
+import { applications as fallbackApplications } from '../data/applications';
+import { testimonials as fallbackTestimonials } from '../data/testimonials';
+import { faqs as fallbackFaqs } from '../data/faqs';
 
 const homeCategories = ['All Featured', 'Fruits', 'Spices and Herbs', 'Plantations', 'Grains and Pulses', 'Nuts and Tubers'];
 
+const renderHeroHeadline = (headline) => {
+  if (!headline) {
+    return (
+      <>
+        Premium Drying
+        <br />
+        Solutions.
+        <br />
+        <span className="text-accent">Taste and Preserve.</span>
+      </>
+    );
+  }
+
+  const clean = String(headline).trim();
+  if (
+    clean === 'Premium Drying Solutions. Taste and Preserve.' ||
+    clean === 'Premium Drying\nSolutions.\nTaste and Preserve.' ||
+    clean.toLowerCase() === 'premium drying solutions. taste and preserve.'
+  ) {
+    return (
+      <>
+        Premium Drying
+        <br />
+        Solutions.
+        <br />
+        <span className="text-accent">Taste and Preserve.</span>
+      </>
+    );
+  }
+
+  if (clean.includes('\n')) {
+    const lines = clean.split('\n');
+    return lines.map((line, idx) => (
+      <span key={idx}>
+        {idx === lines.length - 1 ? <span className="text-accent">{line}</span> : line}
+        {idx < lines.length - 1 && <br />}
+      </span>
+    ));
+  }
+
+  return clean;
+};
+
 export default function Home() {
+  const cms = useCMS();
+  const heroData = cms.heroSection || {};
+  const statsList = cms.keyMetrics?.length ? cms.keyMetrics : fallbackStats;
+  const appsList = cms.applications?.length ? cms.applications : fallbackApplications;
+  const testiList = cms.testimonials?.length ? cms.testimonials : fallbackTestimonials;
+  const faqList = cms.faqItems?.length ? cms.faqItems : fallbackFaqs;
+
   const [selectedApp, setSelectedApp] = useState(null);
   const [activeCategory, setActiveCategory] = useState('All Featured');
   const springConfig = { damping: 28, stiffness: 85, mass: 0.18, restDelta: 0.001 };
@@ -83,8 +134,8 @@ export default function Home() {
 
 
   const displayedCrops = activeCategory === 'All Featured'
-    ? applications.slice(0, 12)
-    : applications.filter(a => a.category === activeCategory);
+    ? appsList.slice(0, 12)
+    : appsList.filter(a => (a.category_tag || a.category) === activeCategory);
 
   return (
     <>
@@ -106,25 +157,20 @@ export default function Home() {
             className="flex flex-col justify-center items-center text-center lg:items-start lg:text-left lg:-ml-2 xl:-ml-3"
           >
             <h1 className="font-display text-3xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-6xl 2xl:text-7xl font-bold uppercase leading-[1.05] sm:leading-[1.03] tracking-tight text-primary dark:text-paper">
-              Premium Drying
-              <br />
-              Solutions.
-              <br />
-              <span className="text-accent">Taste and Preserve.</span>
+              {renderHeroHeadline(heroData.headline)}
             </h1>
             <p className="mt-6 sm:mt-7 max-w-xl xl:max-w-2xl 2xl:max-w-3xl text-base sm:text-lg xl:text-xl 2xl:text-[1.28rem] text-primary/75 dark:text-paper/75 leading-relaxed">
-              Industrial-grade moisture control engineered to eliminate food waste and unlock
-              agricultural profitability for family farms and cooperatives.
+              {heroData.subheadline || 'Industrial-grade moisture control engineered to eliminate food waste and unlock agricultural profitability for family farms and cooperatives.'}
             </p>
             <div className="mt-8 sm:mt-10 flex flex-wrap justify-center lg:justify-start gap-3.5 sm:gap-5">
-              <Button as={Link} to="/quote" variant="primary" icon={FaArrowRight}>
-                Get Quote
+              <Button as={Link} to={heroData.cta_link || "/quote"} variant="primary" icon={FaArrowRight}>
+                {heroData.cta_text || 'Get a Free Quote'}
               </Button>
-              <Button as={Link} to="/products" variant="outline">
-                Explore Machine
+              <Button as={Link} to={heroData.secondary_cta_link || "/products"} variant="outline">
+                {heroData.secondary_cta_text || 'Explore Products'}
               </Button>
-              <Button as={Link} to="/technology" variant="glass" icon={FaPlayCircle}>
-                Watch Demo
+              <Button as={Link} to={heroData.tertiary_cta_link || "/technology"} variant="ghost">
+                {heroData.tertiary_cta_text || 'Explore Technology'}
               </Button>
             </div>
           </motion.div>
@@ -209,8 +255,8 @@ export default function Home() {
           style={{ scale: statsScale, opacity: statsOpacity }}
           className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6"
         >
-          {stats.map((s, idx) => (
-            <StatCard key={s.label} {...s} index={idx} />
+          {statsList.map((s, idx) => (
+            <StatCard key={s.label || idx} {...s} index={idx} />
           ))}
         </motion.div>
 
@@ -299,7 +345,7 @@ export default function Home() {
         <motion.div layout className="grid grid-cols-2 gap-3.5 sm:gap-4.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           <AnimatePresence>
             {displayedCrops.map((app, i) => (
-              <ApplicationCard key={app.title} application={app} index={i} onSelect={setSelectedApp} />
+              <ApplicationCard key={app.title || `crop-${i}`} application={app} index={i} onSelect={setSelectedApp} />
             ))}
           </AnimatePresence>
         </motion.div>
@@ -352,9 +398,9 @@ export default function Home() {
 
             {/* Desktop Testimonials Grid */}
             <div className="hidden lg:grid gap-5.5 xl:gap-6 grid-cols-5">
-              {testimonials.map((t, idx) => (
+              {testiList.map((t, idx) => (
                 <motion.div
-                  key={t.name}
+                  key={t.name || idx}
                   style={{ y: idx % 2 === 0 ? cardsOddY : cardsEvenY }}
                   className="h-full transform-gpu"
                 >
@@ -380,7 +426,7 @@ export default function Home() {
               className="mb-6 sm:mb-8 max-w-3xl mx-auto text-center"
             />
             <div className="w-full transform-gpu flex-1 flex flex-col justify-center">
-              <FAQAccordion items={faqs} />
+              <FAQAccordion items={faqList} />
             </div>
           </div>
         </motion.section>
