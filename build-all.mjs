@@ -4,6 +4,10 @@ import { join } from 'path';
 
 console.log('--- Starting unified build process ---');
 
+// 0. Generate Produce & Applications Guide PDF
+console.log('\n[0/3] Generating Applications Guide PDF...');
+execSync('node scripts/generate-applications-pdf.mjs', { stdio: 'inherit' });
+
 // 1. Build Desktop App
 console.log('\n[1/3] Building Desktop App...');
 execSync('npm run build', { stdio: 'inherit' });
