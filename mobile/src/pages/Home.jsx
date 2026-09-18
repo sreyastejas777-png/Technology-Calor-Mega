@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence, useInView } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
@@ -35,6 +35,7 @@ import { faqs } from '../data/faqs';
 const homeCategories = ['All Featured', 'Fruits', 'Spices and Herbs', 'Plantations', 'Grains and Pulses', 'Nuts and Tubers'];
 
 export default function Home() {
+  const navigate = useNavigate();
   const [selectedApp, setSelectedApp] = useState(null);
   const [activeCategory, setActiveCategory] = useState('All Featured');
   const [showDiamondFlash, setShowDiamondFlash] = useState(false);
@@ -404,7 +405,7 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               className="relative overflow-hidden rounded-[1.5rem] bg-gradient-to-br from-primary/90 to-secondary/90 p-4 text-center text-white shadow-soft flex flex-col items-center justify-center cursor-pointer border-2 border-dashed border-accent/40 hover:bg-accent/10 transition-colors h-full min-h-[220px]"
-              onClick={() => window.location.href = '/applications'}
+              onClick={() => navigate('/technology#applications')}
             >
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent/20 text-3xl text-accent shrink-0 transition-transform hover:scale-110">
                 <FaArrowRight />

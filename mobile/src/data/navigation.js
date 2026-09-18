@@ -1,7 +1,7 @@
 export const navLinks = [
   { label: 'Home', path: '/' },
   { label: 'Products', path: '/products' },
-  { label: 'Applications', path: '/applications' },
+  { label: 'Awards & Achievements', path: '/awards' },
   { label: 'Technology', path: '/technology' },
   { label: 'Gallery', path: '/gallery' },
   { label: 'About', path: '/about' },
@@ -11,6 +11,8 @@ export const navLinks = [
 export const routeLabels = {
   '/': 'Home',
   '/products': 'Products',
+  '/awards': 'Awards & Achievements',
+  '/awards-and-achievements': 'Awards & Achievements',
   '/applications': 'Applications',
   '/technology': 'Technology',
   '/gallery': 'Gallery',
@@ -22,3 +24,4 @@ export const routeLabels = {
   '/privacy-policy': 'Privacy Policy',
   '/terms': 'Terms of Service',
 };
+

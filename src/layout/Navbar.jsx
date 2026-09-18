@@ -152,16 +152,16 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Applications */}
+          {/* Awards & Achievements */}
           <NavLink
-            to="/applications"
+            to="/awards"
             className={({ isActive }) =>
               `relative py-2 text-sm font-semibold transition-colors ${
                 isActive ? 'text-accent' : 'text-primary/80 dark:text-paper/80 hover:text-accent'
               }`
             }
           >
-            Applications
+            Awards & Achievements
           </NavLink>
 
           {/* Technology */}
@@ -376,15 +376,15 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Applications */}
+              {/* Awards & Achievements */}
               <NavLink
-                to="/applications"
+                to="/awards"
                 onClick={() => setMobileOpen(false)}
                 className={({ isActive }) =>
                   `text-sm font-semibold py-1.5 ${isActive ? 'text-accent' : 'text-primary dark:text-paper'}`
                 }
               >
-                Applications
+                Awards & Achievements
               </NavLink>
 
               {/* Technology */}

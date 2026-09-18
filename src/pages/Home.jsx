@@ -307,7 +307,7 @@ export default function Home() {
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
           <Button
             as={Link}
-            to="/applications"
+            to="/technology#applications"
             variant="accent"
             icon={FaArrowRight}
             className="shadow-lg shadow-accent/25 hover:shadow-accent/40 text-sm sm:text-base px-8 py-3.5"

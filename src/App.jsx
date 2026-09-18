@@ -11,12 +11,21 @@ import Contact from './pages/Contact';
 import WorkingProcess from './pages/WorkingProcess';
 
 const ProductDetail = lazy(() => import('./pages/ProductDetail'));
-const Applications = lazy(() => import('./pages/Applications'));
+const AwardsAndAchievements = lazy(() => import('./pages/AwardsAndAchievements'));
 const Technology = lazy(() => import('./pages/Technology'));
 const GetQuote = lazy(() => import('./pages/GetQuote'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+
+// Redirect helper to route /applications to /technology#applications
+function ApplicationsRedirect() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate('/technology#applications', { replace: true });
+  }, [navigate]);
+  return null;
+}
 
 // Redirect helper to route /ai-assistant to home page and open the chatbot widget
 function AIAssistantRedirect() {
@@ -47,7 +56,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<ProductDetail />} />
-            <Route path="/applications" element={<Applications />} />
+            <Route path="/applications" element={<ApplicationsRedirect />} />
+            <Route path="/awards" element={<AwardsAndAchievements />} />
+            <Route path="/awards-and-achievements" element={<AwardsAndAchievements />} />
             <Route path="/technology" element={<Technology />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/process" element={<WorkingProcess />} />

@@ -3,8 +3,9 @@ import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube, FaMapMarkerAlt, FaPh
 
 const quickLinks = [
   { label: 'Products', path: '/products' },
-  { label: 'Applications', path: '/applications' },
+  { label: 'Awards & Achievements', path: '/awards' },
   { label: 'Technology', path: '/technology' },
+  { label: 'Applications', path: '/technology#applications' },
   { label: 'Gallery', path: '/gallery' },
   { label: 'Contact', path: '/contact' },
 ];

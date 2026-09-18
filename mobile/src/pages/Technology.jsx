@@ -1,15 +1,49 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FaFileDownload } from 'react-icons/fa';
+import ApplicationCard from '../components/ApplicationCard';
+import ApplicationModal from '../components/ApplicationModal';
+import { applications } from '../data/applications';
 import '../index.css'; // Ensure tailwind and global styles are applied
 
 gsap.registerPlugin(ScrollTrigger);
 
+const applicationCategories = [
+  'All',
+  'Fruits',
+  'Spices and Herbs',
+  'Plantations',
+  'Grains and Pulses',
+  'Nuts and Tubers',
+  'Vegetables',
+  'Specialty'
+];
+
 export default function Technology() {
   const canvasRef = useRef(null);
   const scrollContainerRef = useRef(null);
+  const [selectedApp, setSelectedApp] = useState(null);
+  const [activeAppCategory, setActiveAppCategory] = useState('All');
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === '#applications') {
+      const el = document.getElementById('applications');
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      }
+    }
+  }, [location]);
+
+  const filteredApps = activeAppCategory === 'All'
+    ? applications
+    : applications.filter(app => app.category === activeAppCategory);
 
   useEffect(() => {
     // ─── THREE.JS SCENE SETUP ───
@@ -637,12 +671,80 @@ export default function Technology() {
               <p className="text-sm text-secondary-text">Download full dimensional drawings & wiring guides.</p>
             </div>
             <a
-              href="/assets/downloads/CALOR_MEGA_Specs.pdf"
+              href="./assets/downloads/CALOR_MEGA_Specs.pdf"
               download="CALOR_MEGA_Specs.pdf"
               className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white shadow-soft"
             >
               <FaFileDownload /> Download PDF
             </a>
+          </div>
+
+          {/* Applications Subsection */}
+          <div id="applications" className="mt-14 pt-10 border-t border-border">
+            <div className="mb-6 text-center">
+              <div className="inline-block px-3 py-1 mb-3 bg-accent/10 text-accent rounded-full text-xs font-bold tracking-wider uppercase border border-accent/20">
+                Endless Produce
+              </div>
+              <h2 className="text-2xl font-bold font-outfit mb-2 text-primary-text">Applications & Processing</h2>
+              <p className="text-xs text-secondary-text max-w-xs mx-auto">
+                CALOR MEGA dryers are trusted across fruit, spice, grain, nut, and botanical processing.
+              </p>
+            </div>
+
+            {/* Filter Tabs */}
+            <div className="flex flex-wrap items-center justify-center gap-1.5 mb-6">
+              {applicationCategories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveAppCategory(cat)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                    activeAppCategory === cat
+                      ? 'bg-accent text-primary shadow-sm scale-105'
+                      : 'bg-white/70 dark:bg-white/5 border border-primary/10 dark:border-white/10 text-primary/70 dark:text-paper/70'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            {/* Grid of Applications */}
+            <motion.div layout className="grid grid-cols-2 gap-3 mb-8">
+              <AnimatePresence mode="popLayout">
+                {filteredApps.map((app, i) => (
+                  <ApplicationCard
+                    key={app.title}
+                    application={app}
+                    index={i}
+                    onSelect={setSelectedApp}
+                  />
+                ))}
+              </AnimatePresence>
+            </motion.div>
+
+            {/* Applications Download Option */}
+            <div className="bg-brand-light border border-border rounded-2xl p-6 text-center flex flex-col items-center gap-4 shadow-sm mb-6">
+              <div className="w-12 h-12 bg-accent/10 text-accent rounded-full flex items-center justify-center text-xl">
+                <FaFileDownload />
+              </div>
+              <div>
+                <h3 className="font-bold text-primary-text text-lg mb-1">Produce Processing Guide</h3>
+                <p className="text-sm text-secondary-text">Download drying parameters, moisture targets & batch yields for 50+ crops.</p>
+              </div>
+              <a
+                href="./assets/downloads/CALOR_MEGA_Applications_Guide.pdf"
+                download="CALOR_MEGA_Applications_Guide.pdf"
+                className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white shadow-soft"
+              >
+                <FaFileDownload /> Download Applications PDF
+              </a>
+            </div>
+
+            <ApplicationModal
+              application={selectedApp}
+              onClose={() => setSelectedApp(null)}
+              onSelectRelated={setSelectedApp}
+            />
           </div>
         </div>
       </section>

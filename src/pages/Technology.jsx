@@ -1,17 +1,52 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FaFileDownload, FaWhatsapp, FaArrowRight, FaChevronDown } from 'react-icons/fa';
+import SectionHeading from '../components/SectionHeading';
+import ApplicationCard from '../components/ApplicationCard';
+import ApplicationModal from '../components/ApplicationModal';
+import { applications } from '../data/applications';
 import './Technology.css';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const applicationCategories = [
+  'All',
+  'Fruits',
+  'Spices and Herbs',
+  'Plantations',
+  'Grains and Pulses',
+  'Nuts and Tubers',
+  'Vegetables',
+  'Specialty'
+];
 
 export default function Technology() {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const centerBlockRef = useRef(null);
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const [selectedApp, setSelectedApp] = useState(null);
+  const [activeAppCategory, setActiveAppCategory] = useState('All');
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === '#applications') {
+      const el = document.getElementById('applications');
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      }
+    }
+  }, [location]);
+
+  const filteredApps = activeAppCategory === 'All'
+    ? applications
+    : applications.filter(app => app.category === activeAppCategory);
 
   // ─── ZOOM LOCK (Applies strictly to Technology page) ───
   useEffect(() => {
@@ -661,7 +696,7 @@ export default function Technology() {
               <p>Download full dimensional drawings, wiring guides, power ratings, and tray loading density sheets.</p>
             </div>
             <a
-              href="/assets/downloads/CALOR_MEGA_Specs.pdf"
+              href="./assets/downloads/CALOR_MEGA_Specs.pdf"
               download="CALOR_MEGA_Specs.pdf"
               className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-semibold text-white shadow-soft transition-transform hover:scale-105"
             >
@@ -670,6 +705,76 @@ export default function Technology() {
           </div>
         </div>
       </section>
+
+      {/* Applications Subsection */}
+      <section id="applications" className="applications-subsection relative z-30 bg-bg border-t border-border/40 py-16">
+        <div className="mx-auto max-w-[1600px] min-[1600px]:max-w-[98vw] px-4 sm:px-6 md:px-8 lg:px-10 2xl:px-12">
+          <SectionHeading
+            eyebrow="One Machine, Endless Produce"
+            title="Applications and Processing"
+            subtitle="CALOR MEGA dryers are trusted across fruit, spice, plantation, grain, nut, tuber, vegetable, seafood, and botanical processing worldwide."
+            className="mb-8 sm:mb-10 max-w-3xl mx-auto text-center"
+          />
+
+          {/* Filter Tabs */}
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10">
+            {applicationCategories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveAppCategory(cat)}
+                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 ${activeAppCategory === cat
+                  ? 'bg-accent text-primary shadow-lg shadow-accent/20 scale-105'
+                  : 'bg-white/70 dark:bg-white/5 border border-primary/10 dark:border-white/10 text-primary/70 dark:text-paper/70 hover:bg-accent/10 hover:text-accent'
+                  }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Grid of Applications */}
+          <motion.div
+            layout
+            className="grid grid-cols-2 gap-4 sm:gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredApps.map((app, i) => (
+                <ApplicationCard
+                  key={app.title}
+                  application={app}
+                  index={i}
+                  onSelect={setSelectedApp}
+                />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Applications Download Option */}
+          <div className="download-cta mt-12">
+            <div className="download-cta-icon">
+              <FaFileDownload />
+            </div>
+            <div className="download-cta-text">
+              <h3>Produce Processing & Applications Guide</h3>
+              <p>Download comprehensive crop drying charts, moisture retention standards, drying temperature profiles, and batch yield benchmarks for 50+ produce types.</p>
+            </div>
+            <a
+              href="./assets/downloads/CALOR_MEGA_Applications_Guide.pdf"
+              download="CALOR_MEGA_Applications_Guide.pdf"
+              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-semibold text-white shadow-soft transition-transform hover:scale-105"
+            >
+              <FaFileDownload /> Download Applications Guide PDF
+            </a>
+          </div>
+
+          <ApplicationModal
+            application={selectedApp}
+            onClose={() => setSelectedApp(null)}
+            onSelectRelated={setSelectedApp}
+          />
+        </div>
+      </section>
     </div>
   );
 }
+

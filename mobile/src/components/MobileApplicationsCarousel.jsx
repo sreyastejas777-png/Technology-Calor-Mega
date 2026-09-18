@@ -33,7 +33,7 @@ export default function MobileApplicationsCarousel({ displayedCrops, onSelect })
         {/* View More Slide */}
         <SwiperSlide className="mobile-app-slide transition-all duration-500 rounded-2xl flex items-stretch">
           <div 
-            onClick={() => navigate('/applications')}
+            onClick={() => navigate('/technology#applications')}
             className="relative w-full h-[150px] overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-primary/90 to-secondary/90 p-3 sm:p-4 text-center text-white shadow-soft flex flex-col items-center justify-center cursor-pointer border-2 border-dashed border-accent/40 hover:bg-accent/10 transition-colors"
           >
             <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-accent/20 text-3xl text-accent shrink-0 transition-transform hover:scale-110">

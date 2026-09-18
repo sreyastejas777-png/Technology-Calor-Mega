@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Info, Cpu, Layers, Phone, FileText, Home, ShoppingBag, Image as ImageIcon } from 'lucide-react';
+import { Info, Cpu, Layers, Phone, FileText, Home, ShoppingBag, Image as ImageIcon, Trophy } from 'lucide-react';
 
 export default function MobileMenu({ isOpen, onClose }) {
   const location = useLocation();
@@ -23,7 +23,7 @@ export default function MobileMenu({ isOpen, onClose }) {
     { name: 'Gallery', path: '/gallery', icon: ImageIcon },
     { name: 'About Us', path: '/about', icon: Info },
     { name: 'Technology', path: '/technology', icon: Cpu },
-    { name: 'Applications', path: '/applications', icon: Layers },
+    { name: 'Awards & Achievements', path: '/awards', icon: Trophy },
     { name: 'Contact', path: '/contact', icon: Phone },
   ];
 
